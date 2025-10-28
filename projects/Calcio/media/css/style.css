@@ -1,0 +1,47 @@
+:root {
+    --bs-primary-rgb: 62, 88, 125 !important;
+    --bs-secondary-rgb: 89, 152, 135 !important;
+}
+
+a{
+    text-decoration: none !important;
+}
+
+body:has(.fixed-bottom) {
+    padding-bottom: 70px; /* stessa altezza della barra */
+}
+
+
+.btn-primary {
+    --bs-btn-bg: rgb(var(--bs-primary-rgb));
+    --bs-btn-border-color: rgb(var(--bs-primary-rgb));
+}
+
+.btn-secondary {
+    --bs-btn-bg: rgb(var(--bs-secondary-rgb));
+    --bs-btn-border-color: rgb(var(--bs-secondary-rgb));
+}
+
+.logo {
+    height: 40px;
+    width: 40px;
+}
+
+
+/*NUMERI*/
+/* Chrome, Safari, Edge, Opera */
+.calendario input[type=number]::-webkit-outer-spin-button,
+.calendario input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.calendario input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.calendario input[type=number] {
+    text-align: center;
+    width: 50px; /* giusto per i gol */
+}

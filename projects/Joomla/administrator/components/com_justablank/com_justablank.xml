@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade">
+    <name>Just a Blank</name>
+    <author>ADETA</author>
+    <creationDate>2025-03</creationDate>
+    <copyright>(C) 2024 dev.adeta.lv</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>info@adeta.lv</authorEmail>
+    <authorUrl>dev.adeta.lv</authorUrl>
+    <version>1.02</version>
+    	<description>
+		<![CDATA[
+			<div><strong>Just a Blank</strong> Component from <a href="http://dev.adeta.lv" target="_blank">dev.adeta.lv</a>, display NOTHING in component area.<br/>Report <a href='mailto:info@adeta.lv'>bug</a>.</div>]]>
+    </description>
+    <changelogurl>https://dev.adeta.lv/adt-updates/joomla/com_justablank_free_changelog.xml</changelogurl>
+    
+    <updateservers>
+        <server type="extension" priority="1" name="Just a Blank Component">https://dev.adeta.lv/adt-updates/joomla/com_justablank_free_update.xml</server>
+    </updateservers>
+
+    <namespace path="src/">Adeta\Component\Justablank</namespace>
+
+    <scriptfile>script.php</scriptfile>
+
+    <files folder="site/">
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <administration>
+        <files folder="admin/">
+            <folder>services</folder>
+            <folder>src</folder>
+            <folder>tmpl</folder>
+        </files>
+
+        <languages folder="admin/">
+            <language tag="en-GB">language/en-GB/en-GB.com_justablank.sys.ini</language>
+        </languages>
+    </administration>
+</extension>
