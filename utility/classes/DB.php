@@ -497,7 +497,14 @@ class DB
                 $sql .= "INSERT INTO `$table` VALUES\n";
                 $values = [];
                 foreach ($data as $row) {
-                    $values[] = "('" . implode("','", array_map([$this->pdo, 'quote'], $row)) . "')";
+                    $escaped = array_map(function ($value) {
+                        if ($value === null) {
+                            return 'NULL';
+                        }
+                        return $this->pdo->quote((string) $value);
+                    }, $row);
+
+                    $values[] = '(' . implode(',', $escaped) . ')';
                 }
                 $sql .= implode(",\n", $values) . ";\n\n";
             }

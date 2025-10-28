@@ -2,11 +2,12 @@
 
 $logged_menu = [
     'Home' => 'home.php',
+    'Visualizza' => 'visualizza.php',
     'Membri' => 'membri.php',
     'Categorie' => 'categorie.php',
     'Sottocategorie' => 'sottocategorie.php',
     'Spese' => 'spese.php',
-    'Visualizza' => 'visualizza.php',
+    'Esporta DB' => 'esporta_db.php',
     'Esci' => 'esci.php',
 ];
 
@@ -16,6 +17,7 @@ $not_logged_menu = [
     'Accedi' => 'accedi.php',
 ];
 
+$dbname = 'spese';
 
 function create_message($type, $text)
 {

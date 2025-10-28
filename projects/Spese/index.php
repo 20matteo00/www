@@ -3,7 +3,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/utility/path.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/utility/classes/DB.php';
 include 'utility.php';
 session_start();
-$db = new DB('spese');
+$db = new DB($dbname);
 $logged = $_SESSION['logged'] ?? false;
 $menu = $logged ? $logged_menu : $not_logged_menu;
 $page = $_GET['page'] ?? 'home.php';

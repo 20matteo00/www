@@ -1,7 +1,8 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/utility/classes/DB.php';
+include 'utility.php';
 
-$db = new DB('spese');
+$db = new DB($dbname);
 
 $db->createTable('membri', [
     'id INT PRIMARY KEY AUTO_INCREMENT',
