@@ -1,0 +1,6 @@
+{
+    "require": {
+        "pelago/emogrifier": "^7.3",
+        "symfony/css-selector": "5.4.45"
+    }
+}

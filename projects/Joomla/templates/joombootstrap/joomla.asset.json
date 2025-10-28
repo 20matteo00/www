@@ -1,0 +1,95 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "JoomBootstrap",
+  "version": "1.0.0",
+  "description": "Template base per Joomla 5/6 con bootstrap.",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+    {
+      "name": "bootstrap-css",
+      "description": "The bootstrap css",
+      "type": "style",
+      "uri": "bootstrap/bootstrap.css"
+    },
+    {
+      "name": "bootstrap-ico",
+      "description": "The bootstrap icons",
+      "type": "style",
+      "uri": "bootstrap/icone/font/bootstrap-icons.css"
+    },
+    {
+      "name": "bootstrap-js",
+      "description": "The bootstrap js",
+      "type": "script",
+      "uri": "bootstrap/bootstrap.bundle.js",
+      "attributes" : {
+        "defer": true
+      }
+    },
+    {
+      "name": "searchtools",
+      "type": "style",
+      "uri": "system/searchtools/searchtools.min.css"
+    },
+    {
+      "name": "fontawesome",
+      "type": "style",
+      "uri": "system/joomla-fontawesome.min.css"
+    },
+    {
+      "name": "leaflet-css",
+      "description": "The leaflet css (mappe)",
+      "type": "style",
+      "uri": "leaflet/leaflet.css"
+    },
+    {
+      "name": "leaflet-marker-css",
+      "description": "The leaflet marker css (mappe)",
+      "type": "style",
+      "uri": "leaflet/MarkerCluster.css"
+    },
+    {
+      "name": "leaflet-marker-default-css",
+      "description": "The leaflet marker css (mappe)",
+      "type": "style",
+      "uri": "leaflet/MarkerCluster.Default.css"
+    },
+    {
+      "name": "leaflet-js",
+      "description": "The leaflet js (mappe)",
+      "type": "script",
+      "uri": "leaflet/leaflet.js"
+    },
+    {
+      "name": "leaflet-marker-js",
+      "description": "The leaflet marker js (mappe)",
+      "type": "script",
+      "uri": "leaflet/leaflet.markercluster.js",
+      "dependencies": ["leaflet-js"],
+      "attributes" : {
+        "defer": true
+      }
+    },
+    {
+      "name": "alpine-js",
+      "description": "The alpine js",
+      "type": "script",
+      "uri": "alpine.js",
+      "attributes" : {
+        "defer": true
+      }
+    },
+    {
+      "name": "user-css",
+      "description": "The custom css style to use. Must be placed in media/templates/site/templatebaseld/css/user.css",
+      "type": "style",
+      "uri": "user.css"
+    },
+    {
+      "name": "user-js",
+      "description": "The custom js script to use. Must be placed in media/templates/site/templatebaseld/js/user.js",
+      "type": "script",
+      "uri": "user.js"
+    }
+  ]
+}

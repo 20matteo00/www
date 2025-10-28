@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="template" client="site" method="upgrade">
+	<name>JoomBootstrap</name>
+	<version>1.0</version>
+	<creationDate>Oct 2025</creationDate>
+	<author>LD</author>
+	<description>Template base per Joomla 5/6 con bootstrap.</description>
+	<inheritable>1</inheritable>
+	<files>
+		<filename>index.php</filename>
+		<filename>joomla.asset.json</filename>
+		<filename>templateDetails.xml</filename>
+		<folder>html</folder>
+		<folder>forms</folder>
+	</files>
+	<media destination="templates/site/JoomBootstrap" folder="media">
+		<folder>js</folder>
+		<folder>css</folder>
+		<folder>fonts</folder>
+		<folder>images</folder>
+	</media>
+	<positions>
+		<position>header-top</position>
+		<position>header-content</position>
+		<position>header-bottom</position>
+		<position>breadcrumb</position>
+		<position>content-top</position>
+		<position>content-bottom</position>
+		<position>sidebar-left</position>
+		<position>sidebar-right</position>
+		<position>footer-top</position>
+		<position>footer-content</position>
+		<position>footer-bottom</position>
+	</positions>
+	<config>
+		<fields name="params">
+			<fieldset name="advanced">
+				<!-- campo favicon -->
+				<field name="favicon" type="media" label="Favicon" directory="images" description="Favicon del sito" default="media/templates/site/joombootstrap/images/favicon.png"/>
+				<!-- campo logo -->
+				<field name="logo" type="media" label="Logo" directory="images" description="Logo del sito" default="media/templates/site/joombootstrap/images/logoRL.png"/>
+				<!-- campo colori -->
+				<field name="colors" type="subform" label="Colori tema" description="Aggiungi uno o più colori" formsource="templates/joombootstrap/forms/colors.xml" multiple="true"/>
+				<!-- Sticky -->
+				<field name="sticky" type="radio" label="Sticky Header" description="Seleziona se l'header content deve essere Sticky oppure no" default="0">
+					<option value="0">No</option>
+					<option value="1">Si</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

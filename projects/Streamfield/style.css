@@ -1,0 +1,45 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.block-item {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.block-item.selected {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.block-item.selected:hover {
+    background-color: #0b5ed7;
+}
+
+.block-item:hover {
+    background-color: #e9ecef;
+}
+
+.config-section {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.preview-item {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.preview-item.selected {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+}
+
+.preview-item:hover {
+    border-color: #adb5bd;
+}

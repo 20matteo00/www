@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="colors">
+        <fieldset name="colorItem" label="Color Item">
+            <field name="value" type="color" label="Valore colore" default="#ffffff" required="true" description="Scegli in ordine di importanza i colori (primario, secondario, terziario, ecc)"/>
+        </fieldset>
+        
+    </fields>
+</form>

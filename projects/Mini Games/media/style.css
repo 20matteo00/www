@@ -1,0 +1,81 @@
+:root{
+    --bs-primary-rgb: 15,15,145;
+}
+
+/*INDEX*/
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(120deg, #f0f8ff, #0b1d44);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    text-shadow: 1px 1px 3px black;
+}
+
+/* CARD */
+.card {
+    background: linear-gradient(135deg, #ff5e5e, #ffa500);
+    border-radius: 16px;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-15px) rotate(-2deg) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* GENERICO */
+#messaggio {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 30px 50px;
+    font-size: 2em;
+    border-radius: 20px;
+    display: none;
+    z-index: 10;
+}
+
+p {
+    margin: 0 !important;
+}
+
+/* CUBO */
+#blocchetto {
+    width: 100px;
+    height: 100px;
+    background-color: #ffa500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    position: absolute;
+    transition: transform 0.1s;
+}
+
+/* NUMERO */
+button {
+    background: linear-gradient(135deg, #ff6600, #ffcc00);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #ff4500, #ffaa00);
+    box-shadow: 0 0 15px #ffcc00, 0 0 25px #ff6600;
+}
