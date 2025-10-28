@@ -1,5 +1,5 @@
 -- Database: spese
--- Generated: 2025-10-28 22:12:41
+-- Generated: 2025-10-28 22:28:38
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -63,9 +63,11 @@ CREATE TABLE `spese` (
   KEY `id_sottocategoria` (`id_sottocategoria`),
   CONSTRAINT `spese_ibfk_1` FOREIGN KEY (`id_membro`) REFERENCES `membri` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `spese_ibfk_2` FOREIGN KEY (`id_sottocategoria`) REFERENCES `sottocategorie` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `spese` VALUES
-('1','48.00','2025-10-28','Dio cane quanto costa','1','2',NULL,'2025-10-28 17:06:49');
+('1','48.01','2025-10-28','Dio cane quanto costa','1','2',NULL,'2025-10-28 17:06:49'),
+('2','23.00','2025-10-28','','2','1',NULL,'2025-10-28 22:19:44'),
+('3','32.00','2025-10-28','','1','1',NULL,'2025-10-28 22:28:01');
 
 SET FOREIGN_KEY_CHECKS=1;
