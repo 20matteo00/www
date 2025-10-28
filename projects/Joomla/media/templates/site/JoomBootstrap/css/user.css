@@ -1,0 +1,85 @@
+:root {
+  --primary-color: var(--colors0, #ff0000);
+  --secondary-color: var(--colors1, #0000ff);
+  --tertiary-color: var(--colors2, #00ff00);
+  --quartary-color: var(--colors3, #ffff00);
+  /**/
+
+
+
+}
+
+/*FONT*/
+@font-face {
+  font-family: "TitilliumWeb";
+  src: url("../fonts/TitilliumWeb/TitilliumWeb-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+/*FONT*/
+
+/*COLORI*/
+.bg-primary{
+  background-color: var(--primary-color) !important;
+}
+
+.bg-secondary{
+  background-color: var(--secondary-color) !important;
+}
+
+.bg-tertiary{
+  background-color: var(--tertiary-color) !important;
+}
+
+.bg-quartary{
+  background-color: var(--quartary-color) !important;
+}
+
+
+
+/*GENERALE*/
+
+body {
+  font-family: "TitilliumWeb", "Roboto", sans-serif;
+}
+
+a{
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 !important;
+}
+
+.navbar-logo img {
+  max-height: 50px;
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.header-bottom{
+  background-color: var(--secondary-color);
+}
+
+.colore-libro {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #000;
+  vertical-align: middle;
+}
+
+.image img{
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  aspect-ratio: 1/1;
+}
