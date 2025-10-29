@@ -52,7 +52,7 @@ function getDatiSpeseMembri(DB $db, ?string $anno = null): array
 
         if (!empty($spese) && $spese[0]['totale_importo'] !== null) {
             $nomi[] = $m['nome'];
-            $colori[] = json_decode($m['dati'], true)['color'] ?? '#000000';
+            $colori[] = json_decode($m['dati'] ?? '', true)['color'] ?? '#000000';
             $importi[] = (float) $spese[0]['totale_importo'];
             $quantita[] = (int) $spese[0]['totale_spese'];
         }
@@ -82,7 +82,7 @@ function getDatiSpeseCategorie(DB $db, ?string $anno = null): array
 
         if (!empty($spese) && $spese[0]['totale_importo'] !== null) {
             $nomi[] = $c['nome'];
-            $colori[] = json_decode($c['dati'], true)['color'] ?? '#000000';
+            $colori[] = json_decode($c['dati'] ?? '', true)['color'] ?? '#000000';
             $importi[] = (float) $spese[0]['totale_importo'];
             $quantita[] = (int) $spese[0]['totale_spese'];
         }
@@ -91,6 +91,34 @@ function getDatiSpeseCategorie(DB $db, ?string $anno = null): array
     return compact('nomi', 'importi', 'quantita', 'colori');
 }
 
+function getDatiSpeseSottocategorie(DB $db, ?string $anno = null): array
+{
+    $sottocategorie = $db->select('sottocategorie');
+    $nomi = $importi = $quantita = $colori = [];
+
+    foreach ($sottocategorie as $sc) {
+        $query = "
+            SELECT COUNT(*) AS totale_spese, SUM(importo) AS totale_importo
+            FROM spese
+            WHERE id_sottocategoria = {$sc['id']}
+        ";
+
+        if ($anno) {
+            $query .= " AND YEAR(data) = {$anno}";
+        }
+
+        $spese = $db->runQuery($query);
+
+        if (!empty($spese) && $spese[0]['totale_importo'] !== null) {
+            $nomi[] = $sc['nome'];
+            $colori[] = json_decode($sc['dati'] ?? '', true)['color'] ?? '#000000';
+            $importi[] = (float) $spese[0]['totale_importo'];
+            $quantita[] = (int) $spese[0]['totale_spese'];
+        }
+    }
+
+    return compact('nomi', 'importi', 'quantita', 'colori');
+}
 
 /**
  * Genera un grafico Chart.js.
@@ -119,4 +147,21 @@ function generaGrafico($id, $tipo, $label, $labels, $data, $colori)
         });
     </script>
     <?php
+}
+
+
+/* creare layout grafici */
+function generaLayoutGrafico($classe_div, $h3, $id, $tipo, $label, $datiTotali)
+{
+    if ($classe_div == '') $classe_div = 'col-md-6 my-3 text-center';
+    
+    ?>
+
+    <div class="<?= htmlspecialchars($classe_div) ?>">
+        <h3><?= htmlspecialchars($h3) ?></h3>
+        <?php generaGrafico($id, $tipo, $label, $datiTotali['nomi'], $datiTotali['importi'], $datiTotali['colori']); ?>
+    </div>
+
+    <?php
+
 }

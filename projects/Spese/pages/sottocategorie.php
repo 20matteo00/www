@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'] ?? '';
     $descrizione = $_POST['descrizione'] ?? '';
     $id_categoria = $_POST['categoria'] ?? '';
+    $color = $_POST['color'] ?? '#000000';
 
     if (!$id_categoria) {
         $msg = "<div class='alert alert-danger'>Devi selezionare una categoria!</div>";
@@ -22,7 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $db->update($table, [
                 'nome' => $nome,
                 'descrizione' => $descrizione,
-                'id_categoria' => $id_categoria
+                'id_categoria' => $id_categoria,
+                'dati' => json_encode(['color' => $color])
+
             ], ['id' => $editId]);
             $msg = "<div class='alert alert-success'>Sottocategoria modificata correttamente.</div>";
         } else {
@@ -31,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'nome' => $nome,
                 'descrizione' => $descrizione,
                 'id_categoria' => $id_categoria,
+                'dati' => json_encode(['color' => $color]),
                 'created_at' => date('Y-m-d H:i:s')
             ]);
             $msg = "<div class='alert alert-success'>Sottocategoria inserita correttamente.</div>";
@@ -78,12 +82,12 @@ if ($editId) {
                     <?= $msg ?? '' ?>
                     <form method="POST" autocomplete="on">
                         <div class="row">
-                            <div class="col-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label" for="nome">Nome <span class="text-danger">*</span></label>
                                 <input type="text" name="nome" id="nome" class="form-control" required
                                     value="<?= htmlspecialchars($editSottocategoria['nome'] ?? $_POST['nome'] ?? '') ?>">
                             </div>
-                            <div class="col-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label" for="categoria">Categoria <span
                                         class="text-danger">*</span></label>
                                 <select name="categoria" id="categoria" class="form-select" required>
@@ -94,6 +98,11 @@ if ($editId) {
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="color">Colore</label>
+                                <input type="color" name="color" id="color" class="form-control" required
+                                    value="<?= htmlspecialchars(json_decode($editSottocategoria['dati'], true)['color'] ?? $_POST['color'] ?? '') ?>">
                             </div>
                             <div class="col-12 mb-3">
                                 <label class="form-label" for="descrizione">Descrizione</label>
@@ -125,6 +134,7 @@ if ($editId) {
                                     <th>Nome</th>
                                     <th>Categoria</th>
                                     <th>Descrizione</th>
+                                    <th>Colore</th>
                                     <th>Spese Totali</th>
                                     <th>Importo Totale</th>
                                     <th>Data Aggiunta</th>
@@ -142,11 +152,17 @@ if ($editId) {
                                     WHERE id_sottocategoria = ' . $s['id'] . '
                                     GROUP BY id_sottocategoria
                                     ');
+                                    $color = '#000000';
+                                    if (isset($s['dati'])) {
+                                        $color = json_decode($s['dati'], true)['color'];
+                                    }
                                     ?>
                                     <tr>
                                         <td><?= htmlspecialchars($s['nome']) ?></td>
                                         <td><?= htmlspecialchars($categoria_nome) ?></td>
                                         <td><?= htmlspecialchars($s['descrizione']) ?></td>
+                                        <td><span class="badge w-100 h-100"
+                                                style="background-color: <?= $color ?>; min-height: 1.5rem;"> </span></td>
                                         <td><?= $spese[0]['totale_spese'] ?? 0 ?></td>
                                         <td><?= number_format($spese[0]['totale_importo'] ?? 0.00, 2) ?> €</td>
                                         <td><?= date('d/m/Y H:i', strtotime($s['created_at'])) ?></td>

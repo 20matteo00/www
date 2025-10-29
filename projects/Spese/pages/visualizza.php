@@ -16,56 +16,36 @@ $modalita = $_GET['modalita'] ?? 'membri';
                     echo "<p class='text-center'>Nessun dato disponibile per i membri.</p>";
                     break;
                 }
-                ?>
-
-                <!-- Totali -->
-                <div class="col-md-6 my-3 text-center">
-                    <h3>Somma Spese (Totale)</h3>
-                    <?php generaGrafico('chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali['nomi'], $datiTotali['importi'], $datiTotali['colori']); ?>
-                </div>
-                <div class="col-md-6 my-3 text-center">
-                    <h3>Numero Spese (Totale)</h3>
-                    <?php generaGrafico('chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali['nomi'], $datiTotali['quantita'], $datiTotali['colori']); ?>
-                </div>
-
-                <!-- 2025 -->
-                <div class="col-md-6 my-3 text-center">
-                    <h3>Somma Spese (2025)</h3>
-                    <?php generaGrafico('chartImporti2025', 'pie', 'Totale Importi 2025 (€)', $dati2025['nomi'], $dati2025['importi'], $dati2025['colori']); ?>
-                </div>
-                <div class="col-md-6 my-3 text-center">
-                    <h3>Numero Spese (2025)</h3>
-                    <?php generaGrafico('chartQuantita2025', 'doughnut', 'Numero di Spese 2025', $dati2025['nomi'], $dati2025['quantita'], $dati2025['colori']); ?>
-                </div>
-
-                <?php
+                generaLayoutGrafico('', 'Somma Spese (Totale)', 'chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali);
+                generaLayoutGrafico('', 'Numero Spese (Totale)', 'chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali);
+                generaLayoutGrafico('', 'Somma Spese (2025)', 'chartImporti2025', 'pie', 'Totale Importi 2025 (€)', $dati2025);
+                generaLayoutGrafico('', 'Numero Spese (2025)', 'chartQuantita2025', 'doughnut', 'Numero di Spese 2025', $dati2025);
                 break;
 
             case 'categorie':
                 $datiTotali = getDatiSpeseCategorie($db);
                 $dati2025 = getDatiSpeseCategorie($db, '2025');
+                if (empty($datiTotali['nomi'])) {
+                    echo "<p class='text-center'>Nessun dato disponibile per le categorie.</p>";
+                    break;
+                }
+                generaLayoutGrafico('', 'Somma Spese (Totale)', 'chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali);
+                generaLayoutGrafico('', 'Numero Spese (Totale)', 'chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali);
+                generaLayoutGrafico('', 'Somma Spese (2025)', 'chartImporti2025', 'pie', 'Totale Importi 2025 (€)', $dati2025);
+                generaLayoutGrafico('', 'Numero Spese (2025)', 'chartQuantita2025', 'doughnut', 'Numero di Spese 2025', $dati2025);
+                break;
 
-                ?>
-                <!-- Totali -->
-                <div class="col-md-6 my-3 text-center">
-                    <h3>Somma Spese (Totale)</h3>
-                    <?php generaGrafico('chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali['nomi'], $datiTotali['importi'], $datiTotali['colori']); ?>
-                </div>
-                <div class="col-md-6 my-3 text-center">
-                    <h3>Numero Spese (Totale)</h3>
-                    <?php generaGrafico('chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali['nomi'], $datiTotali['quantita'], $datiTotali['colori']); ?>
-                </div>
-
-                <!-- 2025 -->
-                <div class="col-md-6 my-3 text-center">
-                    <h3>Somma Spese (2025)</h3>
-                    <?php generaGrafico('chartImporti2025', 'pie', 'Totale Importi 2025 (€)', $dati2025['nomi'], $dati2025['importi'], $dati2025['colori']); ?>
-                </div>
-                <div class="col-md-6 my-3 text-center">
-                    <h3>Numero Spese (2025)</h3>
-                    <?php generaGrafico('chartQuantita2025', 'doughnut', 'Numero di Spese 2025', $dati2025['nomi'], $dati2025['quantita'], $dati2025['colori']); ?>
-                </div>
-                <?php
+            case 'sottocategorie':
+                $datiTotali = getDatiSpeseSottocategorie($db);
+                $dati2025 = getDatiSpeseSottocategorie($db, '2025');
+                if (empty($datiTotali['nomi'])) {
+                    echo "<p class='text-center'>Nessun dato disponibile per le sottocategorie.</p>";
+                    break;
+                }
+                generaLayoutGrafico('', 'Somma Spese (Totale)', 'chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali);
+                generaLayoutGrafico('', 'Numero Spese (Totale)', 'chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali);
+                generaLayoutGrafico('', 'Somma Spese (2025)', 'chartImporti2025', 'pie', 'Totale Importi 2025 (€)', $dati2025);
+                generaLayoutGrafico('', 'Numero Spese (2025)', 'chartQuantita2025', 'doughnut', 'Numero di Spese 2025', $dati2025);
                 break;
 
             default:
