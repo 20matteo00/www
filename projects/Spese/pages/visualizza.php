@@ -1,6 +1,7 @@
 <?php
 include 'layout/menu_visualizza.php';
 $modalita = $_GET['modalita'] ?? 'membri';
+
 ?>
 
 <div class="container">
@@ -8,79 +9,35 @@ $modalita = $_GET['modalita'] ?? 'membri';
         <?php
         switch ($modalita) {
             case 'membri':
-                ?>
-                <div class="col-md-6">
-                    <h3 class="text-center">Distribuzione Importi per Membro</h3>
-                    <canvas id="chartImporti" class="canvas"></canvas>
+                $datiTotali = getDatiSpeseMembri($db);
+                $dati2025 = getDatiSpeseMembri($db, '2025');
 
-                </div>
-                <div class="col-md-6">
-                    <h3 class="text-center">Numero di Spese per Membro</h3>
-                    <canvas id="chartQuantita" class="canvas"></canvas>
-
-                </div>
-                <?php
-                $membri = $db->select('membri');
-                $nomi = $importi = $quantita = [];
-
-                foreach ($membri as $m) {
-                    $spese = $db->runQuery("
-                SELECT COUNT(*) AS totale_spese, SUM(importo) AS totale_importo
-                FROM spese WHERE id_membro = {$m['id']}
-            ");
-
-                    if (!empty($spese) && $spese[0]['totale_importo'] !== null) {
-                        $nomi[] = $m['nome'];
-                        $colori[] = json_decode($m['dati'], true)['color'] ?? '#000000';
-                        $importi[] = (float) $spese[0]['totale_importo'];
-                        $quantita[] = (int) $spese[0]['totale_spese'];
-                    }
-                }
-
-                if (empty($nomi)) {
-                    echo "<p>Nessun dato disponibile per i membri.</p>";
+                if (empty($datiTotali['nomi'])) {
+                    echo "<p class='text-center'>Nessun dato disponibile per i membri.</p>";
                     break;
                 }
-
                 ?>
 
-                <script>
-                    const colori = <?= json_encode($colori) ?>;
-                    const labels = <?= json_encode($nomi) ?>;
-                    const datiImporti = <?= json_encode($importi) ?>;
-                    const datiQuantita = <?= json_encode($quantita) ?>;
+                <!-- Totali -->
+                <div class="col-md-6 my-3 text-center">
+                    <h3>Somma Spese (Totale)</h3>
+                    <?php generaGrafico('chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali['nomi'], $datiTotali['importi'], $datiTotali['colori']); ?>
+                </div>
+                <div class="col-md-6 my-3 text-center">
+                    <h3>Numero Spese (Totale)</h3>
+                    <?php generaGrafico('chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali['nomi'], $datiTotali['quantita'], $datiTotali['colori']); ?>
+                </div>
 
-                    const optBase = {
-                        responsive: true,
-                        plugins: { legend: { display: true, position: 'top' } }
-                    };
+                <!-- 2025 -->
+                <div class="col-md-6 my-3 text-center">
+                    <h3>Somma Spese (2025)</h3>
+                    <?php generaGrafico('chartImporti2025', 'pie', 'Totale Importi 2025 (€)', $dati2025['nomi'], $dati2025['importi'], $dati2025['colori']); ?>
+                </div>
+                <div class="col-md-6 my-3 text-center">
+                    <h3>Numero Spese (2025)</h3>
+                    <?php generaGrafico('chartQuantita2025', 'doughnut', 'Numero di Spese 2025', $dati2025['nomi'], $dati2025['quantita'], $dati2025['colori']); ?>
+                </div>
 
-                    new Chart(document.getElementById('chartImporti'), {
-                        type: 'pie',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Totale Importi (€)',
-                                data: datiImporti,
-                                backgroundColor: colori
-                            }]
-                        },
-                        options: optBase
-                    });
-
-                    new Chart(document.getElementById('chartQuantita'), {
-                        type: 'doughnut',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Numero di Spese',
-                                data: datiQuantita,
-                                backgroundColor: colori
-                            }]
-                        },
-                        options: optBase
-                    });
-                </script>
                 <?php
                 break;
 

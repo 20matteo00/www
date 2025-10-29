@@ -30,3 +30,66 @@ function checkLogin()
         exit;
     }
 }
+
+/**
+ * Estrae dati aggregati delle spese per ogni membro.
+ *
+ * @param PDO $db Connessione al database
+ * @param string|null $anno Filtra per anno (es. '2025'), oppure null per tutte
+ * @return array Dati aggregati con nomi, importi, quantità e colori
+ */
+function getDatiSpeseMembri(DB $db, ?string $anno = null): array {
+    $membri = $db->select('membri');
+    $nomi = $importi = $quantita = $colori = [];
+
+    foreach ($membri as $m) {
+        $query = "
+            SELECT COUNT(*) AS totale_spese, SUM(importo) AS totale_importo
+            FROM spese
+            WHERE id_membro = {$m['id']}
+        ";
+
+        if ($anno) {
+            $query .= " AND YEAR(data) = {$anno}";
+        }
+
+        $spese = $db->runQuery($query);
+
+        if (!empty($spese) && $spese[0]['totale_importo'] !== null) {
+            $nomi[] = $m['nome'];
+            $colori[] = json_decode($m['dati'], true)['color'] ?? '#000000';
+            $importi[] = (float) $spese[0]['totale_importo'];
+            $quantita[] = (int) $spese[0]['totale_spese'];
+        }
+    }
+
+    return compact('nomi', 'importi', 'quantita', 'colori');
+}
+
+/**
+ * Genera un grafico Chart.js.
+ */
+function generaGrafico($id, $tipo, $label, $labels, $data, $colori) {
+    ?>
+    <canvas id="<?= $id ?>" class="canvas"></canvas>
+    <script>
+        new Chart(document.getElementById('<?= $id ?>'), {
+            type: '<?= $tipo ?>',
+            data: {
+                labels: <?= json_encode($labels) ?>,
+                datasets: [{
+                    label: <?= json_encode($label) ?>,
+                    data: <?= json_encode($data) ?>,
+                    backgroundColor: <?= json_encode($colori) ?>
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true, position: 'top' }
+                }
+            }
+        });
+    </script>
+    <?php
+}
