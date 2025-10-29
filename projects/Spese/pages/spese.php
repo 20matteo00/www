@@ -78,7 +78,7 @@ if (isset($_GET['delete'])) {
 
 // Recupera lista spese 
 $spese = $db->select($table, [
-    'orderBy' => 'created_at ASC',
+    'orderBy' => 'data DESC',
 ]);
 
 // Recupero spesa per edit
@@ -199,11 +199,13 @@ if ($editId) {
 
                                         $subcat = array_filter($sottocategorie, fn($sc) => $sc['id'] == $s['id_sottocategoria']);
                                         $sottocategoria_nome = count($subcat) ? reset($subcat)['nome'] : '-';
+
+                                        $categoria_nome = getNomeCategoriaBySottocategoria($db, $s['id_sottocategoria']);
                                         ?>
                                         <tr>
                                             <td><?= date('d/m/Y', strtotime($s['data'])) ?></td>
                                             <td><?= htmlspecialchars($membro_nome) ?></td>
-                                            <td><?= htmlspecialchars($sottocategoria_nome) ?></td>
+                                            <td><?= htmlspecialchars($sottocategoria_nome) . ' (' . htmlspecialchars($categoria_nome) . ')' ?></td>
                                             <td class="text-end">€<?= number_format($s['importo'], 2, ',', '.') ?></td>
                                             <td><?= htmlspecialchars($s['descrizione']) ?: '-' ?></td>
                                             <td>

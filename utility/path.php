@@ -19,6 +19,9 @@ $libraries = [
     ],
     'chart' => [
         'js' => '/libraries/chart/chart.js'
+    ],
+    'chart_datalabels' => [
+        'js' => '/libraries/chart_datalabels/chart_datalabels.js'
     ]
 ];
 
@@ -41,4 +44,5 @@ $leaflet_js = js_tag($libraries['leaflet']['js']);
 $leaflet_markercluster_css = css_tag($libraries['leaflet_markercluster']['css']);
 $leaflet_markercluster_js = js_tag($libraries['leaflet_markercluster']['js']);
 $chart_js = js_tag($libraries['chart']['js']);
+$chart_datalabels_js = js_tag($libraries['chart_datalabels']['js']);
 ?>

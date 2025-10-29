@@ -32,7 +32,7 @@ function checkLogin()
 }
 
 
-function getDatiSpeseMembri(DB $db, ?string $anno = null): array
+function getDatiSpeseMembri(DB $db): array
 {
     $membri = $db->select('membri');
     $nomi = $importi = $quantita = $colori = [];
@@ -43,10 +43,6 @@ function getDatiSpeseMembri(DB $db, ?string $anno = null): array
             FROM spese
             WHERE id_membro = {$m['id']}
         ";
-
-        if ($anno) {
-            $query .= " AND YEAR(data) = {$anno}";
-        }
 
         $spese = $db->runQuery($query);
 
@@ -61,7 +57,7 @@ function getDatiSpeseMembri(DB $db, ?string $anno = null): array
     return compact('nomi', 'importi', 'quantita', 'colori');
 }
 
-function getDatiSpeseCategorie(DB $db, ?string $anno = null): array
+function getDatiSpeseCategorie(DB $db): array
 {
     $categorie = $db->select('categorie');
     $nomi = $importi = $quantita = $colori = [];
@@ -74,9 +70,6 @@ function getDatiSpeseCategorie(DB $db, ?string $anno = null): array
             WHERE sc.id_categoria = {$c['id']}
         ";
 
-        if ($anno) {
-            $query .= " AND YEAR(s.data) = {$anno}";
-        }
 
         $spese = $db->runQuery($query);
 
@@ -91,7 +84,7 @@ function getDatiSpeseCategorie(DB $db, ?string $anno = null): array
     return compact('nomi', 'importi', 'quantita', 'colori');
 }
 
-function getDatiSpeseSottocategorie(DB $db, ?string $anno = null): array
+function getDatiSpeseSottocategorie(DB $db): array
 {
     $sottocategorie = $db->select('sottocategorie');
     $nomi = $importi = $quantita = $colori = [];
@@ -102,10 +95,6 @@ function getDatiSpeseSottocategorie(DB $db, ?string $anno = null): array
             FROM spese
             WHERE id_sottocategoria = {$sc['id']}
         ";
-
-        if ($anno) {
-            $query .= " AND YEAR(data) = {$anno}";
-        }
 
         $spese = $db->runQuery($query);
 
@@ -141,27 +130,77 @@ function generaGrafico($id, $tipo, $label, $labels, $data, $colori)
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { display: true, position: 'top' }
+                    legend: { display: true, position: 'top' },
+                    datalabels: {
+                        color: '#000',
+                        anchor: 'center',     // centra il testo dentro la fetta
+                        clamp: true,          // non fa uscire il testo fuori dal canvas
+                        clip: true,           // taglia eventuali overflow
+                        offset: 4,            // piccolo margine per non toccare il bordo
+                        formatter: (value, context) => {
+                            const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                            const percent = (value / total * 100).toFixed(1);
+                            // se la percentuale è troppo piccola, nascondi l'etichetta
+                            if (percent < 5) return ''; // nasconde le etichette sotto il 5%
+                            return [`${value.toLocaleString('it-IT')}`, `(${percent}%)`];
+                        },
+                        font: (context) => {
+                            // riduce dinamicamente la dimensione se ci sono molte fette
+                            const count = context.chart.data.labels.length;
+                            return {
+                                size: count > 6 ? 10 : 12,
+                                weight: 'bold'
+                            };
+                        },
+                        padding: {
+                            top: 4,
+                            bottom: 4
+                        }
+                    }
+
                 }
-            }
+            },
+            plugins: [ChartDataLabels] // registra il plugin
         });
     </script>
+
     <?php
 }
 
 
 /* creare layout grafici */
-function generaLayoutGrafico($classe_div, $h3, $id, $tipo, $label, $datiTotali)
+function generaLayoutGrafico($classe_div, $h3, $id, $tipo, $label, $datiTotali, $mod = 'importi')
 {
-    if ($classe_div == '') $classe_div = 'col-md-6 my-3 text-center';
-    
+    if ($classe_div == '')
+        $classe_div = 'col-md-6 my-3 text-center';
+
     ?>
 
     <div class="<?= htmlspecialchars($classe_div) ?>">
         <h3><?= htmlspecialchars($h3) ?></h3>
-        <?php generaGrafico($id, $tipo, $label, $datiTotali['nomi'], $datiTotali['importi'], $datiTotali['colori']); ?>
+        <?php generaGrafico($id, $tipo, $label, $datiTotali['nomi'], $datiTotali[$mod], $datiTotali['colori']); ?>
     </div>
 
     <?php
+
+}
+
+
+/* DB */
+function getNomeCategoriaBySottocategoria(DB $db, int $idSottocategoria): ?string
+{
+    $query = "
+        SELECT c.nome
+        FROM sottocategorie s
+        INNER JOIN categorie c ON s.id_categoria = c.id
+        WHERE s.id = {$idSottocategoria}
+        LIMIT 1
+    ";
+    $result = $db->runQuery($query);
+    return $result[0]['nome'] ?? null;
+}
+
+function getNumeroSpeseEImportiTotali()
+{
 
 }

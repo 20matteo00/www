@@ -22,10 +22,11 @@ $msg = '';
     <!-- favicon -->
     <link rel="icon" type="image/png" href="<?= $favicon ?>" />
 
-    <?php echo $chart_js ?? ''; ?>
-    <?php echo $bootstrap_css ?? ''; ?>
-    <?php echo $bootstrap_js ?? ''; ?>
-    <?php echo $bootstrap_icons ?? ''; ?>
+    <?= $chart_js ?? ''; ?>
+    <?= $chart_datalabels_js ?? '' ?>
+    <?= $bootstrap_css ?? ''; ?>
+    <?= $bootstrap_js ?? ''; ?>
+    <?= $bootstrap_icons ?? ''; ?>
     <link rel="stylesheet" href="media/css/style.css">
     <script src="media/js/script.js" defer></script>
 </head>

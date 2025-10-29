@@ -10,42 +10,38 @@ $modalita = $_GET['modalita'] ?? 'membri';
         switch ($modalita) {
             case 'membri':
                 $datiTotali = getDatiSpeseMembri($db);
-                $dati2025 = getDatiSpeseMembri($db, '2025');
-
+                $importoTotale = array_sum($datiTotali['importi']);
+                $quantitaTotale = array_sum($datiTotali['quantita']);
                 if (empty($datiTotali['nomi'])) {
                     echo "<p class='text-center'>Nessun dato disponibile per i membri.</p>";
                     break;
                 }
-                generaLayoutGrafico('', 'Somma Spese (Totale)', 'chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali);
-                generaLayoutGrafico('', 'Numero Spese (Totale)', 'chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali);
-                generaLayoutGrafico('', 'Somma Spese (2025)', 'chartImporti2025', 'pie', 'Totale Importi 2025 (€)', $dati2025);
-                generaLayoutGrafico('', 'Numero Spese (2025)', 'chartQuantita2025', 'doughnut', 'Numero di Spese 2025', $dati2025);
+                generaLayoutGrafico('', 'Somma Spese (Totale: '.$importoTotale.')', 'chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali, 'importi');
+                generaLayoutGrafico('', 'Numero Spese (Totale: '.$quantitaTotale.')', 'chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali, 'quantita');
                 break;
 
             case 'categorie':
                 $datiTotali = getDatiSpeseCategorie($db);
-                $dati2025 = getDatiSpeseCategorie($db, '2025');
+                $importoTotale = array_sum($datiTotali['importi']);
+                $quantitaTotale = array_sum($datiTotali['quantita']);
                 if (empty($datiTotali['nomi'])) {
                     echo "<p class='text-center'>Nessun dato disponibile per le categorie.</p>";
                     break;
                 }
-                generaLayoutGrafico('', 'Somma Spese (Totale)', 'chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali);
-                generaLayoutGrafico('', 'Numero Spese (Totale)', 'chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali);
-                generaLayoutGrafico('', 'Somma Spese (2025)', 'chartImporti2025', 'pie', 'Totale Importi 2025 (€)', $dati2025);
-                generaLayoutGrafico('', 'Numero Spese (2025)', 'chartQuantita2025', 'doughnut', 'Numero di Spese 2025', $dati2025);
+                generaLayoutGrafico('', 'Somma Spese (Totale: '.$importoTotale.')', 'chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali, 'importi');
+                generaLayoutGrafico('', 'Numero Spese (Totale: '.$quantitaTotale.')', 'chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali, 'quantita');
                 break;
 
             case 'sottocategorie':
                 $datiTotali = getDatiSpeseSottocategorie($db);
-                $dati2025 = getDatiSpeseSottocategorie($db, '2025');
+                $importoTotale = array_sum($datiTotali['importi']);
+                $quantitaTotale = array_sum($datiTotali['quantita']);
                 if (empty($datiTotali['nomi'])) {
                     echo "<p class='text-center'>Nessun dato disponibile per le sottocategorie.</p>";
                     break;
                 }
-                generaLayoutGrafico('', 'Somma Spese (Totale)', 'chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali);
-                generaLayoutGrafico('', 'Numero Spese (Totale)', 'chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali);
-                generaLayoutGrafico('', 'Somma Spese (2025)', 'chartImporti2025', 'pie', 'Totale Importi 2025 (€)', $dati2025);
-                generaLayoutGrafico('', 'Numero Spese (2025)', 'chartQuantita2025', 'doughnut', 'Numero di Spese 2025', $dati2025);
+                generaLayoutGrafico('', 'Somma Spese (Totale: '.$importoTotale.')', 'chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali, 'importi');
+                generaLayoutGrafico('', 'Numero Spese (Totale: '.$quantitaTotale.')', 'chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali, 'quantita');
                 break;
 
             default:
