@@ -5,9 +5,6 @@ $modalita = $_GET['modalita'] ?? 'membri';
 
 <div class="container">
     <div class="row">
-
-
-
         <?php
         switch ($modalita) {
             case 'membri':
@@ -55,7 +52,7 @@ $modalita = $_GET['modalita'] ?? 'membri';
 
                     const optBase = {
                         responsive: true,
-                        plugins: { legend: { display: true, position: 'bottom' } }
+                        plugins: { legend: { display: true, position: 'top' } }
                     };
 
                     new Chart(document.getElementById('chartImporti'), {
