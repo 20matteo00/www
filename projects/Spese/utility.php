@@ -31,14 +31,9 @@ function checkLogin()
     }
 }
 
-/**
- * Estrae dati aggregati delle spese per ogni membro.
- *
- * @param PDO $db Connessione al database
- * @param string|null $anno Filtra per anno (es. '2025'), oppure null per tutte
- * @return array Dati aggregati con nomi, importi, quantità e colori
- */
-function getDatiSpeseMembri(DB $db, ?string $anno = null): array {
+
+function getDatiSpeseMembri(DB $db, ?string $anno = null): array
+{
     $membri = $db->select('membri');
     $nomi = $importi = $quantita = $colori = [];
 
@@ -66,10 +61,42 @@ function getDatiSpeseMembri(DB $db, ?string $anno = null): array {
     return compact('nomi', 'importi', 'quantita', 'colori');
 }
 
+function getDatiSpeseCategorie(DB $db, ?string $anno = null): array
+{
+    $categorie = $db->select('categorie');
+    $nomi = $importi = $quantita = $colori = [];
+
+    foreach ($categorie as $c) {
+        $query = "
+            SELECT COUNT(s.id) AS totale_spese, SUM(s.importo) AS totale_importo
+            FROM spese s
+            INNER JOIN sottocategorie sc ON s.id_sottocategoria = sc.id
+            WHERE sc.id_categoria = {$c['id']}
+        ";
+
+        if ($anno) {
+            $query .= " AND YEAR(s.data) = {$anno}";
+        }
+
+        $spese = $db->runQuery($query);
+
+        if (!empty($spese) && $spese[0]['totale_importo'] !== null) {
+            $nomi[] = $c['nome'];
+            $colori[] = json_decode($c['dati'], true)['color'] ?? '#000000';
+            $importi[] = (float) $spese[0]['totale_importo'];
+            $quantita[] = (int) $spese[0]['totale_spese'];
+        }
+    }
+
+    return compact('nomi', 'importi', 'quantita', 'colori');
+}
+
+
 /**
  * Genera un grafico Chart.js.
  */
-function generaGrafico($id, $tipo, $label, $labels, $data, $colori) {
+function generaGrafico($id, $tipo, $label, $labels, $data, $colori)
+{
     ?>
     <canvas id="<?= $id ?>" class="canvas"></canvas>
     <script>

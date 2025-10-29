@@ -41,6 +41,33 @@ $modalita = $_GET['modalita'] ?? 'membri';
                 <?php
                 break;
 
+            case 'categorie':
+                $datiTotali = getDatiSpeseCategorie($db);
+                $dati2025 = getDatiSpeseCategorie($db, '2025');
+
+                ?>
+                <!-- Totali -->
+                <div class="col-md-6 my-3 text-center">
+                    <h3>Somma Spese (Totale)</h3>
+                    <?php generaGrafico('chartImportiTot', 'pie', 'Totale Importi (€)', $datiTotali['nomi'], $datiTotali['importi'], $datiTotali['colori']); ?>
+                </div>
+                <div class="col-md-6 my-3 text-center">
+                    <h3>Numero Spese (Totale)</h3>
+                    <?php generaGrafico('chartQuantitaTot', 'doughnut', 'Numero di Spese', $datiTotali['nomi'], $datiTotali['quantita'], $datiTotali['colori']); ?>
+                </div>
+
+                <!-- 2025 -->
+                <div class="col-md-6 my-3 text-center">
+                    <h3>Somma Spese (2025)</h3>
+                    <?php generaGrafico('chartImporti2025', 'pie', 'Totale Importi 2025 (€)', $dati2025['nomi'], $dati2025['importi'], $dati2025['colori']); ?>
+                </div>
+                <div class="col-md-6 my-3 text-center">
+                    <h3>Numero Spese (2025)</h3>
+                    <?php generaGrafico('chartQuantita2025', 'doughnut', 'Numero di Spese 2025', $dati2025['nomi'], $dati2025['quantita'], $dati2025['colori']); ?>
+                </div>
+                <?php
+                break;
+
             default:
                 echo "<p>Modalità non riconosciuta.</p>";
                 break;

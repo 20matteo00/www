@@ -81,7 +81,7 @@ if ($editId) {
                                 <input type="color" name="color" id="color" class="form-control" required
                                     value="<?= htmlspecialchars(json_decode($editMembro['dati'], true)['color'] ?? $_POST['color'] ?? '') ?>">
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-12 mb-3">
                                 <label class="form-label" for="descrizione">Descrizione</label>
                                 <textarea name="descrizione" id="descrizione" class="form-control"
                                     rows="4"><?= htmlspecialchars($editMembro['descrizione'] ?? $_POST['descrizione'] ?? '') ?></textarea>

@@ -9,11 +9,13 @@ $editId = $_GET['edit'] ?? null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'] ?? '';
     $descrizione = $_POST['descrizione'] ?? '';
+    $color = $_POST['color'] ?? '#000000';
     if ($editId) {
         // Modifica
         $db->update($table, [
             'nome' => $nome,
             'descrizione' => $descrizione,
+            'dati' => json_encode(['color' => $color])
         ], ['id' => $editId]);
         $msg = "<div class='alert alert-success'>Membro modificato correttamente.</div>";
     } else {
@@ -21,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db->insert($table, [
             'nome' => $nome,
             'descrizione' => $descrizione,
+            'dati' => json_encode(['color' => $color]),
             'created_at' => date('Y-m-d H:i:s')
         ]);
         $msg = "<div class='alert alert-success'>Membro inserito correttamente.</div>";
@@ -62,21 +65,28 @@ if ($editId) {
                 <div class="card-body p-4">
                     <?= $msg ?>
                     <form method="POST" autocomplete="on">
-                        <div class="mb-3">
-                            <label class="form-label" for="nome">Nome <span class="text-danger">*</span></label>
-                            <input type="text" name="nome" id="nome" class="form-control" required
-                                value="<?= htmlspecialchars($editCategoria['nome'] ?? $_POST['nome'] ?? '') ?>">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="descrizione">Descrizione</label>
-                            <textarea name="descrizione" id="descrizione" class="form-control"
-                                rows="4"><?= htmlspecialchars($editCategoria['descrizione'] ?? $_POST['descrizione'] ?? '') ?></textarea>
-                        </div>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="?page=<?= $table ?>.php" class="btn btn-secondary me-md-2">Annulla</a>
-                            <button type="submit" class="btn btn-primary">
-                                <?= $editId ? 'Modifica' : 'Aggiungi' ?>
-                            </button>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="nome">Nome <span class="text-danger">*</span></label>
+                                <input type="text" name="nome" id="nome" class="form-control" required
+                                    value="<?= htmlspecialchars($editCategoria['nome'] ?? $_POST['nome'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="color">Colore</label>
+                                <input type="color" name="color" id="color" class="form-control" required
+                                    value="<?= htmlspecialchars(json_decode($editCategoria['dati'], true)['color'] ?? $_POST['color'] ?? '') ?>">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label" for="descrizione">Descrizione</label>
+                                <textarea name="descrizione" id="descrizione" class="form-control"
+                                    rows="4"><?= htmlspecialchars($editCategoria['descrizione'] ?? $_POST['descrizione'] ?? '') ?></textarea>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="?page=<?= $table ?>.php" class="btn btn-secondary me-md-2">Annulla</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <?= $editId ? 'Modifica' : 'Aggiungi' ?>
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -95,6 +105,7 @@ if ($editId) {
                                 <tr>
                                     <th>Nome</th>
                                     <th>Descrizione</th>
+                                    <th>Colore</th>
                                     <th>Sottocategorie</th>
                                     <th>Data Aggiunta</th>
                                     <th>Azioni</th>
@@ -109,10 +120,16 @@ if ($editId) {
                                     WHERE id_categoria = ' . $c['id'] . '
                                     GROUP BY id_categoria
                                     ');
+                                    $color = '#000000';
+                                    if (isset($c['dati'])) {
+                                        $color = json_decode($c['dati'], true)['color'];
+                                    }
                                     ?>
                                     <tr>
                                         <td><?= htmlspecialchars($c['nome']) ?></td>
                                         <td><?= htmlspecialchars($c['descrizione']) ?></td>
+                                        <td><span class="badge w-100 h-100"
+                                                style="background-color: <?= $color ?>; min-height: 1.5rem;"> </span></td>
                                         <td><?= $subcat[0]['totale_subcat'] ?? 0 ?></td>
                                         <td><?= date('d/m/Y H:i', strtotime($c['created_at'])) ?></td>
                                         <td>
