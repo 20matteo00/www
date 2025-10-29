@@ -13,7 +13,6 @@ $logged_menu = [
 
 $not_logged_menu = [
     'Home' => 'home.php',
-    'Visualizza' => 'visualizza.php',
     'Accedi' => 'accedi.php',
 ];
 

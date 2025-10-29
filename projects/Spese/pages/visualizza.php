@@ -34,6 +34,7 @@ $modalita = $_GET['modalita'] ?? 'membri';
 
                     if (!empty($spese) && $spese[0]['totale_importo'] !== null) {
                         $nomi[] = $m['nome'];
+                        $colori[] = json_decode($m['dati'], true)['color'] ?? '#000000';
                         $importi[] = (float) $spese[0]['totale_importo'];
                         $quantita[] = (int) $spese[0]['totale_spese'];
                     }
@@ -44,11 +45,6 @@ $modalita = $_GET['modalita'] ?? 'membri';
                     break;
                 }
 
-                // genera colori dinamici
-                $colori = [];
-                foreach ($nomi as $_) {
-                    $colori[] = sprintf("hsl(%d, 70%%, 55%%)", rand(0, 360));
-                }
                 ?>
 
                 <script>
