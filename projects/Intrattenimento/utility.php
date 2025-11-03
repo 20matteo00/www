@@ -3,7 +3,6 @@
 $logged_menu = [
     'Home' => 'home.php',
     'Visualizza' => 'visualizza.php',
-    'Dati' => 'dati.php',
     'Media' => 'media.php',
     'Esporta DB' => 'esporta_db.php',
     'Esci' => 'esci.php',
@@ -13,6 +12,55 @@ $not_logged_menu = [
     'Home' => 'home.php',
     'Accedi' => 'accedi.php',
 ];
+
+$tipi = [
+    "film" => "Film",
+    "serie_tv" => "Serie TV",
+];
+
+$generi = [
+    "azione" => "Azione",
+    "avventura" => "Avventura",
+    "animazione" => "Animazione",
+    "commedia" => "Commedia",
+    "drammatico" => "Drammatico",
+    "fantascienza" => "Fantascienza",
+    "fantasy" => "Fantasy",
+    "thriller" => "Thriller",
+    "horror" => "Horror",
+    "giallo" => "Giallo / Mistero",
+    "storico" => "Storico",
+    "romantico" => "Romantico",
+    "musicale" => "Musicale",
+    "documentario" => "Documentario",
+    "biografico" => "Biografico",
+    "guerra" => "Guerra",
+    "western" => "Western",
+    "supereroi" => "Supereroi",
+    "slice_of_life" => "Slice of Life",
+    "sportivo" => "Sportivo",
+    "mecha" => "Mecha",
+    "psicologico" => "Psicologico",
+    "reality" => "Reality"
+];
+
+$piattaforme = [
+    "netflix" => "Netflix",
+    "prime_video" => "Prime Video",
+    "disney_plus" => "Disney+",
+    "apple_tv" => "Apple TV+",
+    "paramount_plus" => "Paramount+",
+    "rakuten_tv" => "Rakuten TV",
+    "now_tv" => "NOW TV",
+    "sky_go" => "Sky Go",
+    "youtube" => "YouTube",
+    "plex" => "Plex",
+    "pluto_tv" => "Pluto TV",
+    "mediaset_infinity" => "Mediaset Infinity",
+    "rai_play" => "RaiPlay",
+    "streaming" => "Streaming",
+];
+
 
 $dbname = 'intrattenimento';
 

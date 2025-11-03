@@ -36,4 +36,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     rows.forEach(row => tbody.appendChild(row));
   }
+
+
+  const tipoSelect = document.getElementById('tipo');
+    const campiFilm = document.getElementById('campi-film');
+    const campiSerie = document.getElementById('campi-serie');
+
+    function aggiornaCampi() {
+        const tipo = tipoSelect.value;
+
+        // Nascondi tutto
+        campiFilm.style.display = 'none';
+        campiSerie.style.display = 'none';
+
+        // Mostra in base al tipo
+        if (tipo === 'film') {
+            campiFilm.style.display = 'block';
+        } else if (tipo === 'serie_tv') {
+            campiSerie.style.display = 'block';
+        }
+    }
+
+    tipoSelect.addEventListener('change', aggiornaCampi);
+
+    // Inizializza stato corretto se stai modificando un record
+    aggiornaCampi();
 });
