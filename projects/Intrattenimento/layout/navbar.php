@@ -5,7 +5,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky sticky-top">
     <div class="container">
         <span class="navbar-brand">
-            <img class="logo" src="<?= $logo ?>" alt="Spese">
+            <img class="logo" src="<?= $logo ?>" alt="Intrattenimento">
         </span>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav"

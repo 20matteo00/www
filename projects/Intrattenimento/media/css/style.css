@@ -1,0 +1,14 @@
+:root{
+    --bs-primary-rgb: 0, 0, 255;
+}
+
+
+nav img{
+    height: 2em;
+    aspect-ratio: 1/1;
+}
+
+.canvas{
+    max-height: 600px !important;
+    aspect-ratio: 1/1 !important;
+}
