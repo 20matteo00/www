@@ -15,3 +15,7 @@
 2025-10-22	08:18:25	INFO	Esecuzione attività#03 'Update Notification'.
 2025-10-22	08:18:29	INFO	Attività> UpdateNotification end
 2025-10-22	08:18:29	INFO	Attività terminata con successo#03 in 4.35 (rete 4.35) secondi.
+2025-10-30	10:32:48	INFO	Esecuzione attività#02 'Session GC'.
+2025-10-30	10:32:48	INFO	Attività> SessionGC end
+2025-10-30	10:32:49	INFO	Attività terminata con successo#02 in 0.00 (rete 0.02) secondi.
+2025-10-30	10:32:53	INFO	Esecuzione attività#03 'Update Notification'.
