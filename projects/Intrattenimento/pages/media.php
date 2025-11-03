@@ -338,7 +338,13 @@ if ($editMedia && $editMedia['dati']) {
                                             <td><?= htmlspecialchars($m['nome']) ?></td>
                                             <td><?= htmlspecialchars($tipi[$m['tipo']] ?? $m['tipo']) ?></td>
                                             <td><?= htmlspecialchars($m['descrizione']) ?></td>
-                                            <td><?= implode(', ', $dati['generi'] ?? []) ?></td>
+                                            <td>
+                                                <?php
+                                                $keys = $dati['generi'] ?? []; // es. ["netflix","prime_video"]
+                                                $names = array_map(fn($k) => $generi[$k] ?? $k, $keys);
+                                                echo implode(', ', $names);
+                                                ?>
+                                            </td>
                                             <td>
                                                 <?php if ($m['tipo'] == 'film'): ?>
                                                     Anno: <?= $dati['anno'] ?? '' ?><br>
@@ -351,7 +357,13 @@ if ($editMedia && $editMedia['dati']) {
                                                     Conclusa: <?= ($dati['finita'] ?? 0) ? 'Sì' : 'No' ?>
                                                 <?php endif; ?>
                                             </td>
-                                            <td><?= implode(', ', $dati['piattaforme'] ?? []) ?></td>
+                                            <td>
+                                                <?php
+                                                $keys = $dati['piattaforme'] ?? []; // es. ["netflix","prime_video"]
+                                                $names = array_map(fn($k) => $piattaforme[$k] ?? $k, $keys);
+                                                echo implode(', ', $names);
+                                                ?>
+                                            </td>
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <a href="?page=media.php&edit=<?= $m['id'] ?>"
