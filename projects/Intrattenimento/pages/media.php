@@ -158,7 +158,7 @@ if ($editMedia && $editMedia['dati']) {
 ?>
 <div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12">
             <div class="card shadow rounded-3">
                 <div class="card-header">
                     <h2 class="m-0 py-3 text-center fw-bold fs-1">
