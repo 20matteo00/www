@@ -6,7 +6,7 @@ session_start();
 $site_directory = 'projects'; // nome della cartella dove ci sono i siti
 
 $directory = __DIR__ . "/$site_directory"; // cartella dove ci sono i siti
-$sites = array_diff(scandir($directory), array('..', '.')); // legge tutto tranne . e ..
+$sites = array_diff(scandir($directory), array('..', '.', 'index.php')); // legge tutto tranne . e ..
 
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
 $host = $_SERVER['HTTP_HOST'];
