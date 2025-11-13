@@ -21,8 +21,12 @@ $msg = '';
 
 <body class="container my-5">
     <div class="d-flex justify-content-evenly mb-4">
-        <a class="btn btn-success" href="?page=generaGiornate.php">Genera Giornate</a>
-        <a class="btn btn-success" href="?page=generaClassifiche.php">Genera Classifiche</a>
+        <a class="btn btn-warning" href="?page=generaGiornate.php">Genera Giornate</a>
+        <a class="btn btn-warning" href="?page=generaClassifiche.php">Genera Classifiche</a>
+    </div>
+    <div class="d-flex justify-content-evenly mb-4">
+        <a class="btn btn-success" href="?page=visualizzaGiornate.php">Visualizza Giornate</a>
+        <a class="btn btn-success" href="?page=visualizzaClassifiche.php">Visualizza Classifiche</a>
     </div>
     <?php if (isset($page))
         include "$page"; ?>
