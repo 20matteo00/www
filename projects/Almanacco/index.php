@@ -24,9 +24,19 @@ $seasons = $helper->getSeasons($json);
     <div class="bg-secondary sticky-top py-2">
         <div class="container">
             <form class="row g-3 align-items-end mb-4" method="post">
+                <nav class="navbar">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <button class="btn btn-primary w-100" name="action" type="submit" value="viewtablealltime">
+                                Visualizza Classifica All Time
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+
                 <div class="col">
                     <label for="season" class="form-label">Seleziona la stagione</label>
-                    <select class="form-select" name="season" id="season" required>
+                    <select class="form-select" name="season" id="season">
                         <option value="">-- Seleziona --</option>
                         <?php foreach ($seasons as $season): ?>
                             <option value="<?= $season ?>" <?= (isset($_POST['season']) && $_POST['season'] === $season) ? 'selected' : '' ?>><?= $season ?></option>
@@ -59,11 +69,16 @@ $seasons = $helper->getSeasons($json);
             $selectedSeason = $_POST['season'] ?? null;
             $action = $_POST['action'] ?? null;
 
-            if ($selectedSeason && $action) {
-                if ($action === 'viewdays') {
-                    $helper->viewDaysForSeason($json, $selectedSeason);
-                } elseif ($action === 'viewtable') {
-                    $helper->viewTableForSeason($json, $selectedSeason);
+            if ($action) {
+                if ($action === 'viewtablealltime') {
+                    $helper->viewTableAllTime($json);
+                }
+                elseif ($selectedSeason) {
+                    if ($action === 'viewdays') {
+                        $helper->viewDaysForSeason($json, $selectedSeason);
+                    } elseif ($action === 'viewtable') {
+                        $helper->viewTableForSeason($json, $selectedSeason);
+                    }
                 }
             }
         }
