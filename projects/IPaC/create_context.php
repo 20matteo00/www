@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // tenancyIndex passato dal frontend (0..3)
-$tenancyIndex = isset($_POST['tenancy']) ? (int)$_POST['tenancy'] : 0;
+$tenancyIndex = isset($_POST['tenancy']) ? (int) $_POST['tenancy'] : 0;
 if ($tenancyIndex < 0 || $tenancyIndex > 3) {
     $tenancyIndex = 0;
 }
@@ -128,7 +128,7 @@ if (!createSecurityContext($config, $accessToken, $tenancyIndex)) {
 // Formato richiesto dalla libreria Teca: access_token, scope, token_type, expires_in [attached_file:2]
 echo json_encode([
     'access_token' => $accessToken,
-    'scope'        => 'am_application_scope default',
-    'token_type'   => 'Bearer',
-    'expires_in'   => 3600
+    'scope' => 'am_application_scope default',
+    'token_type' => 'Bearer',
+    'expires_in' => 3600
 ]);
