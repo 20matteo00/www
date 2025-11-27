@@ -1,4 +1,4 @@
-const endpoint = "create_context.php";
+const endpoint = "context.php";
 let teca;
 
 const predefinedParams = {

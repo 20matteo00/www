@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Mini Teca</title>
+    <title>Teca</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://ispc-preprod.prod.os01.ocp.cineca.it/teca-library"></script>
     <script src="script.js"></script>
