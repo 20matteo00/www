@@ -62,7 +62,5 @@ async function openTeca() {
         parameters: params
     };
 
-    console.log("Opening Teca with config:", config);
-
     teca.open(config);
 }

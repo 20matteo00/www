@@ -100,18 +100,6 @@ function createSecurityContext($config, $accessToken, $index = 0)
 // ============================================================================
 header('Content-Type: application/json; charset=utf-8');
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['error' => 'Metodo non consentito, usare POST']);
-    exit;
-}
-
-// tenancyIndex passato dal frontend (0..3)
-$tenancyIndex = isset($_POST['tenancy']) ? (int) $_POST['tenancy'] : 0;
-if ($tenancyIndex < 0 || $tenancyIndex > 3) {
-    $tenancyIndex = 0;
-}
-
 $accessToken = getAccessToken($config);
 if (!$accessToken) {
     http_response_code(500);
@@ -119,11 +107,12 @@ if (!$accessToken) {
     exit;
 }
 
-if (!createSecurityContext($config, $accessToken, $tenancyIndex)) {
+if (!createSecurityContext($config, $accessToken)) {
     http_response_code(500);
     echo json_encode(['error' => 'Contesto sicurezza fallito']);
     exit;
 }
+
 
 // Formato richiesto dalla libreria Teca: access_token, scope, token_type, expires_in [attached_file:2]
 echo json_encode([
