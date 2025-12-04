@@ -1,0 +1,13 @@
+<?php
+defined('_JEXEC') or die;
+return array (
+  'PLG_FIELDS_SQL' => 'Campi - SQL',
+  'PLG_FIELDS_SQL_CREATE_NOT_POSSIBLE' => 'Solo un Super Utente può creare un campo aggiuntivo SQL!',
+  'PLG_FIELDS_SQL_LABEL' => 'SQL (%s)',
+  'PLG_FIELDS_SQL_PARAMS_HEADER_DESC' => 'Aggiungi una stringa senza valore in cima alla lista a discesa ad esempio \' - Seleziona articolo - \'.',
+  'PLG_FIELDS_SQL_PARAMS_HEADER_LABEL' => 'Intestazione',
+  'PLG_FIELDS_SQL_PARAMS_MULTIPLE_LABEL' => 'Multiplo',
+  'PLG_FIELDS_SQL_PARAMS_QUERY_DESC' => 'Query SQL che fornirà i dati per il menu a tendina. La query deve restituire due colonne; una chiamata \'value\' che conterrà i valori degli elementi della lista; l\'altra chiamata \'text\' contenente il testo nel menu a tendina.',
+  'PLG_FIELDS_SQL_PARAMS_QUERY_LABEL' => 'Query',
+  'PLG_FIELDS_SQL_XML_DESCRIPTION' => 'Questo plugin consente di creare nuovi campi aggiuntivi di tipo \'sql\' in tutte le estensioni che supportano i campi aggiuntivi.',
+);

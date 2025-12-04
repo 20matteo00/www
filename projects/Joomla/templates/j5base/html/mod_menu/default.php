@@ -14,19 +14,19 @@ $logo = $templateParams->get('logo', '');
 $mobileMenu = $templateParams->get('mobile_menu', 'collapse');
 ?>
 
-<nav <?= $id ?> class="navbar navbar-expand-lg navbar-light bg-tertiary">
-    <div class="container-fluid">
+<nav <?= $id ?> class="navbar navbar-expand-lg navbar-light bg-primary">
+    <div class="container">
         <a class="navbar-brand" href="<?= JUri::base() ?>">
             <img src="<?= $logo ?>" alt="Logo">
         </a>
 
         <?php if ($mobileMenu == 'collapse'): ?>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#modMenuNavbar"
+            <button class="navbar-toggler bg-quaternary" type="button" data-bs-toggle="collapse" data-bs-target="#modMenuNavbar"
                 aria-controls="modMenuNavbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
         <?php else: ?>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainOffcanvas"
+            <button class="navbar-toggler bg-quaternary" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainOffcanvas"
                 aria-controls="mainOffcanvas">
                 <span class="navbar-toggler-icon"></span>
             </button>

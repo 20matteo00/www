@@ -1,0 +1,10 @@
+<?php
+defined('_JEXEC') or die;
+return array (
+  'PLG_FIELDS_URL' => 'Campi - URL',
+  'PLG_FIELDS_URL_LABEL' => 'URL (%s)',
+  'PLG_FIELDS_URL_PARAMS_RELATIVE_LABEL' => 'URL relativi',
+  'PLG_FIELDS_URL_PARAMS_SCHEMES_LABEL' => 'Schemi',
+  'PLG_FIELDS_URL_PARAMS_SHOW_URL' => 'Mostra URL',
+  'PLG_FIELDS_URL_XML_DESCRIPTION' => 'Questo plugin consente di creare nuovi campi aggiuntivi di tipo \'URL\' in tutte le estensioni che supportano i campi aggiuntivi.',
+);
