@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Table\Table;
+use Joomla\CMS\Table\Category;
 use Joomla\Component\Content\Site\Helper\QueryHelper;
 use Joomla\Utilities\ArrayHelper;
 
@@ -335,7 +335,7 @@ class CategoryModel extends ListModel
     public function getCategory()
     {
         if (!\is_object($this->_item)) {
-            if (!empty($this->state->get('params'))) {
+            if (isset($this->state) && !empty($this->state->get('params'))) {
                 $params                = $this->state->get('params');
                 $options               = [];
                 $options['countItems'] = $params->get('show_cat_num_articles', 1) || !$params->get('show_empty_categories_cat', 0);
@@ -466,7 +466,7 @@ class CategoryModel extends ListModel
         if ($hitcount) {
             $pk = (!empty($pk)) ? $pk : (int) $this->getState('category.id');
 
-            $table = Table::getInstance('Category', '\\Joomla\\CMS\\Table\\');
+            $table = new Category($this->getDatabase());
             $table->hit($pk);
         }
 

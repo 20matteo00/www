@@ -46,6 +46,11 @@ class Continent extends GeoBase
      */
 	public function value()
 	{
+        if (!$this->geo)
+        {
+            return;
+        }
+        
         return [
             $this->geo->getContinentName('en'),
             $this->geo->getContinentCode()

@@ -156,6 +156,7 @@ class MapAddressEditor extends Widget
 		
 		// Get the map editor
 		$map_options = array_merge($this->options, [
+			'required' => false,
 			'show_map' => $show_map,
 			'autocomplete' => $this->options['autocomplete'],
 			'address' => isset($this->options['address']['address']) ? $this->options['address']['address'] : ''

@@ -613,6 +613,11 @@ class Functions
      */
     public static function applySiteTimezoneToDate($date, $format = 'Y-m-d H:i:s')
     {
+		if (empty($date) || is_null($date) || $date == '0000-00-00 00:00:00')
+		{
+			return $date;
+		}
+        
         $timezone = new \DateTimeZone(Factory::getUser()->getParam('timezone', Factory::getConfig()->get('offset')));
         return Factory::getDate($date)->setTimezone($timezone)->format($format, true);
     }

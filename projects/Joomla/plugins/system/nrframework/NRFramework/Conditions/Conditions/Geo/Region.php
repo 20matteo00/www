@@ -35,6 +35,11 @@ class Region extends GeoBase
      */
     private function getRegions()
     {
+        if (!$this->geo)
+        {
+            return;
+        }
+        
         $regionCodes = [];
 		$record = $this->geo->getRecord();
 

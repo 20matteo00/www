@@ -2,7 +2,7 @@
 
 /**
  * @package         Advanced Custom Fields
- * @version         3.0.1 Free
+ * @version         3.1.0 Free
  * 
  * @author          Tassos Marinos <info@tassos.gr>
  * @link            http://www.tassos.gr

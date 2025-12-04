@@ -1,0 +1,68 @@
+﻿:root {
+  --color-1: var(--color-1, #007bff);
+  --color-2: var(--color-2, #6c757d);
+  --color-3: var(--color-3, #28a745);
+  --color-4: var(--color-4, #ffc107);
+}
+
+
+/*FONT*/
+@font-face {
+  font-family: "TitilliumWeb";
+  src: url("/media/templates/site/templatebaseld/fonts/TitilliumWeb/TitilliumWeb-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/media/templates/site/templatebaseld/fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "TitilliumWeb", sans-serif;
+}
+
+a {
+  color: var(--color-1);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-2);
+  text-decoration: underline;
+}
+
+.bg-primary {
+  background-color: var(--color-1) !important;
+}
+
+.bg-secondary {
+  background-color: var(--color-2) !important;
+}
+
+.bg-tertiary {
+  background-color: var(--color-3) !important;
+}
+
+.bg-quaternary {
+  background-color: var(--color-4) !important;
+}
+
+.text-primary {
+  color: var(--color-1) !important;
+}
+
+.text-secondary {
+  color: var(--color-2) !important;
+}
+
+.text-tertiary {
+  color: var(--color-3) !important;
+}
+
+.text-quaternary {
+  color: var(--color-4) !important;
+}

@@ -41,32 +41,25 @@ class JFormFieldTFEditor extends TextareaField
         $option = Factory::getApplication()->input->get('option', '');
         $layout = Factory::getApplication()->input->get('layout', '');
 
-        if (!in_array($option, ['com_content', 'com_contact']) || $layout !== 'edit' || $editor !== 'jce')
+        if (!in_array($option, ['com_content', 'com_contact', 'com_categories']) || $layout !== 'edit' || $editor !== 'jce')
         {
-            if (JVERSION < 4)
+            $wa = $doc->getWebAssetManager();
+
+            if (!$wa->assetExists('script', 'tinymce'))
             {
-                $doc->addScript(Uri::root(true) . '/media/editors/tinymce/tinymce.min.js');
+                $wa->registerScript('tinymce', 'media/vendor/tinymce/tinymce.min.js', [], ['defer' => true]);
             }
-            else
+
+            if (!$wa->assetExists('script', 'plg_editors_tinymce'))
             {
-                $wa = $doc->getWebAssetManager();
-    
-                if (!$wa->assetExists('script', 'tinymce'))
-                {
-                    $wa->registerScript('tinymce', 'media/vendor/tinymce/tinymce.min.js', [], ['defer' => true]);
-                }
-    
-                if (!$wa->assetExists('script', 'plg_editors_tinymce'))
-                {
-                    $wa->registerScript('plg_editors_tinymce', 'plg_editors_tinymce/tinymce.min.js', [], ['defer' => true], ['core', 'tinymce']);
-                }
-    
-                $wa->useScript('tinymce')->useScript('plg_editors_tinymce');
+                $wa->registerScript('plg_editors_tinymce', 'plg_editors_tinymce/tinymce.min.js', [], ['type' => 'module', 'defer' => true], ['core', 'tinymce']);
             }
+
+            $wa->useScript('tinymce')->useScript('plg_editors_tinymce');
         }
 
         HTMLHelper::stylesheet('plg_system_nrframework/controls/editor.css', ['relative' => true, 'versioning' => 'auto']);
-        HTMLHelper::script('plg_system_nrframework/controls/editor.js', ['relative' => true, 'versioning' => 'auto'], ['defer' => true]);
+        HTMLHelper::script('plg_system_nrframework/controls/editor.js', ['relative' => true, 'versioning' => 'auto'], []);
     }
 
     private function getWrapperAttributes()

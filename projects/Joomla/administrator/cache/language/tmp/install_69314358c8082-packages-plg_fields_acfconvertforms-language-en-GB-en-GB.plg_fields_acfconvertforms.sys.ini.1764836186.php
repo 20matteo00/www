@@ -1,0 +1,6 @@
+<?php
+defined('_JEXEC') or die;
+return array (
+  'ACF_CONVERTFORMS' => 'Fields - ACF Convert Forms',
+  'ACF_CONVERTFORMS_DESC' => 'Render a form created with Convert Forms',
+);

@@ -3,7 +3,7 @@
 	<fieldset name="base">
 	    <field name="name" type="nrconditions"
 			hiddenLabel="true"
-            class="condition_selector hasChosen"
+            class="condition_selector"
 	    />
 	</fieldset>
 </form>

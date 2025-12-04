@@ -1,0 +1,13 @@
+<?php
+defined('_JEXEC') or die;
+return array (
+  'PLG_FIELDS_ACFTRUEFALSE_LABEL' => 'ACF - Vero/Falso',
+  'ACF_TRUEFALSE' => 'Campi - ACF Vero/falso',
+  'ACF_TRUEFALSE_DESC' => 'Crea un campo di selezione per scegliere facilmente tra vero e falso',
+  'ACF_TRUEFALSE_DEFAULT_CHOICE' => 'Scelta predefinita',
+  'ACF_TRUEFALSE_DEFAULT_CHOICE_DESC' => 'Imposta la scelta predefinita tra vero o falso o lascia vuoto',
+  'ACF_TRUEFALSE_TRUE_TEXT' => 'Testo vero',
+  'ACF_TRUEFALSE_TRUE_TEXT_DESC' => 'Il testo da visualizzare in frontend per il valore VERO',
+  'ACF_TRUEFALSE_FALSE_TEXT' => 'Testo falso',
+  'ACF_TRUEFALSE_FALSE_TEXT_DESC' => 'Il testo da visualizzare nel frontend per il valore FALSO',
+);

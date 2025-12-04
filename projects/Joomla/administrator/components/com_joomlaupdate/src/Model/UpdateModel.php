@@ -18,8 +18,6 @@ use Joomla\CMS\Event\Extension\BeforeJoomlaUpdateEvent;
 use Joomla\CMS\Extension\ExtensionHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
-use Joomla\CMS\Http\Http;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -39,6 +37,7 @@ use Joomla\Component\Joomlaupdate\Administrator\Enum\AutoupdateRegisterState;
 use Joomla\Database\ParameterType;
 use Joomla\Filesystem\Exception\FilesystemException;
 use Joomla\Filesystem\File;
+use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use Tobscure\JsonApi\Exception\InvalidParameterException;
@@ -130,7 +129,7 @@ class UpdateModel extends BaseDatabaseModel
 
         $id    = ExtensionHelper::getExtensionRecord('joomla', 'file')->extension_id;
         $db    = version_compare(JVERSION, '4.2.0', 'lt') ? $this->getDbo() : $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('us') . '.*')
             ->from($db->quoteName('#__update_sites_extensions', 'map'))
             ->join(
@@ -204,7 +203,7 @@ class UpdateModel extends BaseDatabaseModel
     {
         $db = version_compare(JVERSION, '4.2.0', 'lt') ? $this->getDbo() : $this->getDatabase();
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('element') . ' = ' . $db->quote('com_joomlaupdate'));
@@ -228,7 +227,7 @@ class UpdateModel extends BaseDatabaseModel
             $updater->findUpdates($joomlaUpdateComponentId, $cache_timeout, Updater::STABILITY_STABLE);
 
             // Fetch the update information from the database.
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('*')
                 ->from($db->quoteName('#__updates'))
                 ->where($db->quoteName('extension_id') . ' = :id')
@@ -274,7 +273,7 @@ class UpdateModel extends BaseDatabaseModel
         // Fetch the update information from the database.
         $id    = ExtensionHelper::getExtensionRecord('joomla', 'file')->extension_id;
         $db    = version_compare(JVERSION, '4.2.0', 'lt') ? $this->getDbo() : $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__updates'))
             ->where($db->quoteName('extension_id') . ' = :id')
@@ -354,7 +353,7 @@ class UpdateModel extends BaseDatabaseModel
         $update_site->update_site_id       = 1;
         $db->updateObject('#__update_sites', $update_site, 'update_site_id');
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->delete($db->quoteName('#__updates'))
             ->where($db->quoteName('update_site_id') . ' = 1');
         $db->setQuery($query);
@@ -390,7 +389,7 @@ class UpdateModel extends BaseDatabaseModel
         $response = ['basename' => false, 'check' => null, 'version' => $updateInfo['latest']];
 
         try {
-            $head = HttpFactory::getHttp($httpOptions)->head($packageURL);
+            $head = (new HttpFactory())->getHttp($httpOptions)->head($packageURL);
         } catch (\RuntimeException) {
             // Passing false here -> download failed message
             return $response;
@@ -401,7 +400,7 @@ class UpdateModel extends BaseDatabaseModel
             $packageURL = (string) $head->getHeaders()['location'][0];
 
             try {
-                $head = HttpFactory::getHttp($httpOptions)->head($packageURL);
+                $head = (new HttpFactory())->getHttp($httpOptions)->head($packageURL);
             } catch (\RuntimeException) {
                 // Passing false here -> download failed message
                 return $response;
@@ -586,7 +585,7 @@ class UpdateModel extends BaseDatabaseModel
         $this->cleanCache('_system');
 
         // Prepare connection
-        $http = HttpFactory::getHttp();
+        $http = (new HttpFactory())->getHttp();
 
         $url = self::AUTOUPDATE_URL;
         $url .= ($targetState === AutoupdateRegisterState::Subscribe) ? '/register' : '/delete';
@@ -661,7 +660,7 @@ class UpdateModel extends BaseDatabaseModel
     /**
      * Update the autoupdate activation and registration states
      *
-     * @since   5.4.0
+     * @since   6.0.0
      */
     protected function updateAutoUpdateParams(AutoupdateRegisterState $registrationState, bool $enableUpdate): void
     {
@@ -780,7 +779,7 @@ class UpdateModel extends BaseDatabaseModel
 
         // Download the package
         try {
-            $result = HttpFactory::getHttp([], ['curl', 'stream'])->get($url);
+            $result = (new HttpFactory())->getHttp([], ['curl', 'stream'])->get($url);
         } catch (\RuntimeException) {
             return false;
         }
@@ -810,7 +809,7 @@ class UpdateModel extends BaseDatabaseModel
      * @return  boolean
      * @since   2.5.1
      *
-     * @deprecated  4.3 will be removed in 6.0
+     * @deprecated  4.3 will be removed in 7.0
      *              Use "createUpdateFile" instead
      *              Example: $updateModel->createUpdateFile($basename);
      */
@@ -943,8 +942,6 @@ ENDDATA;
         $installer->extension = new \Joomla\CMS\Table\Extension($db);
         $installer->extension->load(ExtensionHelper::getExtensionRecord('joomla', 'file')->extension_id);
 
-        $installer->setAdapter($installer->extension->type);
-
         $installer->setPath('manifest', JPATH_MANIFESTS . '/files/joomla.xml');
         $installer->setPath('source', JPATH_MANIFESTS . '/files');
         $installer->setPath('extension_root', JPATH_ROOT);
@@ -989,7 +986,7 @@ ENDDATA;
          * we can assume that it was (badly) uninstalled.
          * If it isn't, add an entry to extensions.
          */
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('type') . ' = ' . $db->quote('file'))
@@ -1360,23 +1357,29 @@ ENDDATA;
          * version is not shown. So this check is actually unnecessary.
          */
         $option         = new \stdClass();
-        $option->label  = Text::sprintf('INSTL_PHP_VERSION_NEWER', $this->getTargetMinimumPHPVersion());
         $option->state  = $this->isPhpVersionSupported();
-        $option->notice = null;
+        $option->label  = $option->state
+            ? Text::sprintf('INSTL_PHP_VERSION_NEWER', $this->getTargetMinimumPHPVersion())
+            : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PHP_VERSION_NEWER_NOT_SUPPORTED', $this->getTargetMinimumPHPVersion());
+        $option->notice = $option->state ? null : Text::_('COM_JOOMLAUPDATE_VIEW_DEFAULT_PHP_VERSION_NEWER_NOT_SUPPORTED_NOTICE');
         $options[]      = $option;
 
         // Check for zlib support.
         $option         = new \stdClass();
-        $option->label  = Text::_('INSTL_ZLIB_COMPRESSION_SUPPORT');
         $option->state  = \extension_loaded('zlib');
-        $option->notice = null;
+        $option->label  = $option->state
+            ? Text::_('INSTL_ZLIB_COMPRESSION_SUPPORT')
+            : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PHP_MODULE_NOT_LOADED', Text::_('INSTL_ZLIB_COMPRESSION_SUPPORT'));
+        $option->notice = $option->state ? null : Text::_('COM_JOOMLAUPDATE_VIEW_DEFAULT_PHP_MODULE_NOT_LOADED_NOTICE');
         $options[]      = $option;
 
         // Check for XML support.
         $option         = new \stdClass();
-        $option->label  = Text::_('INSTL_XML_SUPPORT');
         $option->state  = \extension_loaded('xml');
-        $option->notice = null;
+        $option->label  = $option->state
+            ? Text::_('INSTL_XML_SUPPORT')
+            : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PHP_MODULE_NOT_LOADED', Text::_('INSTL_XML_SUPPORT'));
+        $option->notice = $option->state ? null : Text::_('COM_JOOMLAUPDATE_VIEW_DEFAULT_PHP_MODULE_NOT_LOADED_NOTICE');
         $options[]      = $option;
 
         // Check for mbstring options.
@@ -1391,26 +1394,33 @@ ENDDATA;
 
         // Check for a missing native parse_ini_file implementation.
         $option         = new \stdClass();
-        $option->label  = Text::_('INSTL_PARSE_INI_FILE_AVAILABLE');
         $option->state  = $this->getIniParserAvailability();
-        $option->notice = null;
+        $option->label  = $option->state
+            ? Text::_('INSTL_PARSE_INI_FILE_AVAILABLE')
+            : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PARSE_INI_FILE_NOT_AVAILABLE', Text::_('INSTL_PARSE_INI_FILE_AVAILABLE'));
+        $option->notice = $option->state ? null : Text::_('COM_JOOMLAUPDATE_VIEW_DEFAULT_PARSE_INI_FILE_NOT_AVAILABLE_NOTICE');
         $options[]      = $option;
 
         // Check for missing native json_encode / json_decode support.
-        $option            = new \stdClass();
-        $option->label     = Text::_('INSTL_JSON_SUPPORT_AVAILABLE');
-        $option->state     = \function_exists('json_encode') && \function_exists('json_decode');
-        $option->notice    = null;
-        $options[]         = $option;
+        $option         = new \stdClass();
+        $option->state  = \function_exists('json_encode') && \function_exists('json_decode');
+        $option->label  = $option->state
+            ? Text::_('INSTL_JSON_SUPPORT_AVAILABLE')
+            : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PHP_MODULE_NOT_LOADED', Text::_('INSTL_JSON_SUPPORT_AVAILABLE'));
+        $option->notice = $option->state ? null : Text::_('COM_JOOMLAUPDATE_VIEW_DEFAULT_PHP_MODULE_NOT_LOADED_NOTICE');
+        $options[]      = $option;
+
         $updateInformation = $this->getUpdateInformation();
 
         // Extra checks when updating to the next major version of Joomla
         if (version_compare($updateInformation['latest'], (string) Version::MAJOR_VERSION + 1, '>=')) {
             // Check if configured database is compatible with the next major version of Joomla
             $option         = new \stdClass();
-            $option->label  = Text::sprintf('INSTL_DATABASE_SUPPORTED', $this->getConfiguredDatabaseType());
             $option->state  = $this->isDatabaseTypeSupported();
-            $option->notice = null;
+            $option->label  = $option->state
+                ? Text::sprintf('INSTL_DATABASE_SUPPORTED', $this->getConfiguredDatabaseType())
+                : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_DATABASE_NOT_SUPPORTED', $this->getConfiguredDatabaseType());
+            $option->notice = $option->state ? null : Text::_('COM_JOOMLAUPDATE_VIEW_DEFAULT_DATABASE_NOT_SUPPORTED_NOTICE');
             $options[]      = $option;
 
             // Check if the Joomla 5 backwards compatibility plugin is disabled
@@ -1419,9 +1429,13 @@ ENDDATA;
             $this->translateExtensionName($plugin);
 
             $option         = new \stdClass();
-            $option->label  = Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PLUGIN_DISABLED_TITLE', $plugin->name);
             $option->state  = !PluginHelper::isEnabled('behaviour', 'compat');
-            $option->notice = $option->state ? null : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PLUGIN_DISABLED_NOTICE', $plugin->folder, $plugin->element);
+            $option->label  = $option->state
+                ? $plugin->name
+                : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PLUGIN_BC_DISABLED_TITLE', $plugin->name);
+            $option->notice = $option->state
+                ? null
+                : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PLUGIN_BC_DISABLED_NOTICE', $plugin->name, $plugin->folder, $plugin->element);
             $options[]      = $option;
 
             // Check if the Joomla 6 backwards compatibility plugin is enabled
@@ -1430,16 +1444,20 @@ ENDDATA;
             $this->translateExtensionName($plugin);
 
             $option         = new \stdClass();
-            $option->label  = Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PLUGIN_ENABLED_TITLE', $plugin->name);
             $option->state  = PluginHelper::isEnabled('behaviour', 'compat6');
+            $option->label  = $option->state
+                ? $plugin->name
+                : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PLUGIN_BC_ENABLED_TITLE', $plugin->name);
             $option->notice = $option->state ? null : Text::sprintf('COM_JOOMLAUPDATE_VIEW_DEFAULT_PLUGIN_ENABLED_NOTICE', $plugin->folder, $plugin->element);
             $options[]      = $option;
         }
 
         // Check if database structure is up to date
         $option         = new \stdClass();
-        $option->label  = Text::_('COM_JOOMLAUPDATE_VIEW_DEFAULT_DATABASE_STRUCTURE_TITLE');
         $option->state  = $this->getDatabaseSchemaCheck();
+        $option->label  = $option->state
+            ? Text::_('COM_JOOMLAUPDATE_VIEW_DEFAULT_DATABASE_STRUCTURE_TITLE')
+            : Text::_('COM_JOOMLAUPDATE_VIEW_DEFAULT_DATABASE_STRUCTURE_NOT_UP_TO_DATE');
         $option->notice = $option->state ? null : Text::_('COM_JOOMLAUPDATE_VIEW_DEFAULT_DATABASE_STRUCTURE_NOTICE');
         $options[]      = $option;
 
@@ -1677,7 +1695,7 @@ ENDDATA;
     public function getNonCoreExtensions()
     {
         $db    = version_compare(JVERSION, '4.2.0', 'lt') ? $this->getDbo() : $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query->select(
             [
@@ -1725,7 +1743,7 @@ ENDDATA;
     public function getNonCorePlugins($folderFilter = ['system', 'user', 'authentication', 'actionlog', 'multifactorauth'])
     {
         $db    = version_compare(JVERSION, '4.2.0', 'lt') ? $this->getDbo() : $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query->select(
             $db->quoteName('ex.name') . ', ' .
@@ -1772,7 +1790,7 @@ ENDDATA;
     }
 
     /**
-     * Called by controller's fetchExtensionCompatibility, which is called via AJAX.
+     * Called by controller's batchextensioncompatibility, which is called via AJAX.
      *
      * @param   string  $extensionID          The ID of the checked extension
      * @param   string  $joomlaTargetVersion  Target version of Joomla
@@ -1824,7 +1842,7 @@ ENDDATA;
     {
         $id    = (int) $extensionID;
         $db    = version_compare(JVERSION, '4.2.0', 'lt') ? $this->getDbo() : $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query->select(
             [
@@ -1874,7 +1892,7 @@ ENDDATA;
     {
         $return = [];
 
-        $http = new Http();
+        $http = (new HttpFactory())->getHttp();
 
         try {
             $response = $http->get($updateSiteInfo['location']);
@@ -2009,7 +2027,7 @@ ENDDATA;
     public function isTemplateActive($template)
     {
         $db    = version_compare(JVERSION, '4.2.0', 'lt') ? $this->getDbo() : $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query->select(
             $db->quoteName(
@@ -2038,7 +2056,7 @@ ENDDATA;
         $menu = false;
 
         if (\count($ids)) {
-            $query = $db->getQuery(true);
+            $query = $db->createQuery();
 
             $query->select(
                 'COUNT(*)'
@@ -2346,7 +2364,7 @@ ENDDATA;
 
         $params = $params->toString();
         $db     = $this->getDatabase();
-        $query  = $db->getQuery(true)
+        $query  = $db->createQuery()
             ->update($db->quoteName('#__extensions'))
             ->set($db->quoteName('params') . ' = :params')
             ->where($db->quoteName('type') . ' = ' . $db->quote('component'))

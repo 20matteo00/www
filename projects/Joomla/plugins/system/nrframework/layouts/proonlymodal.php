@@ -2,7 +2,7 @@
 
 /**
  * @package         Advanced Custom Fields
- * @version         3.0.1 Free
+ * @version         3.1.0 Free
  * 
  * @author          Tassos Marinos <info@tassos.gr>
  * @link            https://www.tassos.gr
@@ -45,9 +45,13 @@ Factory::getDocument()->addScriptDeclaration('
 
             event.preventDefault();
 
-            if (proFeature) {
+            window.triggerTFFrameworkProOnlyModal(proFeature);
+        });
+
+        window.triggerTFFrameworkProOnlyModal = (feature) => {
+            if (feature) {
                 proOnlyEl.querySelectorAll("em").forEach(function(el) {
-                    el.innerHTML = proFeature; 
+                    el.innerHTML = feature; 
                 });
                 proOnlyEl.querySelector(".po-upgrade").style.display = "none";
                 proOnlyEl.querySelector(".po-feature").style.display = "block";
@@ -57,7 +61,7 @@ Factory::getDocument()->addScriptDeclaration('
             }
 
             proOnlyModal.show();
-        });
+        }
     });
 ');
 

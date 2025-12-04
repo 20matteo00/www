@@ -162,7 +162,7 @@ class User extends SmartTag
             return;
         }
         
-        return ucwords(strtolower($name));
+        return ucwords($name);
     }
 
     /**

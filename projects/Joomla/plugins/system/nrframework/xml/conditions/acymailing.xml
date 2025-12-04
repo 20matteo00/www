@@ -6,7 +6,6 @@
             label="NR_ACYMAILING_LIST"
             description="NR_ACYMAILING_LIST_DESC"
             multiple="true"
-            class="hasChosen"
         />
     </fieldset>
 </form>

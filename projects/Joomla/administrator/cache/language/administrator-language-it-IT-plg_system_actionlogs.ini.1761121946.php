@@ -1,0 +1,22 @@
+<?php
+defined('_JEXEC') or die;
+return array (
+  'PLG_SYSTEM_ACTIONLOGS' => 'Sistema - Log delle Azioni Utente',
+  'PLG_SYSTEM_ACTIONLOGS_EXTENSIONS_NOTIFICATIONS' => 'Seleziona gli eventi di cui ricevere la notifica',
+  'PLG_SYSTEM_ACTIONLOGS_INFO_DESC' => 'Il plugin Action Log di Joomla è disabilitato',
+  'PLG_SYSTEM_ACTIONLOGS_INFO_LABEL' => 'Informazione',
+  'PLG_SYSTEM_ACTIONLOGS_JOOMLA_ACTIONLOG_DISABLED' => 'Log Azioni - Joomla',
+  'PLG_SYSTEM_ACTIONLOGS_JOOMLA_ACTIONLOG_DISABLED_REDIRECT' => 'Il plugin %s è disabilitato.',
+  'PLG_SYSTEM_ACTIONLOGS_NOTIFICATIONS' => 'Invia notifiche per i Log delle azioni utente',
+  'PLG_SYSTEM_ACTIONLOGS_OPTIONS' => 'Opzioni Log Azioni Utenti',
+  'PLG_SYSTEM_ACTIONLOGS_XML_DESCRIPTION' => 'Per registrare le azioni degli utenti nel sito, così possono essere revisionate se necessario.',
+  'PLG_SYSTEM_ACTIONLOGS_CONTENT_ADDED' => 'L\'utente <a href="{accountlink}">{username}</a> ha aggiunto un nuovo {type} <a href="{itemlink}">{title}</a>',
+  'PLG_SYSTEM_ACTIONLOGS_CONTENT_ARCHIVED' => 'L\'utente <a href="{accountlink}">{username}</a> ha archiviato un {type} <a href="{itemlink}">{title}</a>',
+  'PLG_SYSTEM_ACTIONLOGS_CONTENT_DELETED' => 'L\'utente <a href="{accountlink}">{username}</a> ha eliminato un {type} {title}',
+  'PLG_SYSTEM_ACTIONLOGS_CONTENT_PUBLISHED' => 'L\'utente <a href="{accountlink}">{username}</a> ha pubblicato un {type} <a href="{itemlink}">{title}</a>',
+  'PLG_SYSTEM_ACTIONLOGS_CONTENT_TRASHED' => 'L\'utente <a href="{accountlink}">{username}</a> ha cestinato un {type} <a href="{itemlink}">{title}</a>',
+  'PLG_SYSTEM_ACTIONLOGS_CONTENT_UNPUBLISHED' => 'L\'utente <a href="{accountlink}">{username}</a> ha sospeso un {type} <a href="{itemlink}">{title}</a>',
+  'PLG_SYSTEM_ACTIONLOGS_CONTENT_UPDATED' => 'L\'utente <a href="{accountlink}">{username}</a> ha aggiornato un {type} <a href="{itemlink}">{title}</a>',
+  'PLG_SYSTEM_ACTIONLOGS_LOG_DELETE_PERIOD' => 'Giorni dopo i quali eliminare i log',
+  'PLG_SYSTEM_ACTIONLOGS_LOG_DELETE_PERIOD_DESC' => 'Inserisci 0 se non vuoi che i log vengano eliminati.',
+);

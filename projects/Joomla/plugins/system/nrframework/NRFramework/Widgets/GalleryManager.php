@@ -59,7 +59,7 @@ class GalleryManager extends Widget
 		'limit_files' => 0,
 
 		// Allowed upload file types
-		'allowed_file_types' => '.jpg, .jpeg, .png, .gif, .webp, image/webp',
+		'allowed_file_types' => '.jpg, .jpeg, .png, .gif, .webp, image/*, image/webp',
 
 		/**
 		 * Original Image

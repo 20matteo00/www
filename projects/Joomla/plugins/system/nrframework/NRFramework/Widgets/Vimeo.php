@@ -35,6 +35,9 @@ class Vimeo extends Video
 		// The Cover Image URL when coverImage="custom"
 		'coverImage' => '',
 
+		// Whether we allow fullscreen
+		'fs' => false,
+
 		// Whether controls will appear in the video
 		'controls' => true,
 
@@ -125,6 +128,7 @@ class Vimeo extends Video
 			'data-video-color="' . $this->options['color'] . '"',
 			'data-video-start="' . $this->options['start'] . '"',
 			'data-video-end="' . $this->options['end'] . '"',
+			'data-video-fs="' . var_export($this->options['fs'], true) . '"',
 		];
 
 		$this->options['atts'] = implode(' ', $atts);

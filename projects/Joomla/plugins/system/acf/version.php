@@ -2,7 +2,7 @@
 
 /**
  * @package         Advanced Custom Fields
- * @version         3.0.1 Free
+ * @version         3.1.0 Free
  *
  * @author          Tassos Marinos <info@tassos.gr>
  * @link            http://www.tassos.gr
@@ -12,5 +12,5 @@
 
 defined('_JEXEC') or die('Restricted Access');
 $NR_PRO = "0";
-$RELEASE_DATE = "2025-09-01";
+$RELEASE_DATE = "2025-11-11";
 ?>

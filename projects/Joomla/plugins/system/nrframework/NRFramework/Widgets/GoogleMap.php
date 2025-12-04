@@ -24,7 +24,7 @@ class GoogleMap extends Map
 	{
 		parent::loadMedia();
 
-		HTMLHelper::script('https://maps.googleapis.com/maps/api/js?callback=tassosFrameworkGoogleMaps&loading=async&libraries=marker&key=' . $this->options['provider_key'], ['relative' => false, 'version' => false], ['async' => true]);
-		HTMLHelper::script('plg_system_nrframework/widgets/googlemap.js', ['relative' => true, 'version' => 'auto'], ['async' => true]);
+		HTMLHelper::script('https://maps.googleapis.com/maps/api/js?callback=tassosFrameworkGoogleMaps&loading=async&libraries=marker&key=' . $this->options['provider_key'], ['relative' => false, 'version' => false]);
+		HTMLHelper::script('plg_system_nrframework/widgets/googlemap.js', ['relative' => true, 'version' => 'auto']);
 	}
 }

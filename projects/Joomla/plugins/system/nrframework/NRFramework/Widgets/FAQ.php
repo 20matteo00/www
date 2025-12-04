@@ -224,7 +224,15 @@ class FAQ extends Widget
 			return;
 		}
 
-		// Hook into GSD to add the FAQ
+		// This is the new way to add structured data on the page
+		if (class_exists('\GSD\Schemas\SchemaManager'))
+		{
+			$schemaManager = \GSD\Schemas\SchemaManager::getInstance();
+			$schemaManager->addSchema($faq);
+			return;
+		}
+
+		// The following way adding structured data is deprecated and will be removed in future versions
 		Factory::getApplication()->registerEvent('onGSDBeforeRender', function(&$data) use ($faq)
 		{
 			try
@@ -232,6 +240,10 @@ class FAQ extends Widget
 				// get the data
 				$tmpData = $data;
 				$tmpData = $data->getArgument('0');
+
+				// Get the JSON/LD code of the FAQ
+				$json = new \GSD\Json($faq->get());
+				$faq = $json->generate();
 
 				// Append the FAQ Schema
 				$tmpData[] = $faq;
@@ -271,11 +283,7 @@ class FAQ extends Widget
 		$payload = new Registry($payload);
 		$faq = new \GSD\Schemas\Schemas\FAQ($payload);
 
-		// Get the JSON/LD code of the FAQ
-		$json = new \GSD\Json($faq->get());
-
-		// Return the code
-		return $json->generate();
+		return $faq;
 	}
 
 	/**

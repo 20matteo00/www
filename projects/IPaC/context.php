@@ -1,6 +1,6 @@
 <?php
 /**
- * create_context.php - ENDPOINT PER LIBRERIA TECA H2W
+ * context.php - ENDPOINT PER LIBRERIA TECA H2W
  */
 
 // ============================================================================
@@ -9,25 +9,25 @@
 $config = [
     'client_id' => 'I2ywPWn7zxQd2FBMTuu1Ogm0Ygoa',
     'client_secret' => 'i34lXT3mtNGvJBjBOyLLXxrYuwIa',
-    'iam_url' => 'https://identity-collaudo.cloud.sbn.it/oauth2/token',
+    'iam_url' => 'https://ecomic-iam-identity-collaudo.cultura.gov.it/oauth2/token',
     'cap_endpoint' => 'https://cap-apicast-preprod.prod.os01.ocp.cineca.it/capautorizzazionesoggettosistema/api/v1/cap/autorizzazionesoggettosistema/predisponeAutenticazione',
-    'sistemaUUID' => '89CB662C0CE44126A31E6FD4D37AC8C4', // BDL [attached_file:1]
+    'sistemaUUID' => '89CB662C0CE44126A31E6FD4D37AC8C4', // BDL
     'tenancyUUIDs' => [
-        'FB5F15FBE0904D0CAB75298F4D687640', // BIBLIOGRAFICO - Regione Liguria [attached_file:1]
-        '2D86DFEBF5614DB6A07F7F667E902F9F', // ARCHIVISTICO [attached_file:1]
-        'BB77E9C87564459691116893C645E179', // MULTIMEDIALE [attached_file:1]
-        'FA4BED808FB041ED91598ECA263C09D4'  // BIBLIOGRAFICO - Berio [attached_file:1]
+        'FB5F15FBE0904D0CAB75298F4D687640', // BIBLIOGRAFICO - Regione Liguria
+        '2D86DFEBF5614DB6A07F7F667E902F9F', // ARCHIVISTICO
+        'BB77E9C87564459691116893C645E179', // MULTIMEDIALE
+        'FA4BED808FB041ED91598ECA263C09D4'  // BIBLIOGRAFICO - Berio
     ],
     'enteAderenteUUIDs' => [
-        'DFDA683E0AF14D7894596DEFEF908BE7', // Regione Liguria [attached_file:1]
+        'DFDA683E0AF14D7894596DEFEF908BE7', // Regione Liguria
         'DFDA683E0AF14D7894596DEFEF908BE7',
         'DFDA683E0AF14D7894596DEFEF908BE7',
-        '17DD47EA7F5C92EAE0630204FE0AF650'  // Biblioteca civica Berio [attached_file:1]
+        '17DD47EA7F5C92EAE0630204FE0AF650'  // Biblioteca civica Berio
     ],
     'utente' => [
         'labelDescrittivaUtente' => 'TEST',
         'idUtente' => '12345',
-        'codiceRuolo' => 'Amministratore'   // da schema_pagina [attached_file:1]
+        'codiceRuolo' => 'Amministratore'   // da schema_pagina
     ]
 ];
 
@@ -114,7 +114,7 @@ if (!createSecurityContext($config, $accessToken)) {
 }
 
 
-// Formato richiesto dalla libreria Teca: access_token, scope, token_type, expires_in [attached_file:2]
+// Formato richiesto dalla libreria Teca: access_token, scope, token_type, expires_in
 echo json_encode([
     'access_token' => $accessToken,
     'scope' => 'am_application_scope default',

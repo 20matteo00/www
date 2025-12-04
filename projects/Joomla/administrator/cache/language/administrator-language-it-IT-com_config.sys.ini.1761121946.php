@@ -1,0 +1,12 @@
+<?php
+defined('_JEXEC') or die;
+return array (
+  'COM_CONFIG' => 'Configurazione',
+  'COM_CONFIG_COMPONENT_VIEW_DEFAULT_DESC' => 'Visualizza le opzioni di configurazione per il componente selezionato.',
+  'COM_CONFIG_COMPONENT_VIEW_DEFAULT_TITLE' => 'Opzioni di configurazione del componente',
+  'COM_CONFIG_CONFIG_VIEW_DEFAULT_DESC' => 'Visualizza le opzioni di configurazione globali del sito',
+  'COM_CONFIG_CONFIG_VIEW_DEFAULT_TITLE' => 'Opzioni di configurazione del sito',
+  'COM_CONFIG_TEMPLATES_VIEW_DEFAULT_DESC' => 'Visualizza i parametri del template se il template lo consente.',
+  'COM_CONFIG_TEMPLATES_VIEW_DEFAULT_TITLE' => 'Opzioni visualizzazione template',
+  'COM_CONFIG_XML_DESCRIPTION' => 'Gestione configurazione',
+);

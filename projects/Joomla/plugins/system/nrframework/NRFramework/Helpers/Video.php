@@ -63,7 +63,7 @@ class Video
 	 */
 	public static function getYouTubePattern()
 	{
-		return '/^https?:\/\/(?:m\.|www\.)?youtube\.com\/(?:watch\?v=|embed\/|shorts\/)?([a-zA-Z0-9_-]{11})|^https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})/';
+		return '/^https?:\/\/(?:m\.|www\.)?youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)?([a-zA-Z0-9_-]{11})(?:[&?][^\s]*)?|^https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})(?:[&?][^\s]*)?/';
 	}
 
 	/**

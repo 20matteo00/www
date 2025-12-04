@@ -2,7 +2,7 @@
 
 /**
  * @package         Advanced Custom Fields
- * @version         3.0.1 Free
+ * @version         3.1.0 Free
  * 
  * @author          Tassos Marinos <info@tassos.gr>
  * @link            https://www.tassos.gr
@@ -163,8 +163,8 @@ $ai_icon = '<svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="h
 		<div class="tf-gallery-preview-item template" data-item-id="">
 			<div class="checkmark-edited-icon"><?php echo Text::_('NR_UPDATED'); ?></div>
 			<div class="select-item-checkbox" title="<?php echo Text::_('NR_GALLERY_MANAGER_CHECK_TO_DELETE_ITEMS'); ?>">
-				<input type="checkbox" id="<?php echo $name; ?>[select-item]" />
-				<label for="<?php echo $name; ?>[select-item]">
+				<input type="checkbox" id="ITEM_BASE_NAME[ITEM_ID][select-item]" />
+				<label for="ITEM_BASE_NAME[ITEM_ID][select-item]">
 					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="mask0_279_439" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20"><rect width="20" height="20" fill="#D9D9D9"/></mask><g mask="url(#mask0_279_439)"><path d="M8.83342 13.8333L14.7084 7.95829L13.5417 6.79163L8.83342 11.5L6.45841 9.12496L5.29175 10.2916L8.83342 13.8333ZM10.0001 18.3333C8.8473 18.3333 7.76397 18.1145 6.75008 17.677C5.73619 17.2395 4.85425 16.6458 4.10425 15.8958C3.35425 15.1458 2.7605 14.2638 2.323 13.25C1.8855 12.2361 1.66675 11.1527 1.66675 9.99996C1.66675 8.84718 1.8855 7.76385 2.323 6.74996C2.7605 5.73607 3.35425 4.85413 4.10425 4.10413C4.85425 3.35413 5.73619 2.76038 6.75008 2.32288C7.76397 1.88538 8.8473 1.66663 10.0001 1.66663C11.1529 1.66663 12.2362 1.88538 13.2501 2.32288C14.264 2.76038 15.1459 3.35413 15.8959 4.10413C16.6459 4.85413 17.2397 5.73607 17.6772 6.74996C18.1147 7.76385 18.3334 8.84718 18.3334 9.99996C18.3334 11.1527 18.1147 12.2361 17.6772 13.25C17.2397 14.2638 16.6459 15.1458 15.8959 15.8958C15.1459 16.6458 14.264 17.2395 13.2501 17.677C12.2362 18.1145 11.1529 18.3333 10.0001 18.3333ZM10.0001 16.6666C11.8612 16.6666 13.4376 16.0208 14.7292 14.7291C16.0209 13.4375 16.6667 11.8611 16.6667 9.99996C16.6667 8.13885 16.0209 6.56246 14.7292 5.27079C13.4376 3.97913 11.8612 3.33329 10.0001 3.33329C8.13897 3.33329 6.56258 3.97913 5.27091 5.27079C3.97925 6.56246 3.33341 8.13885 3.33341 9.99996C3.33341 11.8611 3.97925 13.4375 5.27091 14.7291C6.56258 16.0208 8.13897 16.6666 10.0001 16.6666Z" fill="currentColor"/></g></svg>
 				</label>
 			</div>
@@ -182,7 +182,7 @@ $ai_icon = '<svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="h
 			<div class="tf-gallery-preview-item--alt">
 				<div class="tf-gallery-preview-item--alt--existing"></div>
 				<div class="tf-gallery-preview-item--alt--fields">
-					<textarea name="<?php echo $name; ?>[alt]" class="item-alt" placeholder="<?php echo Text::_('NR_GALLERY_MANAGER_IMAGE_DESCRIPTION_HINT'); ?>" title="<?php echo Text::_('NR_GALLERY_MANAGER_ALT_HINT'); ?>" rows="2"></textarea>
+					<textarea name="ITEM_BASE_NAME[ITEM_ID][alt]" class="item-alt" placeholder="<?php echo Text::_('NR_GALLERY_MANAGER_IMAGE_DESCRIPTION_HINT'); ?>" title="<?php echo Text::_('NR_GALLERY_MANAGER_ALT_HINT'); ?>" rows="2"></textarea>
 					<?php if (!$pro): ?>
 						<div class="tf-gallery-ai-button" title="<?php echo Text::_('NR_GENERATE_IMAGE_DESCRIPTION_USING_AI') ?>">
 							<span data-pro-only="<?php echo Text::_('NR_AI_IMAGE_DESCRIPTION_GENERATION') ?>"><?php echo $ai_icon; ?></span>
@@ -216,12 +216,12 @@ $ai_icon = '<svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="h
 				</div>
 			</div>
 			<div class="tf-gallery-preview-error"><div data-dz-errormessage></div></div>
-			<input type="hidden" value="" class="item-source" name="<?php echo $name; ?>[source]" />
-			<input type="hidden" value="" class="item-slideshow" name="<?php echo $name; ?>[slideshow]" />
-			<input type="hidden" value="" class="item-original" name="<?php echo $name; ?>[image]" />
-			<input type="hidden" value="" class="item-thumbnail" name="<?php echo $name; ?>[thumbnail]" />
-			<input type="hidden" value="" class="item-caption" name="<?php echo $name; ?>[caption]" />
-			<input type="hidden" value="" class="item-tags" name="<?php echo $name; ?>[tags]" />
+			<input type="hidden" value="" class="item-source" name="ITEM_BASE_NAME[ITEM_ID][source]" />
+			<input type="hidden" value="" class="item-slideshow" name="ITEM_BASE_NAME[ITEM_ID][slideshow]" />
+			<input type="hidden" value="" class="item-original" name="ITEM_BASE_NAME[ITEM_ID][image]" />
+			<input type="hidden" value="" class="item-thumbnail" name="ITEM_BASE_NAME[ITEM_ID][thumbnail]" />
+			<input type="hidden" value="" class="item-caption" name="ITEM_BASE_NAME[ITEM_ID][caption]" />
+			<input type="hidden" value="" class="item-tags" name="ITEM_BASE_NAME[ITEM_ID][tags]" />
 		</div>
 	</template>
 	<!-- /Dropzone Preview Template -->
@@ -248,7 +248,7 @@ $ai_icon = '<svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="h
 			echo HTMLHelper::_('bootstrap.renderModal', 'tf-GalleryMissingValue-' . $id, $opts, $content);
 		}
 		
-		// Print Joomla 4 Media Manager modal only if Gallery is not disabled
+		// Print Joomla Media Manager modal only if Gallery is not disabled
 		$opts = [
 			'title'       => Text::_('NR_GALLERY_MANAGER_SELECT_ITEM'),
 			'height'      => '400px',

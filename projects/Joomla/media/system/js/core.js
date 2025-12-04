@@ -347,7 +347,7 @@
    *
    * @type {{}}
    *
-   * @deprecated   4.0 will be removed in 6.0
+   * @deprecated   4.0 will be removed in 7.0
    *               Example: Joomla.Text._('...');
    *                        Joomla.Text.load(...);
    */

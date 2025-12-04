@@ -2,7 +2,7 @@
 
 /**
  * @package         Advanced Custom Fields
- * @version         3.0.1 Free
+ * @version         3.1.0 Free
  * 
  * @author          Tassos Marinos <info@tassos.gr>
  * @link            https://www.tassos.gr
@@ -20,7 +20,7 @@ extract($displayData);
     <div class="cb-item-toolbar group">
         <div class="show">
             <?php echo Text::_('NR_CB_SHOW_WHEN'); ?>
-            <select name="<?php echo $name; ?>[<?php echo $groupKey; ?>][matching_method]" class="form-select width-auto form-select-small">
+            <select name="<?php echo $name; ?>[<?php echo $groupKey; ?>][matching_method]" class="form-select form-select-small conditionMatchingMethod">
                 <option <?php echo (isset($groupConditions['matching_method']) && $groupConditions['matching_method'] == 'all') ? 'selected ' : ''; ?>value="all"><?php echo strtolower(Text::_('NR_ALL')); ?></option>
                 <option <?php echo (isset($groupConditions['matching_method']) && $groupConditions['matching_method'] == 'any') ? 'selected ' : ''; ?>value="any"><?php echo strtolower(Text::_('NR_ANY')); ?></option>
             </select>

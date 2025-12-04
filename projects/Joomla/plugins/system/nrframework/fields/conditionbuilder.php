@@ -34,7 +34,14 @@ class JFormFieldConditionBuilder extends HiddenField
        }
 
         // This is required on views we don't control such as the Fields or the Modules view page.
-        HTMLHelper::_('formbehavior.chosen', '.hasChosen');
+        Factory::getDocument()->getWebAssetManager()
+            ->usePreset('choicesjs')
+            ->useScript('webcomponent.field-fancy-select');
+        // Factory::getApplication()->getDocument()->getWebAssetManager()->usePreset('choicesjs');
+        
+        // $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+        // $wa->usePreset('chosen')->registerAndUseScript('joomla-chosen', 'legacy/joomla-chosen.min.js', [], [], ['chosen']);
+        // HTMLHelper::_('formbehavior.chosen', '.hasChosen');
 
         HTMLHelper::stylesheet('plg_system_nrframework/fields.css', ['relative' => true, 'version' => 'auto']);
         HTMLHelper::stylesheet('plg_system_nrframework/joomla4.css', ['relative' => true, 'version' => 'auto']);

@@ -23,6 +23,7 @@ $address = isset($value['address']) ? $value['address'] : '';
 <div class="tf-address-lookup-container <?php echo $group_class; ?> is-<?php echo $visible ? 'visible' : 'hidden'; ?>">
 	<input type="hidden" name="<?php echo $name; ?>[coordinates]" class="tf-address-lookup-field-coordinates-value" value="<?php echo $coordinates; ?>" />
 	<input type="text"  name="<?php echo $name; ?>[address]" id="<?php echo $id; ?>-field-address-field-address" class="form-control span12 full-width w-100 tf-address-lookup-field-address" placeholder="<?php echo Text::_('NR_ADDRESS_ADDRESS_HINT'); ?>" value="<?php echo $address; ?>" autocomplete="off" data-autocomplete="<?php echo $autocomplete ? 'true' : 'false'; ?>">
+	<div class="tf-address-lookup-loading"></div>
 	<div class="tf-address-lookup-field-autocomplete-results"></div>
 	<svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<circle cx="14" cy="14" r="8.48528" transform="rotate(-45 14 14)" stroke-width="2"></circle>

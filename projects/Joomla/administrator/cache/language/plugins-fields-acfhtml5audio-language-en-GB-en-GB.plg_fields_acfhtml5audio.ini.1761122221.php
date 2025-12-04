@@ -1,0 +1,8 @@
+<?php
+defined('_JEXEC') or die;
+return array (
+  'PLG_FIELDS_ACFHTML5AUDIO_LABEL' => 'ACF - HTML5 Audio',
+  'ACF_HTML5AUDIO' => 'Fields - ACF HTML5 Audio',
+  'ACF_HTML5AUDIO_DESC' => 'Select an audio file in the back-end and display an HTML5 Audio Player in the front-end.',
+  'ACF_HTML5AUDIO_VALUE_DESC' => 'The URL of the audio file. Possible values: <br><br><b>A relative URL:</b><br>playlist/song.mp3<br><br><b>An absolute URL:</b><br>http://www.site.com/song.wav<br><br><b>Supported formats</b>:<br>MP3, Wav, Ogg',
+);

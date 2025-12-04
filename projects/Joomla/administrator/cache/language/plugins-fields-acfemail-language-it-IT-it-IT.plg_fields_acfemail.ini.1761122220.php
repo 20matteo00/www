@@ -1,0 +1,14 @@
+<?php
+defined('_JEXEC') or die;
+return array (
+  'PLG_FIELDS_ACFEMAIL_LABEL' => 'ACF - Email',
+  'ACF_EMAIL' => 'Campi - Email ACF ',
+  'ACF_EMAIL_DESC' => 'Mostra indirizzi email in sicurezza nel front-end, che siano illeggibili per gli spambot.',
+  'ACF_EMAIL_VALUE_DESC' => 'Imposta un indirizzo email.',
+  'ACF_EMAIL_CLOAK_SUPPORT' => 'Maschera indirizzo email',
+  'ACF_EMAIL_CLOAK_SUPPORT_DESC' => 'Se abilitato l\'indirizzo email sarà protetto con una mascheramento anti-spam che lo rende illeggibile per gli spambot.',
+  'ACF_EMAIL_DISPLAY_AS' => 'Mostra come',
+  'ACF_EMAIL_DISPLAY_AS_DESC' => 'Scegli se mostrare l\'indirizzo email come testo semplice o convertirlo a collegamento mailto.',
+  'ACF_EMAIL_TEXT' => 'Testo',
+  'ACF_EMAIL_LINK' => 'Collegamento mailto',
+);

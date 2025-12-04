@@ -9,3 +9,4 @@
 2025-10-22T08:20:45+00:00	INFO 127.0.0.1	joomlafailure	Il nome utente e la password non corrispondono o non hai ancora un account.
 2025-10-22T08:20:46+00:00	INFO 127.0.0.1	joomlafailure	Il nome utente e la password non corrispondono o non hai ancora un account.
 2025-10-30T10:32:55+00:00	INFO ::1	joomlafailure	Il nome utente e la password non corrispondono o non hai ancora un account.
+2025-12-04T07:59:48+00:00	INFO 127.0.0.1	joomlafailure	Il nome utente e la password non corrispondono o non hai ancora un account.

@@ -25,6 +25,11 @@ class City extends GeoBase
      */
 	public function value()
 	{
+        if (!$this->geo)
+        {
+            return;
+        }
+        
 		return $this->geo->getCity();
 	}
 }

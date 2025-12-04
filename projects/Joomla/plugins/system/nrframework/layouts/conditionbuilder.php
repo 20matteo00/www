@@ -15,6 +15,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Factory;
 
+Text::script('NR_PLEASE_SELECT');
+
 HTMLHelper::stylesheet('plg_system_nrframework/conditionbuilder.css', ['relative' => true, 'version' => 'auto']);
 HTMLHelper::script('plg_system_nrframework/helper.js', ['relative' => true, 'version' => 'auto']);
 HTMLHelper::script('plg_system_nrframework/conditionbuilder.js', ['relative' => true, 'version' => 'auto']);
