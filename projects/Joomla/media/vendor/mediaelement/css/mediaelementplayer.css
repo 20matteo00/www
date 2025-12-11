@@ -47,7 +47,6 @@
 .mejs__container:focus {
   outline-offset: .125rem;
   outline-width: .125rem;
-  outline-style: solid;
 }
 
 .mejs__iframe-overlay {
@@ -595,14 +594,6 @@
   bottom: 100%;
   right: 50%;
   overflow: hidden;
-}
-
-.mejs__captions-button-toggle {
-  opacity: .7;
-}
-
-.mejs__captions-button-toggle-on {
-  opacity: 1;
 }
 
 .mejs__chapters-button > .mejs__chapters-selector {

@@ -10,7 +10,6 @@
 namespace Joomla\CMS\Input;
 
 use Joomla\CMS\Filter\InputFilter;
-use Joomla\Input\Input;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -21,7 +20,7 @@ use Joomla\Input\Input;
  *
  * @since       1.7.0
  *
- * @deprecated  4.3 will be removed in 7.0
+ * @deprecated  4.3 will be removed in 6.0
  *              Use the `joomla/console` package instead
  */
 class Cli extends Input
@@ -32,7 +31,7 @@ class Cli extends Input
      * @var    string
      * @since  1.7.0
      *
-     * @deprecated  4.3 will be removed in 7.0
+     * @deprecated  4.3 will be removed in 6.0
      *              Use the `joomla/console` package instead
      */
     public $executable;
@@ -44,7 +43,7 @@ class Cli extends Input
      * @var    array
      * @since  1.7.0
      *
-     * @deprecated  4.3 will be removed in 7.0
+     * @deprecated  4.3 will be removed in 6.0
      *              Use the `joomla/console` package instead
      */
     public $args = [];
@@ -57,7 +56,7 @@ class Cli extends Input
      *
      * @since   1.7.0
      *
-     * @deprecated  4.3 will be removed in 7.0
+     * @deprecated  4.3 will be removed in 6.0
      *              Use the `joomla/console` package instead
      */
     public function __construct(?array $source = null, array $options = [])
@@ -82,7 +81,7 @@ class Cli extends Input
      *
      * @since   3.0.0
      *
-     * @deprecated  4.3 will be removed in 7.0
+     * @deprecated  4.3 will be removed in 6.0
      *              Use the `joomla/console` package instead
      */
     public function serialize()
@@ -107,7 +106,7 @@ class Cli extends Input
      *
      * @since   3.0.0
      *
-     * @deprecated  4.3 will be removed in 7.0
+     * @deprecated  4.3 will be removed in 6.0
      *              Use the `joomla/console` package instead
      */
     public function unserialize($input)
@@ -132,7 +131,7 @@ class Cli extends Input
      *
      * @since   1.7.0
      *
-     * @deprecated  4.3 will be removed in 7.0
+     * @deprecated  4.3 will be removed in 6.0
      *              Use the `joomla/console` package instead
      */
     protected function parseArguments()

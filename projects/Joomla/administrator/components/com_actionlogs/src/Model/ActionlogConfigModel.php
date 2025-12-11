@@ -35,7 +35,7 @@ class ActionlogConfigModel extends BaseDatabaseModel
     public function getLogContentTypeParams(string $context): ?\stdClass
     {
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('a.*')
             ->from($db->quoteName('#__action_log_config', 'a'))
             ->where($db->quoteName('a.type_alias') . ' = :context')

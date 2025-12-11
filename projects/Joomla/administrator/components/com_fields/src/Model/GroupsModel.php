@@ -128,7 +128,7 @@ class GroupsModel extends ListModel
     {
         // Create a new query object.
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $user  = $this->getCurrentUser();
 
         // Select the required fields from the table.

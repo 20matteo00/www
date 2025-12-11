@@ -10,7 +10,6 @@
 namespace Joomla\Filter;
 
 use Joomla\Language\Language;
-use Joomla\Language\LanguageFactory;
 use Joomla\Language\Transliterate;
 use Joomla\String\StringHelper;
 
@@ -144,7 +143,7 @@ class OutputFilter
             if (empty($language) || $language === '*' || self::$language->getLanguage() === $language) {
                 $str = self::$language->transliterate($str);
             } else {
-                $str = (new LanguageFactory())->getLanguage(self::$language->getBasePath(), $language, self::$language->getDebug())->transliterate($str);
+                $str = (new Language(self::$language->getBasePath(), $language, self::$language->getDebug()))->transliterate($str);
             }
         } else {
             // Fallback behavior based on the Language package's en-GB LocaliseInterface implementation
@@ -217,7 +216,7 @@ class OutputFilter
     /**
      * Cleans text of all formatting and scripting code.
      *
-     * @param   ?string  $text  Text to clean
+     * @param   string  $text  Text to clean
      *
      * @return  string  Cleaned text.
      *

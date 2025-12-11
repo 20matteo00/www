@@ -14,8 +14,11 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Multilanguage;
-use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\MVC\View\ListView;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\Button\DropdownButton;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Modules\Administrator\Model\ModulesModel;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -26,61 +29,80 @@ use Joomla\CMS\MVC\View\ListView;
  *
  * @since  1.6
  */
-class HtmlView extends ListView
+class HtmlView extends BaseHtmlView
 {
     /**
-     * The client ID for the modules we're showing
+     * An array of items
      *
-     * @var int
-     *
-     * @since 6.0.0
+     * @var  array
      */
-    protected $clientId;
+    protected $items;
 
     /**
-     * The help link for the view
+     * The pagination object
      *
-     * @var string
+     * @var  \Joomla\CMS\Pagination\Pagination
      */
-    protected $helpLink = 'Modules';
+    protected $pagination;
 
     /**
-     * Constructor
+     * The model state
      *
-     * @param   array  $config  An optional associative array of configuration settings.
+     * @var  \Joomla\Registry\Registry
      */
-    public function __construct(array $config)
-    {
-        if (empty($config['option'])) {
-            $config['option'] = 'com_modules';
-        }
-
-        $config['toolbar_icon']   = 'cube module';
-        $config['supports_batch'] = true;
-
-        parent::__construct($config);
-    }
+    protected $state;
 
     /**
-     * Prepare view data
+     * Form object for search filters
+     *
+     * @var    \Joomla\CMS\Form\Form
+     *
+     * @since  4.0.0
+     */
+    public $filterForm;
+
+    /**
+     * The active search filters
+     *
+     * @var    array
+     * @since  4.0.0
+     */
+    public $activeFilters;
+
+    /**
+     * Is this view an Empty State
+     *
+     * @var  boolean
+     * @since 4.0.0
+     */
+    private $isEmptyState = false;
+
+    /**
+     * Display the view
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
      *
      * @return  void
+     *
+     * @since   1.6
      */
-    protected function initializeView()
+    public function display($tpl = null)
     {
-        parent::initializeView();
-
-        /**
-         * @var ListModel
-         */
+        /** @var ModulesModel $model */
         $model = $this->getModel();
+        $model->setUseExceptions(true);
 
+        $this->items         = $model->getItems();
+        $this->pagination    = $model->getPagination();
+        $this->state         = $model->getState();
         $this->total         = $model->getTotal();
-        $this->clientId      = (int) $this->state->get('client_id', 0);
+        $this->filterForm    = $model->getFilterForm();
+        $this->activeFilters = $model->getActiveFilters();
+        $this->clientId      = $this->state->get('client_id');
 
-        $this->canDo = ContentHelper::getActions('com_modules');
-
-        $this->toolbarTitle = $this->clientId == 1 ? 'COM_MODULES_MANAGER_MODULES_ADMIN' : 'COM_MODULES_MANAGER_MODULES_SITE';
+        if (!\count($this->items) && $this->isEmptyState = $model->getIsEmptyState()) {
+            $this->setLayout('emptystate');
+        }
 
         /**
          * The code below make sure the remembered position will be available from filter dropdown even if there are no
@@ -115,6 +137,8 @@ class HtmlView extends ListView
 
         // We don't need the toolbar in the modal window.
         if ($this->getLayout() !== 'modal') {
+            $this->addToolbar();
+
             // We do not need to filter by language when multilingual is disabled
             if (!Multilanguage::isEnabled()) {
                 unset($this->activeFilters['language']);
@@ -130,6 +154,8 @@ class HtmlView extends ListView
                 unset($this->activeFilters['state'], $this->activeFilters['language']);
             }
         }
+
+        parent::display($tpl);
     }
 
     /**
@@ -141,42 +167,78 @@ class HtmlView extends ListView
      */
     protected function addToolbar()
     {
-        $canDo = $this->canDo;
+        $state = $this->state;
+        $canDo = ContentHelper::getActions('com_modules');
+        $user  = $this->getCurrentUser();
 
-        $canCreate = $canDo->get('core.create');
+        // Get the toolbar object instance
+        $toolbar = $this->getDocument()->getToolbar();
 
-        if ($canCreate) {
-            $this->getDocument()->getToolbar()->standardButton('new', 'JTOOLBAR_NEW')
-                ->onclick("location.href='index.php?option=com_modules&amp;view=select&amp;client_id=" . $this->clientId . "'");
+        if ($state->get('client_id') == 1) {
+            ToolbarHelper::title(Text::_('COM_MODULES_MANAGER_MODULES_ADMIN'), 'cube module');
+        } else {
+            ToolbarHelper::title(Text::_('COM_MODULES_MANAGER_MODULES_SITE'), 'cube module');
         }
 
-        // Prevent showing default add button
-        $canDo->set('core.create', false);
+        if ($canDo->get('core.create')) {
+            $toolbar->standardButton('new', 'JTOOLBAR_NEW')
+                ->onclick("location.href='index.php?option=com_modules&amp;view=select&amp;client_id=" . $this->state->get('client_id', 0) . "'");
+        }
 
-        parent::addToolbar();
+        if (!$this->isEmptyState && ($canDo->get('core.edit.state') || $this->getCurrentUser()->authorise('core.admin'))) {
+            /** @var DropdownButton $dropdown */
+            $dropdown = $toolbar->dropdownButton('status-group', 'JTOOLBAR_CHANGE_STATUS')
+                ->toggleSplit(false)
+                ->icon('icon-ellipsis-h')
+                ->buttonClass('btn btn-action')
+                ->listCheck(true);
 
-        $canDo->set('core.create', $canCreate);
+            $childBar = $dropdown->getChildToolbar();
 
-        // We add the duplicate button if there is the default dropdown
-        if ($canCreate) {
+            if ($canDo->get('core.edit.state')) {
+                $childBar->publish('modules.publish')->listCheck(true);
 
-            /**
-             * @var \Joomla\CMS\Toolbar\Toolbar $toolbar
-             */
-            $toolbar = $this->getDocument()->getToolbar();
+                $childBar->unpublish('modules.unpublish')->listCheck(true);
+            }
 
-            $buttons = $toolbar->getItems();
+            if ($this->getCurrentUser()->authorise('core.admin')) {
+                $childBar->checkin('modules.checkin')->listCheck(true);
+            }
 
-            foreach ($buttons as $button) {
-                if ($button->getName() === 'status-group') {
-                    $childBar = $button->getChildToolbar();
+            if ($canDo->get('core.edit.state') && $this->state->get('filter.published') != -2) {
+                $childBar->trash('modules.trash')->listCheck(true);
+            }
 
-                    $childBar->standardButton('copy', 'JTOOLBAR_DUPLICATE', 'modules.duplicate')
-                        ->listCheck(true);
+            // Add a batch button
+            if (
+                $user->authorise('core.create', 'com_modules') && $user->authorise('core.edit', 'com_modules')
+                && $user->authorise('core.edit.state', 'com_modules')
+            ) {
+                $childBar->popupButton('batch', 'JTOOLBAR_BATCH')
+                    ->popupType('inline')
+                    ->textHeader(Text::_('COM_MODULES_BATCH_OPTIONS'))
+                    ->url('#joomla-dialog-batch')
+                    ->modalWidth('800px')
+                    ->modalHeight('fit-content')
+                    ->listCheck(true);
+            }
 
-                    break;
-                }
+            if ($canDo->get('core.create')) {
+                $childBar->standardButton('copy', 'JTOOLBAR_DUPLICATE', 'modules.duplicate')
+                    ->listCheck(true);
             }
         }
+
+        if (!$this->isEmptyState && ($state->get('filter.state') == -2 && $canDo->get('core.delete'))) {
+            $toolbar->delete('modules.delete', 'JTOOLBAR_DELETE_FROM_TRASH')
+                ->message('JGLOBAL_CONFIRM_DELETE')
+                ->listCheck(true);
+        }
+
+        if ($canDo->get('core.admin')) {
+            $toolbar->preferences('com_modules');
+        }
+
+        $toolbar->help('Modules');
     }
 }

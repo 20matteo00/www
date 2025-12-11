@@ -15,6 +15,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
 use Joomla\Filesystem\Path;
@@ -176,9 +177,9 @@ class PluginModel extends AdminModel
                 return false;
             }
 
-            // Convert to an object before adding other data.
+            // Convert to the \Joomla\CMS\Object\CMSObject before adding other data.
             $properties             = $table->getProperties(1);
-            $this->_cache[$cacheId] = ArrayHelper::toObject($properties);
+            $this->_cache[$cacheId] = ArrayHelper::toObject($properties, CMSObject::class);
 
             // Convert the params field to an array.
             $registry                       = new Registry($table->params);
@@ -253,7 +254,7 @@ class PluginModel extends AdminModel
 
         // Load the core and/or local language sys file(s) for the ordering field.
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('element'))
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
@@ -360,13 +361,15 @@ class PluginModel extends AdminModel
     /**
      * Custom clean cache method, plugins are cached in 2 places for different clients.
      *
-     * @param  string  $group  Cache group name.
+     * @param   string   $group     Cache group name.
+     * @param   integer  $clientId  No longer used, will be removed without replacement
+     *                              @deprecated   4.3 will be removed in 6.0
      *
      * @return  void
      *
      * @since   1.6
      */
-    protected function cleanCache($group = null)
+    protected function cleanCache($group = null, $clientId = 0)
     {
         parent::cleanCache('com_plugins');
     }

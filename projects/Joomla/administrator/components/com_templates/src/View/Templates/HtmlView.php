@@ -118,11 +118,6 @@ class HtmlView extends BaseHtmlView
         $this->file          = base64_encode('home');
         $this->pluginState   = PluginHelper::isEnabled('installer', 'override');
 
-        // Add form control fields
-        $this->filterForm
-            ->addControlField('task', '')
-            ->addControlField('boxchecked', '0');
-
         $this->addToolbar();
 
         parent::display($tpl);

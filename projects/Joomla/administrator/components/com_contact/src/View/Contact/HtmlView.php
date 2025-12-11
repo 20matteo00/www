@@ -10,11 +10,16 @@
 
 namespace Joomla\Component\Contact\Administrator\View\Contact;
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\View\FormView;
+use Joomla\CMS\MVC\View\GenericDataException;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Contact\Administrator\Model\ContactModel;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -25,62 +30,68 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  *
  * @since  1.6
  */
-class HtmlView extends FormView
+class HtmlView extends BaseHtmlView
 {
     /**
-     * Set to true, if saving to menu should be supported
+     * The Form object
      *
-     * @var boolean
+     * @var  \Joomla\CMS\Form\Form
      */
-    protected $supportSaveMenu = true;
+    protected $form;
 
     /**
-     * Holds the extension for categories, if available
+     * The active item
      *
-     * @var string
+     * @var  object
      */
-    protected $categorySection = 'com_contact';
+    protected $item;
 
     /**
-     * Constructor
+     * The model state
      *
-     * @param   array  $config  An optional associative array of configuration settings.
-     *
-     * @since   6.0.0
+     * @var  \Joomla\Registry\Registry
      */
-    public function __construct(array $config)
-    {
-        if (empty($config['option'])) {
-            $config['option'] = 'com_contact';
-        }
-
-        $config['help_link']    = 'Contacts:_Edit';
-        $config['toolbar_icon'] = 'address-book contact';
-
-        parent::__construct($config);
-    }
+    protected $state;
 
     /**
-     * Prepare view data
+     * Array of fieldsets not to display
+     *
+     * @var    string[]
+     *
+     * @since  5.2.0
+     */
+    public $ignore_fieldsets = [];
+
+    /**
+     * Display the view.
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
      *
      * @return  void
-     *
-     * @since   6.0.0
      */
-    protected function initializeView()
+    public function display($tpl = null)
     {
-        parent::initializeView();
+        /** @var ContactModel $model */
+        $model = $this->getModel();
 
-        $this->canDo = ContentHelper::getActions('com_contact', 'category', $this->item->catid);
+        // Initialise variables.
+        $this->form  = $model->getForm();
+        $this->item  = $model->getItem();
+        $this->state = $model->getState();
 
         if ($this->getLayout() === 'modalreturn') {
+            parent::display($tpl);
+
             return;
         }
 
-        // If we are forcing a language in modal (used for associations).
-        $forcedLanguage = Factory::getApplication()->getInput()->get('forcedLanguage', '', 'cmd');
+        // Check for errors.
+        if (\count($errors = $model->getErrors())) {
+            throw new GenericDataException(implode("\n", $errors), 500);
+        }
 
-        if ($this->getLayout() === 'modal' && $forcedLanguage) {
+        // If we are forcing a language in modal (used for associations).
+        if ($this->getLayout() === 'modal' && $forcedLanguage = Factory::getApplication()->getInput()->get('forcedLanguage', '', 'cmd')) {
             // Set the language field to the forcedLanguage and disable changing it.
             $this->form->setValue('language', null, $forcedLanguage);
             $this->form->setFieldAttribute('language', 'readonly', 'true');
@@ -92,10 +103,13 @@ class HtmlView extends FormView
             $this->form->setFieldAttribute('tags', 'language', '*,' . $forcedLanguage);
         }
 
-        // Add form control fields
-        $this->form
-            ->addControlField('task', '')
-            ->addControlField('forcedLanguage', $forcedLanguage);
+        if ($this->getLayout() !== 'modal') {
+            $this->addToolbar();
+        } else {
+            $this->addModalToolbar();
+        }
+
+        parent::display($tpl);
     }
 
     /**
@@ -107,15 +121,91 @@ class HtmlView extends FormView
      */
     protected function addToolbar()
     {
-        if ($this->getLayout() === 'modal') {
-            $this->addModalToolbar();
+        Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
-            return;
+        $user       = $this->getCurrentUser();
+        $userId     = $user->id;
+        $isNew      = ($this->item->id == 0);
+        $checkedOut = !(\is_null($this->item->checked_out) || $this->item->checked_out == $userId);
+        $toolbar    = $this->getDocument()->getToolbar();
+
+        // Since we don't track these assets at the item level, use the category id.
+        $canDo = ContentHelper::getActions('com_contact', 'category', $this->item->catid);
+
+        ToolbarHelper::title($isNew ? Text::_('COM_CONTACT_MANAGER_CONTACT_NEW') : Text::_('COM_CONTACT_MANAGER_CONTACT_EDIT'), 'address-book contact');
+
+        // Build the actions for new and existing records.
+        if ($isNew) {
+            // For new records, check the create permission.
+            if (\count($user->getAuthorisedCategories('com_contact', 'core.create')) > 0) {
+                $toolbar->apply('contact.apply');
+
+                $saveGroup = $toolbar->dropdownButton('save-group');
+
+                $saveGroup->configure(
+                    function (Toolbar $childBar) use ($user) {
+                        $childBar->save('contact.save');
+
+                        if ($user->authorise('core.create', 'com_menus.menu')) {
+                            $childBar->save('contact.save2menu', 'JTOOLBAR_SAVE_TO_MENU');
+                        }
+
+                        $childBar->save2new('contact.save2new');
+                    }
+                );
+            }
+
+            $toolbar->cancel('contact.cancel', 'JTOOLBAR_CANCEL');
+        } else {
+            // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
+            $itemEditable = $canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId);
+
+            // Can't save the record if it's checked out and editable
+            if (!$checkedOut && $itemEditable) {
+                $toolbar->apply('contact.apply');
+            }
+
+            $saveGroup = $toolbar->dropdownButton('save-group');
+
+            $saveGroup->configure(
+                function (Toolbar $childBar) use ($checkedOut, $itemEditable, $canDo, $user) {
+                    // Can't save the record if it's checked out and editable
+                    if (!$checkedOut && $itemEditable) {
+                        $childBar->save('contact.save');
+
+                        // We can save this record, but check the create permission to see if we can return to make a new one.
+                        if ($canDo->get('core.create')) {
+                            $childBar->save2new('contact.save2new');
+                        }
+                    }
+
+                    // If checked out, we can still save2menu
+                    if ($user->authorise('core.create', 'com_menus.menu')) {
+                        $childBar->save('contact.save2menu', 'JTOOLBAR_SAVE_TO_MENU');
+                    }
+
+                    // If checked out, we can still save
+                    if ($canDo->get('core.create')) {
+                        $childBar->save2copy('contact.save2copy');
+                    }
+                }
+            );
+
+            $toolbar->cancel('contact.cancel');
+
+            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->get('params')->get('save_history', 0) && $itemEditable) {
+                $toolbar->versions('com_contact.contact', $this->item->id);
+            }
+
+            if (Associations::isEnabled() && ComponentHelper::isEnabled('com_associations')) {
+                $toolbar->standardButton('contract', 'JTOOLBAR_ASSOCIATIONS', 'contact.editAssociations')
+                    ->icon('icon-contract')
+                    ->listCheck(false);
+            }
         }
 
-        parent::addToolbar();
-
-        return;
+        $toolbar->divider();
+        $toolbar->help('Contacts:_Edit');
     }
 
     /**

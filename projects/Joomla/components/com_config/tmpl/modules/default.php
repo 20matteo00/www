@@ -10,17 +10,20 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-/** @var \Joomla\Component\Config\Site\View\Modules\HtmlView $this */
+HTMLHelper::_('behavior.combobox');
 
-$this->getDocument()->getWebAssetManager()
-    ->useScript('keepalive')
+/** @var \Joomla\Component\Config\Site\View\Modules\HtmlView $this */
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->getDocument()->getWebAssetManager();
+$wa->useScript('keepalive')
     ->useScript('form.validate')
-    ->useScript('com_config.modules')
-    ->useScript('awesomplete');
+    ->useScript('com_config.modules');
 
 $editorText  = false;
 $moduleXml   = JPATH_SITE . '/modules/' . $this->item['module'] . '/' . $this->item['module'] . '.xml';
@@ -161,7 +164,10 @@ if (Multilanguage::isEnabled()) {
                     <?php endif; ?>
                 </div>
 
-                <?php echo $this->form->renderControlFields(); ?>
+                <input type="hidden" name="id" value="<?php echo $this->item['id']; ?>">
+                <input type="hidden" name="return" value="<?php echo Factory::getApplication()->getInput()->get('return', null, 'base64'); ?>">
+                <input type="hidden" name="task" value="">
+                <?php echo HTMLHelper::_('form.token'); ?>
             </div>
             <div class="d-grid gap-2 d-sm-block mb-2">
             <button type="button" class="btn btn-primary" data-submit-task="modules.apply">

@@ -15,6 +15,10 @@ use Symfony\Component\Ldap\Exception\UpdateOperationException;
 
 class UpdateOperation
 {
+    private int $operationType;
+    private ?array $values;
+    private string $attribute;
+
     private const VALID_OPERATION_TYPES = [
         \LDAP_MODIFY_BATCH_ADD,
         \LDAP_MODIFY_BATCH_REMOVE,
@@ -28,17 +32,18 @@ class UpdateOperation
      *
      * @throws UpdateOperationException on consistency errors during construction
      */
-    public function __construct(
-        private int $operationType,
-        private string $attribute,
-        private ?array $values,
-    ) {
+    public function __construct(int $operationType, string $attribute, ?array $values)
+    {
         if (!\in_array($operationType, self::VALID_OPERATION_TYPES, true)) {
             throw new UpdateOperationException(\sprintf('"%s" is not a valid modification type.', $operationType));
         }
         if (\LDAP_MODIFY_BATCH_REMOVE_ALL === $operationType && null !== $values) {
             throw new UpdateOperationException(\sprintf('$values must be null for LDAP_MODIFY_BATCH_REMOVE_ALL operation, "%s" given.', get_debug_type($values)));
         }
+
+        $this->operationType = $operationType;
+        $this->attribute = $attribute;
+        $this->values = $values;
     }
 
     public function toArray(): array

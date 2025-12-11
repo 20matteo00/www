@@ -133,8 +133,9 @@ $canChange = $user->authorise('core.edit.state', 'com_scheduler');
                     ?>
                     <?php echo $this->pagination->getListFooter(); ?>
                 <?php endif; ?>
-
-                <?php echo $this->filterForm->renderControlFields(); ?>
+                <input type="hidden" name="task" value="">
+                <input type="hidden" name="boxchecked" value="0">
+                <?php echo HTMLHelper::_('form.token'); ?>
             </div>
         </div>
     </div>

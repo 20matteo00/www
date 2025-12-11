@@ -44,7 +44,7 @@ class UserMessagesField extends UserField
     {
         // Compute usergroups
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('id')
             ->from('#__usergroups');
         $db->setQuery($query);

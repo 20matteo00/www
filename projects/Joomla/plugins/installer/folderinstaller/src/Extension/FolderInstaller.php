@@ -27,6 +27,15 @@ use Joomla\Event\SubscriberInterface;
 final class FolderInstaller extends CMSPlugin implements SubscriberInterface
 {
     /**
+     * Application object.
+     *
+     * @var    \Joomla\CMS\Application\CMSApplication
+     * @since  4.0.0
+     * @deprecated 6.0 Is needed for template overrides, use getApplication instead
+     */
+    protected $app;
+
+    /**
      * Returns an array of events this subscriber will listen to.
      *
      * @return  array

@@ -44,7 +44,7 @@ class ConfigComponentsField extends ListField
     protected function getOptions()
     {
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('name AS text, element AS value')
             ->from('#__extensions')
             ->where('enabled >= 1')

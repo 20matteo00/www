@@ -64,7 +64,9 @@ $this->useCoreUI        = true;
             <?php echo LayoutHelper::render('joomla.edit.params', $this); ?>
             <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
-            <?php echo $this->form->renderControlFields(); ?>
+            <input type="hidden" name="task" value=""/>
+            <input type="hidden" name="return" value="<?php echo $this->return_page; ?>"/>
+            <?php echo HTMLHelper::_('form.token'); ?>
         </fieldset>
         <div class="d-grid gap-2 d-sm-block mb-2">
             <button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('contact.save')">

@@ -14,7 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Table\Category;
+use Joomla\CMS\Table\Table;
 use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
 use Joomla\Utilities\ArrayHelper;
@@ -146,7 +146,7 @@ class ContactsModel extends ListModel
     {
         // Create a new query object.
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $user  = $this->getCurrentUser();
 
         // Select the required fields from the table.
@@ -208,7 +208,7 @@ class ContactsModel extends ListModel
 
         // Join over the associations.
         if (Associations::isEnabled()) {
-            $subQuery = $db->createQuery()
+            $subQuery = $db->getQuery(true)
                 ->select('COUNT(' . $db->quoteName('asso1.id') . ') > 1')
                 ->from($db->quoteName('#__associations', 'asso1'))
                 ->join('INNER', $db->quoteName('#__associations', 'asso2'), $db->quoteName('asso1.key') . ' = ' . $db->quoteName('asso2.key'))
@@ -291,7 +291,7 @@ class ContactsModel extends ListModel
                 $includeNone = true;
             }
 
-            $subQuery = $db->createQuery()
+            $subQuery = $db->getQuery(true)
                 ->select('DISTINCT ' . $db->quoteName('content_item_id'))
                 ->from($db->quoteName('#__contentitem_tag_map'))
                 ->where(
@@ -308,7 +308,7 @@ class ContactsModel extends ListModel
             );
 
             if ($includeNone) {
-                $subQuery2 = $db->createQuery()
+                $subQuery2 = $db->getQuery(true)
                     ->select('DISTINCT ' . $db->quoteName('content_item_id'))
                     ->from($db->quoteName('#__contentitem_tag_map'))
                     ->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_contact.contact'));
@@ -326,7 +326,7 @@ class ContactsModel extends ListModel
             $tag = (int) $tag;
 
             if ($tag === 0) {
-                $subQuery = $db->createQuery()
+                $subQuery = $db->getQuery(true)
                     ->select('DISTINCT ' . $db->quoteName('content_item_id'))
                     ->from($db->quoteName('#__contentitem_tag_map'))
                     ->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_contact.contact'));
@@ -365,7 +365,7 @@ class ContactsModel extends ListModel
         // Case: Using both categories filter and by level filter
         if (\count($categoryId)) {
             $categoryId       = ArrayHelper::toInteger($categoryId);
-            $categoryTable    = new Category($db);
+            $categoryTable    = Table::getInstance('Category', '\\Joomla\\CMS\\Table\\');
             $subCatItemsWhere = [];
 
             // @todo: Convert to prepared statement

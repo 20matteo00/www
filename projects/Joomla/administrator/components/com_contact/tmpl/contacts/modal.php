@@ -161,7 +161,9 @@ if (!empty($editor)) {
 
         <?php endif; ?>
 
-        <?php echo $this->filterForm->renderControlFields(); ?>
+        <input type="hidden" name="task" value="">
+        <input type="hidden" name="forcedLanguage" value="<?php echo $app->getInput()->get('forcedLanguage', '', 'CMD'); ?>">
+        <?php echo HTMLHelper::_('form.token'); ?>
 
     </form>
 </div>

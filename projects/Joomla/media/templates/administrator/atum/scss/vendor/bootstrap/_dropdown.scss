@@ -1,7 +1,7 @@
 // Dropdown
 
 .btn-group .dropdown-menu {
-  min-inline-size: 100%;
+  min-width: 100%;
   background: var(--body-bg);
   box-shadow: $dropdown-box-shadow;
 
@@ -17,7 +17,7 @@
 
 .dropdown-item {
   text-align: start;
-  border-block-end: var(--dropdown-item-border-bottom);
+  border-bottom: var(--dropdown-item-border-bottom);
 
   &:hover,
   &:focus {
@@ -53,7 +53,7 @@
   }
 
   + .dropdown-item {
-    border-block-start: 1px solid rgba(0, 0, 0, .1);
+    border-top: 1px solid rgba(0, 0, 0, .1);
   }
 
   .dropdown-status-group .dropdown-menu &:not(.disabled) {
@@ -65,13 +65,13 @@
   }
 
   &.first:not(.last) {
-    border-end-end-radius: 0;
-    border-end-start-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   &.last:not(.first) {
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
   }
 
   &:not(.first):not(.last):not(:only-of-type) {
@@ -82,7 +82,7 @@
 @if $enable-dark-mode {
   @include color-mode(dark) {
     .dropdown-divider {
-      border-block-start: map-get($atum-colors-dark, "dropdown-divider-bg");
+      border-top: map-get($atum-colors-dark, "dropdown-divider-bg");
     }
   }
 }

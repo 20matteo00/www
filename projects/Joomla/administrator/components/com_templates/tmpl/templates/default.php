@@ -98,21 +98,21 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                                     <?php endif; ?>
                                 </th>
                                 <td class="small d-none d-md-table-cell text-center">
-                                    <?php echo $this->escape($item->xmldata->version); ?>
+                                    <?php echo $this->escape($item->xmldata->get('version')); ?>
                                 </td>
                                 <td class="small d-none d-md-table-cell text-center">
-                                    <?php echo $this->escape($item->xmldata->creationDate); ?>
+                                    <?php echo $this->escape($item->xmldata->get('creationDate')); ?>
                                 </td>
                                 <td class="d-none d-md-table-cell text-center">
-                                    <?php if ($author = $item->xmldata->author) : ?>
+                                    <?php if ($author = $item->xmldata->get('author')) : ?>
                                         <div><?php echo $this->escape($author); ?></div>
                                     <?php else : ?>
                                         &mdash;
                                     <?php endif; ?>
-                                    <?php if ($email = $item->xmldata->authorEmail) : ?>
+                                    <?php if ($email = $item->xmldata->get('authorEmail')) : ?>
                                         <div><?php echo $this->escape($email); ?></div>
                                     <?php endif; ?>
-                                    <?php if ($url = $item->xmldata->authorUrl) : ?>
+                                    <?php if ($url = $item->xmldata->get('authorUrl')) : ?>
                                         <div><a href="<?php echo $this->escape($url); ?>"><?php echo $this->escape($url); ?></a></div>
                                     <?php endif; ?>
                                 </td>
@@ -137,7 +137,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
                 <?php endif; ?>
 
-                <?php echo $this->filterForm->renderControlFields(); ?>
+                <input type="hidden" name="task" value="">
+                <input type="hidden" name="boxchecked" value="0">
+                <?php echo HTMLHelper::_('form.token'); ?>
             </div>
         </div>
     </div>

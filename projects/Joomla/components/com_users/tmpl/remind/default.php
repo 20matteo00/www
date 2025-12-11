@@ -10,6 +10,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -44,7 +45,6 @@ $wa->useScript('keepalive')
                 </button>
             </div>
         </div>
-
-        <?php echo $this->form->renderControlFields(); ?>
+        <?php echo HTMLHelper::_('form.token'); ?>
     </form>
 </div>

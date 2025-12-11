@@ -11,6 +11,7 @@ namespace Joomla\CMS\Updater;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Object\LegacyErrorHandlingTrait;
@@ -19,7 +20,6 @@ use Joomla\CMS\Table\Tuf as TufMetadata;
 use Joomla\CMS\TUF\TufFetcher;
 use Joomla\CMS\Version;
 use Joomla\Database\DatabaseDriver;
-use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -658,7 +658,7 @@ class Update
         $httpOption->set('userAgent', $version->getUserAgent('Joomla', true, false));
 
         try {
-            $http     = (new HttpFactory())->getHttp($httpOption);
+            $http     = HttpFactory::getHttp($httpOption);
             $response = $http->get($url);
         } catch (\RuntimeException) {
             $response = null;

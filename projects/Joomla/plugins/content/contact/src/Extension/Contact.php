@@ -119,7 +119,7 @@ final class Contact extends CMSPlugin implements SubscriberInterface
         }
 
         $db     = $this->getDatabase();
-        $query  = $db->createQuery();
+        $query  = $db->getQuery(true);
         $userId = (int) $userId;
 
         $query->select($db->quoteName('contact.id', 'contactid'))

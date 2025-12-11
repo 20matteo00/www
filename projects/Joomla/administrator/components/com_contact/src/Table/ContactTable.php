@@ -20,6 +20,7 @@ use Joomla\CMS\Tag\TaggableTableInterface;
 use Joomla\CMS\Tag\TaggableTableTrait;
 use Joomla\CMS\User\CurrentUserInterface;
 use Joomla\CMS\User\CurrentUserTrait;
+use Joomla\CMS\Versioning\VersionableTableInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\String\StringHelper;
@@ -33,7 +34,7 @@ use Joomla\String\StringHelper;
  *
  * @since  1.0
  */
-class ContactTable extends Table implements TaggableTableInterface, CurrentUserInterface
+class ContactTable extends Table implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {
     use TaggableTableTrait;
     use CurrentUserTrait;

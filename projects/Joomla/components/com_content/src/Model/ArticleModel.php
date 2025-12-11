@@ -14,7 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ItemModel;
-use Joomla\CMS\Table\Content;
+use Joomla\CMS\Table\Table;
 use Joomla\Component\Content\Administrator\Extension\ContentComponent;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -95,7 +95,7 @@ class ArticleModel extends ItemModel
         if (!isset($this->_item[$pk])) {
             try {
                 $db    = $this->getDatabase();
-                $query = $db->createQuery();
+                $query = $db->getQuery(true);
 
                 $query->select(
                     $this->getState(
@@ -294,7 +294,7 @@ class ArticleModel extends ItemModel
         if ($hitcount) {
             $pk = (!empty($pk)) ? $pk : (int) $this->getState('article.id');
 
-            $table = new Content($this->getDatabase());
+            $table = Table::getInstance('Content', '\\Joomla\\CMS\\Table\\');
             $table->hit($pk);
         }
 
@@ -319,7 +319,7 @@ class ArticleModel extends ItemModel
 
             // Initialize variables.
             $db    = $this->getDatabase();
-            $query = $db->createQuery();
+            $query = $db->getQuery(true);
 
             // Create the base select statement.
             $query->select('*')
@@ -341,7 +341,7 @@ class ArticleModel extends ItemModel
 
             // There are no ratings yet, so lets insert our rating
             if (!$rating) {
-                $query = $db->createQuery();
+                $query = $db->getQuery(true);
 
                 // Create the base insert statement.
                 $query->insert($db->quoteName('#__content_rating'))
@@ -370,7 +370,7 @@ class ArticleModel extends ItemModel
                 }
             } else {
                 if ($userIP != $rating->lastip) {
-                    $query = $db->createQuery();
+                    $query = $db->getQuery(true);
 
                     // Create the base update statement.
                     $query->update($db->quoteName('#__content_rating'))
@@ -414,13 +414,15 @@ class ArticleModel extends ItemModel
     /**
      * Cleans the cache of com_content and content modules
      *
-     * @param  string  $group  Cache group name.
+     * @param   string   $group     The cache group
+     * @param   integer  $clientId  No longer used, will be removed without replacement
+     *                              @deprecated   4.3 will be removed in 6.0
      *
      * @return  void
      *
      * @since   3.9.9
      */
-    protected function cleanCache($group = null)
+    protected function cleanCache($group = null, $clientId = 0)
     {
         parent::cleanCache('com_content');
         parent::cleanCache('mod_articles');

@@ -7562,13 +7562,13 @@ var script$v = {
 };
 
 const _hoisted_1$v = { key: 0 };
-const _hoisted_2$n = ["src", "width", "height"];
-const _hoisted_3$m = ["data-type"];
-const _hoisted_4$f = {
+const _hoisted_2$k = ["src", "width", "height"];
+const _hoisted_3$h = ["data-type"];
+const _hoisted_4$b = {
   scope: "row",
   class: "name"
 };
-const _hoisted_5$c = { class: "size" };
+const _hoisted_5$a = { class: "size" };
 const _hoisted_6$9 = { key: 0 };
 const _hoisted_7$6 = { class: "dimension" };
 const _hoisted_8$4 = { class: "created" };
@@ -7589,15 +7589,15 @@ function render$v(_ctx, _cache, $props, $setup, $data, $options) {
             alt: "",
             style: {"width":"100%","height":"auto"},
             onLoad: _cache[0] || (_cache[0] = (...args) => ($options.setSize && $options.setSize(...args)))
-          }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_2$n)
+          }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_2$k)
         ]))
       : (openBlock(), createElementBlock("td", {
           key: 1,
           class: "type",
           "data-type": $props.item.extension
-        }, null, 8 /* PROPS */, _hoisted_3$m)),
-    createBaseVNode("th", _hoisted_4$f, toDisplayString($props.item.name), 1 /* TEXT */),
-    createBaseVNode("td", _hoisted_5$c, [
+        }, null, 8 /* PROPS */, _hoisted_3$h)),
+    createBaseVNode("th", _hoisted_4$b, toDisplayString($props.item.name), 1 /* TEXT */),
+    createBaseVNode("td", _hoisted_5$a, [
       createTextVNode(toDisplayString($options.size), 1 /* TEXT */),
       ($options.size !== '')
         ? (openBlock(), createElementBlock("span", _hoisted_6$9, "KB"))
@@ -7636,13 +7636,13 @@ var script$u = {
 };
 
 const _hoisted_1$u = { class: "table media-browser-table" };
-const _hoisted_2$m = { class: "visually-hidden" };
-const _hoisted_3$l = { class: "media-browser-table-head" };
-const _hoisted_4$e = {
+const _hoisted_2$j = { class: "visually-hidden" };
+const _hoisted_3$g = { class: "media-browser-table-head" };
+const _hoisted_4$a = {
   class: "name",
   scope: "col"
 };
-const _hoisted_5$b = {
+const _hoisted_5$9 = {
   class: "size",
   scope: "col"
 };
@@ -7663,14 +7663,14 @@ function render$u(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_MediaBrowserItemRow = resolveComponent("MediaBrowserItemRow");
 
   return (openBlock(), createElementBlock("table", _hoisted_1$u, [
-    createBaseVNode("caption", _hoisted_2$m, toDisplayString(_ctx.sprintf('COM_MEDIA_BROWSER_TABLE_CAPTION', $props.currentDirectory)), 1 /* TEXT */),
-    createBaseVNode("thead", _hoisted_3$l, [
+    createBaseVNode("caption", _hoisted_2$j, toDisplayString(_ctx.sprintf('COM_MEDIA_BROWSER_TABLE_CAPTION', $props.currentDirectory)), 1 /* TEXT */),
+    createBaseVNode("thead", _hoisted_3$g, [
       createBaseVNode("tr", null, [
         _cache[5] || (_cache[5] = createBaseVNode("th", {
           class: "type",
           scope: "col"
         }, null, -1 /* CACHED */)),
-        createBaseVNode("th", _hoisted_4$e, [
+        createBaseVNode("th", _hoisted_4$a, [
           createBaseVNode("button", {
             class: "btn btn-link",
             onClick: _cache[0] || (_cache[0] = $event => ($options.changeOrder('name')))
@@ -7686,7 +7686,7 @@ function render$u(_ctx, _cache, $props, $setup, $data, $options) {
             }, null, 2 /* CLASS */)
           ])
         ]),
-        createBaseVNode("th", _hoisted_5$b, [
+        createBaseVNode("th", _hoisted_5$9, [
           createBaseVNode("button", {
             class: "btn btn-link",
             onClick: _cache[1] || (_cache[1] = $event => ($options.changeOrder('size')))
@@ -8266,8 +8266,8 @@ var script$m = {
 };
 
 const _hoisted_1$m = ["aria-label", "title"];
-const _hoisted_2$l = ["aria-label"];
-const _hoisted_3$k = {
+const _hoisted_2$i = ["aria-label"];
+const _hoisted_3$f = {
   "aria-hidden": "true",
   class: "media-browser-actions-item-name"
 };
@@ -8319,7 +8319,7 @@ function render$m(_ctx, _cache, $props, $setup, $data, $options) {
             "aria-orientation": "vertical",
             "aria-label": _ctx.sprintf('COM_MEDIA_ACTIONS_TOOLBAR_LABEL',(_ctx.$parent.$props.item.name))
           }, [
-            createBaseVNode("span", _hoisted_3$k, [
+            createBaseVNode("span", _hoisted_3$f, [
               createBaseVNode("strong", null, toDisplayString(_ctx.$parent.$props.item.name), 1 /* TEXT */)
             ]),
             ($props.previewable)
@@ -8460,7 +8460,7 @@ function render$m(_ctx, _cache, $props, $setup, $data, $options) {
                   ]
                 }, null, 8 /* PROPS */, ["on-focused", "main-action", "hide-actions", "onKeyup", "onKeydown"]))
               : createCommentVNode("v-if", true)
-          ], 8 /* PROPS */, _hoisted_2$l))
+          ], 8 /* PROPS */, _hoisted_2$i))
         : createCommentVNode("v-if", true)
     ], 2 /* CLASS */)
   ], 64 /* STABLE_FRAGMENT */))
@@ -8486,26 +8486,6 @@ var script$l = {
     return {
       showActions: false,
     };
-  },
-  computed: {
-    thumbURL() {
-      let path = this.item.thumb_path || '';
-
-      if (path && this.item.modified_date) {
-        path = path + (path.includes('?') ? '&' : '?') + this.item.modified_date;
-      }
-
-      return path;
-    },
-    thumbWidth() {
-      return this.item.thumb_width || null;
-    },
-    thumbHeight() {
-      return this.item.thumb_height || null;
-    },
-    thumbLoading() {
-      return this.item.thumb_width ? 'lazy' : null;
-    },
   },
   methods: {
     /* Handle the on preview double click event */
@@ -8536,12 +8516,7 @@ var script$l = {
   },
 };
 
-const _hoisted_1$l = ["src", "loading", "width", "height"];
-const _hoisted_2$k = {
-  key: 1,
-  class: "folder-icon"
-};
-const _hoisted_3$j = { class: "media-browser-item-info" };
+const _hoisted_1$l = { class: "media-browser-item-info" };
 
 function render$l(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_MediaBrowserActionItemsContainer = resolveComponent("MediaBrowserActionItemsContainer");
@@ -8555,29 +8530,14 @@ function render$l(_ctx, _cache, $props, $setup, $data, $options) {
       tabindex: "0",
       onDblclick: _cache[0] || (_cache[0] = withModifiers($event => ($options.onPreviewDblClick()), ["stop","prevent"])),
       onKeyup: _cache[1] || (_cache[1] = withKeys($event => ($options.onPreviewDblClick()), ["enter"]))
-    }, [
-      createBaseVNode("div", {
-        class: normalizeClass(["file-background", { 'with-thumbnail': $options.thumbURL }])
-      }, [
-        ($options.thumbURL)
-          ? (openBlock(), createElementBlock("img", {
-              key: 0,
-              class: "image-cropped",
-              alt: "",
-              src: $options.thumbURL,
-              loading: $options.thumbLoading,
-              width: $options.thumbWidth,
-              height: $options.thumbHeight
-            }, null, 8 /* PROPS */, _hoisted_1$l))
-          : createCommentVNode("v-if", true),
-        (!$options.thumbURL)
-          ? (openBlock(), createElementBlock("div", _hoisted_2$k, [...(_cache[3] || (_cache[3] = [
-              createBaseVNode("span", { class: "icon-folder" }, null, -1 /* CACHED */)
-            ]))]))
-          : createCommentVNode("v-if", true)
-      ], 2 /* CLASS */)
-    ], 32 /* NEED_HYDRATION */),
-    createBaseVNode("div", _hoisted_3$j, toDisplayString($props.item.name), 1 /* TEXT */),
+    }, [...(_cache[3] || (_cache[3] = [
+      createBaseVNode("div", { class: "file-background" }, [
+        createBaseVNode("div", { class: "folder-icon" }, [
+          createBaseVNode("span", { class: "icon-folder" })
+        ])
+      ], -1 /* CACHED */)
+    ]))], 32 /* NEED_HYDRATION */),
+    createBaseVNode("div", _hoisted_1$l, toDisplayString($props.item.name), 1 /* TEXT */),
     createVNode(_component_MediaBrowserActionItemsContainer, {
       ref: "container",
       item: $props.item,
@@ -8610,26 +8570,6 @@ var script$k = {
       showActions: false,
     };
   },
-  computed: {
-    thumbURL() {
-      let path = this.item.thumb_path || '';
-
-      if (path && this.item.modified_date) {
-        path = path + (path.includes('?') ? '&' : '?') + this.item.modified_date;
-      }
-
-      return path;
-    },
-    thumbWidth() {
-      return this.item.thumb_width || null;
-    },
-    thumbHeight() {
-      return this.item.thumb_height || null;
-    },
-    thumbLoading() {
-      return this.item.thumb_width ? 'lazy' : null;
-    },
-  },
   methods: {
     /* Hide actions dropdown */
     hideActions() {
@@ -8647,14 +8587,8 @@ var script$k = {
   },
 };
 
-const _hoisted_1$k = { class: "media-browser-item-preview" };
-const _hoisted_2$j = ["src", "loading", "width", "height"];
-const _hoisted_3$i = {
-  key: 1,
-  class: "file-icon"
-};
-const _hoisted_4$d = { class: "media-browser-item-info" };
-const _hoisted_5$a = ["aria-label", "title"];
+const _hoisted_1$k = { class: "media-browser-item-info" };
+const _hoisted_2$h = ["aria-label", "title"];
 
 function render$k(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_MediaBrowserActionItemsContainer = resolveComponent("MediaBrowserActionItemsContainer");
@@ -8663,34 +8597,19 @@ function render$k(_ctx, _cache, $props, $setup, $data, $options) {
     class: "media-browser-item-file",
     onMouseleave: _cache[0] || (_cache[0] = $event => ($options.hideActions()))
   }, [
-    createBaseVNode("div", _hoisted_1$k, [
-      createBaseVNode("div", {
-        class: normalizeClass(["file-background", { 'with-thumbnail': $options.thumbURL }])
-      }, [
-        ($options.thumbURL)
-          ? (openBlock(), createElementBlock("img", {
-              key: 0,
-              class: "image-cropped",
-              alt: "",
-              src: $options.thumbURL,
-              loading: $options.thumbLoading,
-              width: $options.thumbWidth,
-              height: $options.thumbHeight
-            }, null, 8 /* PROPS */, _hoisted_2$j))
-          : createCommentVNode("v-if", true),
-        (!$options.thumbURL)
-          ? (openBlock(), createElementBlock("div", _hoisted_3$i, [...(_cache[1] || (_cache[1] = [
-              createBaseVNode("span", { class: "icon-file-alt" }, null, -1 /* CACHED */)
-            ]))]))
-          : createCommentVNode("v-if", true)
-      ], 2 /* CLASS */)
-    ]),
-    createBaseVNode("div", _hoisted_4$d, toDisplayString($props.item.name) + " " + toDisplayString($props.item.filetype), 1 /* TEXT */),
+    _cache[1] || (_cache[1] = createBaseVNode("div", { class: "media-browser-item-preview" }, [
+      createBaseVNode("div", { class: "file-background" }, [
+        createBaseVNode("div", { class: "file-icon" }, [
+          createBaseVNode("span", { class: "icon-file-alt" })
+        ])
+      ])
+    ], -1 /* CACHED */)),
+    createBaseVNode("div", _hoisted_1$k, toDisplayString($props.item.name) + " " + toDisplayString($props.item.filetype), 1 /* TEXT */),
     createBaseVNode("span", {
       class: "media-browser-select",
       "aria-label": _ctx.translate('COM_MEDIA_TOGGLE_SELECT_ITEM'),
       title: _ctx.translate('COM_MEDIA_TOGGLE_SELECT_ITEM')
-    }, null, 8 /* PROPS */, _hoisted_5$a),
+    }, null, 8 /* PROPS */, _hoisted_2$h),
     createVNode(_component_MediaBrowserActionItemsContainer, {
       ref: "container",
       item: $props.item,
@@ -8721,7 +8640,7 @@ var script$j = {
     };
   },
   computed: {
-    thumbURL() {
+    getURL() {
       if (!this.item.thumb_path) {
         return '';
       }
@@ -8730,16 +8649,16 @@ var script$j = {
         ? `${this.item.thumb_path}?${this.item.modified_date ? new Date(this.item.modified_date).valueOf() : api.mediaVersion}`
         : `${this.item.thumb_path}`;
     },
-    thumbWidth() {
-      return this.item.thumb_width || this.item.width || null;
+    width() {
+      return this.item.width > 0 ? this.item.width : null;
     },
-    thumbHeight() {
-      return this.item.thumb_height || this.item.height || null;
+    height() {
+      return this.item.height > 0 ? this.item.height : null;
     },
-    thumbLoading() {
-      return this.thumbWidth ? 'lazy' : null;
+    loading() {
+      return this.item.width > 0 ? 'lazy' : null;
     },
-    thumbAlt() {
+    altTag() {
       return this.item.name;
     },
   },
@@ -8781,14 +8700,14 @@ var script$j = {
 };
 
 const _hoisted_1$j = ["title"];
-const _hoisted_2$i = { class: "image-background" };
-const _hoisted_3$h = ["src", "alt", "loading", "width", "height"];
-const _hoisted_4$c = {
+const _hoisted_2$g = { class: "image-background" };
+const _hoisted_3$e = ["src", "alt", "loading", "width", "height"];
+const _hoisted_4$9 = {
   key: 1,
   class: "icon-eye-slash image-placeholder",
   "aria-hidden": "true"
 };
-const _hoisted_5$9 = ["title"];
+const _hoisted_5$8 = ["title"];
 const _hoisted_6$7 = ["aria-label", "title"];
 
 function render$j(_ctx, _cache, $props, $setup, $data, $options) {
@@ -8805,28 +8724,28 @@ function render$j(_ctx, _cache, $props, $setup, $data, $options) {
       class: "media-browser-item-preview",
       title: $props.item.name
     }, [
-      createBaseVNode("div", _hoisted_2$i, [
-        ($options.thumbURL)
+      createBaseVNode("div", _hoisted_2$g, [
+        ($options.getURL)
           ? (openBlock(), createElementBlock("img", {
               key: 0,
               class: "image-cropped",
-              src: $options.thumbURL,
-              alt: $options.thumbAlt,
-              loading: $options.thumbLoading,
-              width: $options.thumbWidth,
-              height: $options.thumbHeight,
+              src: $options.getURL,
+              alt: $options.altTag,
+              loading: $options.loading,
+              width: $options.width,
+              height: $options.height,
               onLoad: _cache[0] || (_cache[0] = (...args) => ($options.setSize && $options.setSize(...args)))
-            }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_3$h))
+            }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_3$e))
           : createCommentVNode("v-if", true),
-        (!$options.thumbURL)
-          ? (openBlock(), createElementBlock("span", _hoisted_4$c))
+        (!$options.getURL)
+          ? (openBlock(), createElementBlock("span", _hoisted_4$9))
           : createCommentVNode("v-if", true)
       ])
     ], 8 /* PROPS */, _hoisted_1$j),
     createBaseVNode("div", {
       class: "media-browser-item-info",
       title: $props.item.name
-    }, toDisplayString($props.item.name) + " " + toDisplayString($props.item.filetype), 9 /* TEXT, PROPS */, _hoisted_5$9),
+    }, toDisplayString($props.item.name) + " " + toDisplayString($props.item.filetype), 9 /* TEXT, PROPS */, _hoisted_5$8),
     createBaseVNode("span", {
       class: "media-browser-select",
       "aria-label": _ctx.translate('COM_MEDIA_TOGGLE_SELECT_ITEM'),
@@ -8868,26 +8787,6 @@ var script$i = {
       showActions: false,
     };
   },
-  computed: {
-    thumbURL() {
-      let path = this.item.thumb_path || '';
-
-      if (path && this.item.modified_date) {
-        path = path + (path.includes('?') ? '&' : '?') + this.item.modified_date;
-      }
-
-      return path;
-    },
-    thumbWidth() {
-      return this.item.thumb_width || null;
-    },
-    thumbHeight() {
-      return this.item.thumb_height || null;
-    },
-    thumbLoading() {
-      return this.item.thumb_width ? 'lazy' : null;
-    },
-  },
   methods: {
     /* Hide actions dropdown */
     hideActions() {
@@ -8905,13 +8804,7 @@ var script$i = {
   },
 };
 
-const _hoisted_1$i = { class: "media-browser-item-preview" };
-const _hoisted_2$h = ["src", "loading", "width", "height"];
-const _hoisted_3$g = {
-  key: 1,
-  class: "file-icon"
-};
-const _hoisted_4$b = { class: "media-browser-item-info" };
+const _hoisted_1$i = { class: "media-browser-item-info" };
 
 function render$i(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_MediaBrowserActionItemsContainer = resolveComponent("MediaBrowserActionItemsContainer");
@@ -8921,29 +8814,14 @@ function render$i(_ctx, _cache, $props, $setup, $data, $options) {
     onDblclick: _cache[0] || (_cache[0] = $event => ($options.openPreview())),
     onMouseleave: _cache[1] || (_cache[1] = $event => ($options.hideActions()))
   }, [
-    createBaseVNode("div", _hoisted_1$i, [
-      createBaseVNode("div", {
-        class: normalizeClass(["file-background", { 'with-thumbnail': $options.thumbURL }])
-      }, [
-        ($options.thumbURL)
-          ? (openBlock(), createElementBlock("img", {
-              key: 0,
-              class: "image-cropped",
-              alt: "",
-              src: $options.thumbURL,
-              loading: $options.thumbLoading,
-              width: $options.thumbWidth,
-              height: $options.thumbHeight
-            }, null, 8 /* PROPS */, _hoisted_2$h))
-          : createCommentVNode("v-if", true),
-        (!$options.thumbURL)
-          ? (openBlock(), createElementBlock("div", _hoisted_3$g, [...(_cache[2] || (_cache[2] = [
-              createBaseVNode("span", { class: "fas fa-file-video" }, null, -1 /* CACHED */)
-            ]))]))
-          : createCommentVNode("v-if", true)
-      ], 2 /* CLASS */)
-    ]),
-    createBaseVNode("div", _hoisted_4$b, toDisplayString($props.item.name) + " " + toDisplayString($props.item.filetype), 1 /* TEXT */),
+    _cache[2] || (_cache[2] = createBaseVNode("div", { class: "media-browser-item-preview" }, [
+      createBaseVNode("div", { class: "file-background" }, [
+        createBaseVNode("div", { class: "file-icon" }, [
+          createBaseVNode("span", { class: "fas fa-file-video" })
+        ])
+      ])
+    ], -1 /* CACHED */)),
+    createBaseVNode("div", _hoisted_1$i, toDisplayString($props.item.name) + " " + toDisplayString($props.item.filetype), 1 /* TEXT */),
     createVNode(_component_MediaBrowserActionItemsContainer, {
       ref: "container",
       item: $props.item,
@@ -8979,26 +8857,6 @@ var script$h = {
       showActions: false,
     };
   },
-  computed: {
-    thumbURL() {
-      let path = this.item.thumb_path || '';
-
-      if (path && this.item.modified_date) {
-        path = path + (path.includes('?') ? '&' : '?') + this.item.modified_date;
-      }
-
-      return path;
-    },
-    thumbWidth() {
-      return this.item.thumb_width || null;
-    },
-    thumbHeight() {
-      return this.item.thumb_height || null;
-    },
-    thumbLoading() {
-      return this.item.thumb_width ? 'lazy' : null;
-    },
-  },
   methods: {
     /* Hide actions dropdown */
     hideActions() {
@@ -9016,13 +8874,7 @@ var script$h = {
   },
 };
 
-const _hoisted_1$h = { class: "media-browser-item-preview" };
-const _hoisted_2$g = ["src", "loading", "width", "height"];
-const _hoisted_3$f = {
-  key: 1,
-  class: "file-icon"
-};
-const _hoisted_4$a = { class: "media-browser-item-info" };
+const _hoisted_1$h = { class: "media-browser-item-info" };
 
 function render$h(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_MediaBrowserActionItemsContainer = resolveComponent("MediaBrowserActionItemsContainer");
@@ -9034,29 +8886,14 @@ function render$h(_ctx, _cache, $props, $setup, $data, $options) {
     onMouseleave: _cache[1] || (_cache[1] = $event => ($options.hideActions())),
     onKeyup: _cache[2] || (_cache[2] = withKeys($event => ($options.openPreview()), ["enter"]))
   }, [
-    createBaseVNode("div", _hoisted_1$h, [
-      createBaseVNode("div", {
-        class: normalizeClass(["file-background", { 'with-thumbnail': $options.thumbURL }])
-      }, [
-        ($options.thumbURL)
-          ? (openBlock(), createElementBlock("img", {
-              key: 0,
-              class: "image-cropped",
-              alt: "",
-              src: $options.thumbURL,
-              loading: $options.thumbLoading,
-              width: $options.thumbWidth,
-              height: $options.thumbHeight
-            }, null, 8 /* PROPS */, _hoisted_2$g))
-          : createCommentVNode("v-if", true),
-        (!$options.thumbURL)
-          ? (openBlock(), createElementBlock("div", _hoisted_3$f, [...(_cache[3] || (_cache[3] = [
-              createBaseVNode("span", { class: "fas fa-file-audio" }, null, -1 /* CACHED */)
-            ]))]))
-          : createCommentVNode("v-if", true)
-      ], 2 /* CLASS */)
-    ]),
-    createBaseVNode("div", _hoisted_4$a, toDisplayString($props.item.name) + " " + toDisplayString($props.item.filetype), 1 /* TEXT */),
+    _cache[3] || (_cache[3] = createBaseVNode("div", { class: "media-browser-item-preview" }, [
+      createBaseVNode("div", { class: "file-background" }, [
+        createBaseVNode("div", { class: "file-icon" }, [
+          createBaseVNode("span", { class: "fas fa-file-audio" })
+        ])
+      ])
+    ], -1 /* CACHED */)),
+    createBaseVNode("div", _hoisted_1$h, toDisplayString($props.item.name) + " " + toDisplayString($props.item.filetype), 1 /* TEXT */),
     createVNode(_component_MediaBrowserActionItemsContainer, {
       ref: "container",
       item: $props.item,
@@ -9092,26 +8929,6 @@ var script$g = {
       showActions: false,
     };
   },
-  computed: {
-    thumbURL() {
-      let path = this.item.thumb_path || '';
-
-      if (path && this.item.modified_date) {
-        path = path + (path.includes('?') ? '&' : '?') + this.item.modified_date;
-      }
-
-      return path;
-    },
-    thumbWidth() {
-      return this.item.thumb_width || null;
-    },
-    thumbHeight() {
-      return this.item.thumb_height || null;
-    },
-    thumbLoading() {
-      return this.item.thumb_width ? 'lazy' : null;
-    },
-  },
   methods: {
     /* Hide actions dropdown */
     hideActions() {
@@ -9129,14 +8946,8 @@ var script$g = {
   },
 };
 
-const _hoisted_1$g = { class: "media-browser-item-preview" };
-const _hoisted_2$f = ["src", "loading", "width", "height"];
-const _hoisted_3$e = {
-  key: 1,
-  class: "file-icon"
-};
-const _hoisted_4$9 = { class: "media-browser-item-info" };
-const _hoisted_5$8 = ["aria-label", "title"];
+const _hoisted_1$g = { class: "media-browser-item-info" };
+const _hoisted_2$f = ["aria-label", "title"];
 
 function render$g(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_MediaBrowserActionItemsContainer = resolveComponent("MediaBrowserActionItemsContainer");
@@ -9146,34 +8957,19 @@ function render$g(_ctx, _cache, $props, $setup, $data, $options) {
     onDblclick: _cache[0] || (_cache[0] = $event => ($options.openPreview())),
     onMouseleave: _cache[1] || (_cache[1] = $event => ($options.hideActions()))
   }, [
-    createBaseVNode("div", _hoisted_1$g, [
-      createBaseVNode("div", {
-        class: normalizeClass(["file-background", { 'with-thumbnail': $options.thumbURL }])
-      }, [
-        ($options.thumbURL)
-          ? (openBlock(), createElementBlock("img", {
-              key: 0,
-              class: "image-cropped",
-              alt: "",
-              src: $options.thumbURL,
-              loading: $options.thumbLoading,
-              width: $options.thumbWidth,
-              height: $options.thumbHeight
-            }, null, 8 /* PROPS */, _hoisted_2$f))
-          : createCommentVNode("v-if", true),
-        (!$options.thumbURL)
-          ? (openBlock(), createElementBlock("div", _hoisted_3$e, [...(_cache[2] || (_cache[2] = [
-              createBaseVNode("span", { class: "fas fa-file" }, null, -1 /* CACHED */)
-            ]))]))
-          : createCommentVNode("v-if", true)
-      ], 2 /* CLASS */)
-    ]),
-    createBaseVNode("div", _hoisted_4$9, toDisplayString($props.item.name) + " " + toDisplayString($props.item.filetype), 1 /* TEXT */),
+    _cache[2] || (_cache[2] = createBaseVNode("div", { class: "media-browser-item-preview" }, [
+      createBaseVNode("div", { class: "file-background" }, [
+        createBaseVNode("div", { class: "file-icon" }, [
+          createBaseVNode("span", { class: "fas fa-file" })
+        ])
+      ])
+    ], -1 /* CACHED */)),
+    createBaseVNode("div", _hoisted_1$g, toDisplayString($props.item.name) + " " + toDisplayString($props.item.filetype), 1 /* TEXT */),
     createBaseVNode("span", {
       class: "media-browser-select",
       "aria-label": _ctx.translate('COM_MEDIA_TOGGLE_SELECT_ITEM'),
       title: _ctx.translate('COM_MEDIA_TOGGLE_SELECT_ITEM')
-    }, null, 8 /* PROPS */, _hoisted_5$8),
+    }, null, 8 /* PROPS */, _hoisted_2$f),
     createVNode(_component_MediaBrowserActionItemsContainer, {
       ref: "container",
       item: $props.item,

@@ -61,7 +61,7 @@ class FiltersModel extends ListModel
     protected function getListQuery()
     {
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         // Select all fields from the table.
         $query->select('a.*')

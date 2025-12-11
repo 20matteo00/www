@@ -11,6 +11,7 @@ namespace Joomla\CMS\TUF;
 
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Table\TableInterface;
+use Joomla\CMS\Table\Tuf;
 use Tuf\Metadata\StorageBase;
 
 // phpcs:disable PSR1.Files.SideEffects

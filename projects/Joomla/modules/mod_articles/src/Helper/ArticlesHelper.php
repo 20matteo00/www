@@ -170,7 +170,7 @@ class ArticlesHelper implements DatabaseAwareInterface
 
         switch ($ordering) {
             case 'random':
-                $articles->setState('list.ordering', $this->getDatabase()->createQuery()->rand());
+                $articles->setState('list.ordering', $this->getDatabase()->getQuery(true)->rand());
                 break;
 
             case 'rating_count':

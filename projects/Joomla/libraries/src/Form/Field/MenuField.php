@@ -46,7 +46,7 @@ class MenuField extends GroupedlistField
         $showAll    = (string) $this->element['showAll'] === 'true';
 
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('id'),
@@ -59,7 +59,7 @@ class MenuField extends GroupedlistField
             ->order(
                 [
                     $db->quoteName('client_id'),
-                    $db->quoteName('ordering'),
+                    $db->quoteName('title'),
                 ]
             );
 

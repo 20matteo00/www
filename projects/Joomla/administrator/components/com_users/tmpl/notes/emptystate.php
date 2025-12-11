@@ -19,8 +19,6 @@ $displayData = [
     'formURL'    => 'index.php?option=com_users&view=notes',
     'helpURL'    => 'https://docs.joomla.org/Special:MyLanguage/Help5.x:User_Notes',
     'icon'       => 'icon-users user',
-
-    'controlFields' => $this->filterForm->renderControlFields(),
 ];
 
 if ($this->getCurrentUser()->authorise('core.create', 'com_users')) {

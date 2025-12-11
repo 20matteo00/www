@@ -1,24 +1,23 @@
 <?php
 class JConfig {
 	public $offline = false;
-	public $offline_message = 'Sito fuori servizio per manutenzione.<br /> Riprovare più tardi.';
+	public $offline_message = 'Questo sito è inattivo per manutenzione.<br />Si prega di riprovare più tardi.';
 	public $display_offline_message = 1;
 	public $offline_image = '';
-	public $sitename = 'Mamodo Universe';
+	public $sitename = 'Test';
 	public $editor = 'tinymce';
 	public $captcha = '0';
 	public $list_limit = 20;
 	public $access = 1;
-	public $frontediting = 1;
-	public $debug = false;
+	public $debug = true;
 	public $debug_lang = false;
 	public $debug_lang_const = true;
 	public $dbtype = 'mysqli';
 	public $host = 'localhost';
 	public $user = 'root';
 	public $password = 'Matteo00';
-	public $db = 'joomla';
-	public $dbprefix = 'abcde_';
+	public $db = 'test';
+	public $dbprefix = 'test_';
 	public $dbencryption = 0;
 	public $dbsslverifyservercert = false;
 	public $dbsslkey = '';
@@ -27,19 +26,15 @@ class JConfig {
 	public $dbsslcipher = '';
 	public $force_ssl = 0;
 	public $live_site = '';
-	public $secret = '8Cl5mrFAHNpmFvG5';
+	public $secret = 'Ol1Z8URtGgSu7qX8';
 	public $gzip = false;
 	public $error_reporting = 'default';
 	public $helpurl = 'https://help.joomla.org/proxy?keyref=Help{major}{minor}:{keyref}&lang={langcode}';
 	public $offset = 'UTC';
-	public $cors = false;
-	public $cors_allow_origin = '*';
-	public $cors_allow_methods = '';
-	public $cors_allow_headers = 'Content-Type,X-Joomla-Token';
 	public $mailonline = true;
 	public $mailer = 'mail';
-	public $mailfrom = 'matteo.moscone.1atgiorgi@gmail.com';
-	public $fromname = 'Joomla';
+	public $mailfrom = 'm.moscone@liguriadigitale.it';
+	public $fromname = 'Test';
 	public $sendmail = '/usr/sbin/sendmail';
 	public $smtpauth = false;
 	public $smtpuser = '';
@@ -52,7 +47,7 @@ class JConfig {
 	public $cachetime = 15;
 	public $cache_platformprefix = false;
 	public $MetaDesc = '';
-	public $MetaAuthor = true;
+	public $MetaAuthor = false;
 	public $MetaVersion = false;
 	public $robots = '';
 	public $sef = true;
@@ -65,8 +60,8 @@ class JConfig {
 	public $tmp_path = 'C:\\laragon\\www\\projects\\Joomla/tmp';
 	public $lifetime = 15;
 	public $session_handler = 'database';
-	public $shared_session = false;
-	public $session_metadata = true;
+	public $shared_session = true;
+	public $session_metadata = false;
 	public $memcached_persist = true;
 	public $memcached_compress = false;
 	public $memcached_server_host = 'localhost';
@@ -75,6 +70,10 @@ class JConfig {
 	public $redis_server_host = 'localhost';
 	public $redis_server_port = 6379;
 	public $redis_server_db = 0;
+	public $cors = false;
+	public $cors_allow_origin = '*';
+	public $cors_allow_headers = 'Content-Type,X-Joomla-Token';
+	public $cors_allow_methods = '';
 	public $behind_loadbalancer = false;
 	public $proxy_enable = false;
 	public $proxy_host = '';
@@ -93,6 +92,7 @@ class JConfig {
 	public $session_redis_server_port = 6379;
 	public $session_redis_server_db = 0;
 	public $session_metadata_for_guest = true;
+	public $frontediting = 0;
 	public $log_everything = 0;
 	public $log_deprecated = 0;
 	public $log_priorities = array('0' => 'all');
@@ -103,4 +103,5 @@ class JConfig {
 	public $asset_id = '1';
 	public $redis_server_auth = '';
 	public $session_redis_server_auth = '';
+	public $session_name = 'EE3dd0f1rgoHkO53';
 }

@@ -57,7 +57,7 @@ abstract class Menu
         if (!isset(static::$menus[$key])) {
             $db = Factory::getDbo();
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select(
                     [
                         $db->quoteName('id'),
@@ -70,7 +70,7 @@ abstract class Menu
                 ->order(
                     [
                         $db->quoteName('client_id'),
-                        $db->quoteName('ordering'),
+                        $db->quoteName('title'),
                     ]
                 );
 
@@ -105,7 +105,7 @@ abstract class Menu
             $menus    = static::menus($clientId);
 
             $db    = Factory::getDbo();
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select(
                     [
                         $db->quoteName('a.id', 'value'),
@@ -245,7 +245,7 @@ abstract class Menu
     {
         if ($id) {
             $db    = Factory::getDbo();
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select(
                     [
                         $db->quoteName('ordering', 'value'),
@@ -293,7 +293,7 @@ abstract class Menu
         $db = Factory::getDbo();
 
         // Get a list of the menu items
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('m.id'),

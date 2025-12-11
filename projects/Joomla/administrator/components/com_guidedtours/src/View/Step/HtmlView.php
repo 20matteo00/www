@@ -16,7 +16,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Guidedtours\Administrator\Model\StepModel;
-use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -53,7 +52,7 @@ class HtmlView extends BaseHtmlView
     /**
      * The actions the user is authorised to perform
      *
-     * @var Registry
+     * @var \Joomla\CMS\Object\CMSObject
      */
     protected $canDo;
 
@@ -76,10 +75,6 @@ class HtmlView extends BaseHtmlView
         $this->form  = $model->getForm();
         $this->item  = $model->getItem();
         $this->state = $model->getState();
-
-        // Add form control fields
-        $this->form
-            ->addControlField('task', '');
 
         $this->addToolbar();
 

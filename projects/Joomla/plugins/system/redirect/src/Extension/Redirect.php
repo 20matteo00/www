@@ -124,7 +124,7 @@ final class Redirect extends CMSPlugin implements SubscriberInterface
             return;
         }
 
-        $query = $this->getDatabase()->createQuery();
+        $query = $this->getDatabase()->getQuery(true);
 
         $query->select('*')
             ->from($this->getDatabase()->quoteName('#__redirect_links'))

@@ -100,10 +100,6 @@ class HtmlView extends BaseHtmlView
             $this->section = array_shift($parts);
         }
 
-        // Add form control fields
-        $this->form
-            ->addControlField('task', 'stage.edit');
-
         // Set the toolbar
         $this->addToolbar();
 

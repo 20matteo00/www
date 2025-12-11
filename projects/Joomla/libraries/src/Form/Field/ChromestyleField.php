@@ -218,7 +218,7 @@ class ChromestyleField extends GroupedlistField
         $db = $this->getDatabase();
 
         // Get the database object and a new query object.
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         // Build the query.
         $query->select(

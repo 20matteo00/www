@@ -29,12 +29,17 @@ use Symfony\Component\Security\Http\Event\CheckPassportEvent;
  */
 class CheckLdapCredentialsListener implements EventSubscriberInterface
 {
-    public function __construct(
-        private ContainerInterface $ldapLocator,
-    ) {
+    private ContainerInterface $ldapLocator;
+
+    public function __construct(ContainerInterface $ldapLocator)
+    {
+        $this->ldapLocator = $ldapLocator;
     }
 
-    public function onCheckPassport(CheckPassportEvent $event): void
+    /**
+     * @return void
+     */
+    public function onCheckPassport(CheckPassportEvent $event)
     {
         $passport = $event->getPassport();
         if (!$passport->hasBadge(LdapBadge::class)) {

@@ -13,6 +13,7 @@ namespace Joomla\Component\Mails\Administrator\View\Template;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Mails\Administrator\Helper\MailsHelper;
 use Joomla\Component\Mails\Administrator\Model\TemplateModel;
@@ -59,7 +60,7 @@ class HtmlView extends BaseHtmlView
     /**
      * Master data for the mail template
      *
-     * @var  \stdClass
+     * @var  CMSObject
      */
     protected $master;
 
@@ -110,11 +111,6 @@ class HtmlView extends BaseHtmlView
                 $this->form->setValue($field, null, $this->item->$field);
             }
         }
-
-        // Add form control fields
-        $this->form
-            ->addControlField('task', '')
-            ->addControlField('return', Factory::getApplication()->getInput()->get('return', '', 'BASE64'));
 
         $this->addToolbar();
 

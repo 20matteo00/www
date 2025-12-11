@@ -21,21 +21,16 @@ use Joomla\CMS\Session\Session;
 
 /** @var \Joomla\Component\Templates\Administrator\View\Template\HtmlView $this */
 
-$app = Factory::getApplication();
-$doc = $app->getDocument();
-
-// Pass the required options to the javascript
-$doc->addScriptOptions('js-multiselect', ['formName' => 'updateForm']);
+HTMLHelper::_('behavior.multiselect', 'updateForm');
+HTMLHelper::_('bootstrap.modal');
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-$wa    = $doc->getWebAssetManager();
-$input = $app->getInput();
+$wa    = $this->getDocument()->getWebAssetManager();
+$input = Factory::getApplication()->getInput();
 
 // Enable assets
 $wa->useScript('form.validate')
     ->useScript('keepalive')
-    ->useScript('bootstrap.modal')
-    ->useScript('multiselect')
     ->useScript('com_templates.admin-template-toggle-switch')
     ->useScript('com_templates.admin-templates')
     ->useStyle('com_templates.admin-templates');

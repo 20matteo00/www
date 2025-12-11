@@ -86,7 +86,7 @@ class PrivacyStatusHelper implements DatabaseAwareInterface
         $lang = '';
 
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('id'),
@@ -129,7 +129,7 @@ class PrivacyStatusHelper implements DatabaseAwareInterface
                 $params              = ComponentHelper::getParams('com_languages');
                 $defaultSiteLanguage = $params->get('site');
 
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__menu'))
                     ->where(
@@ -173,7 +173,7 @@ class PrivacyStatusHelper implements DatabaseAwareInterface
         $period = '-' . $notify;
 
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $query->select('COUNT(*)')
             ->from($db->quoteName('#__privacy_requests'))
             ->where(

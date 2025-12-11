@@ -30,12 +30,7 @@ Joomla = window.Joomla || {};
       newElementsArray.forEach(elem => {
         elem.value = '';
       });
-      if (form.requestSubmit) {
-        form.requestSubmit();
-      } else {
-        // Fallback if requestSubmit is not available
-        form.submit();
-      }
+      form.submit();
     }
   };
   class Searchtools {
@@ -167,12 +162,7 @@ Joomla = window.Joomla || {};
         i.addEventListener('change', () => {
           self.checkFilter(i);
           if (i.classList.contains(this.options.listSelectAutoSubmit) || needsFormSubmit) {
-            if (i.form.requestSubmit) {
-              i.form.requestSubmit();
-            } else {
-              // Fallback if requestSubmit is not available
-              i.form.submit();
-            }
+            i.form.submit();
           }
           if (i.classList.contains(this.options.listSelectAutoReset) || needsFormReset) {
             this.clear(i);
@@ -208,12 +198,7 @@ Joomla = window.Joomla || {};
             } else {
               self.toggleDirection();
             }
-            if (self.theForm.requestSubmit) {
-              self.theForm.requestSubmit();
-            } else {
-              // Fallback if requestSubmit is not available
-              self.theForm.submit();
-            }
+            self.theForm.submit();
           }
         });
       });
@@ -246,22 +231,26 @@ Joomla = window.Joomla || {};
         }
         i.value = '';
         self.checkFilter(i);
+        if (window.jQuery && window.jQuery.chosen) {
+          window.jQuery(i).trigger('chosen:updated');
+        }
       });
       if (self.clearListOptions) {
         self.getListFields().forEach(i => {
           i.value = '';
           self.checkFilter(i);
+          if (window.jQuery && window.jQuery.chosen) {
+            window.jQuery(i).trigger('chosen:updated');
+          }
         });
 
         // Special case to limit box to the default config limit
         document.querySelector('#list_limit').value = self.options.defaultLimit;
+        if (window.jQuery && window.jQuery.chosen) {
+          window.jQuery('#list_limit').trigger('chosen:updated');
+        }
       }
-      if (self.theForm.requestSubmit) {
-        self.theForm.requestSubmit();
-      } else {
-        // Fallback if requestSubmit is not available
-        self.theForm.submit();
-      }
+      self.theForm.submit();
     }
     updateFilterCount(count) {
       if (this.clearButton) {
@@ -433,6 +422,9 @@ Joomla = window.Joomla || {};
             }
           }
         });
+        if (window.jQuery && window.jQuery.chosen) {
+          window.jQuery(this.orderField).trigger('chosen:updated');
+        }
       }
       this.activeOrder = this.orderField.value;
     }
@@ -463,6 +455,10 @@ Joomla = window.Joomla || {};
           field.appendChild(option);
         }
         field.value = newValue;
+        // Trigger the chosen update
+        if (window.jQuery && window.jQuery.chosen) {
+          field.trigger('chosen:updated');
+        }
       }
     }
     findOption(select, value) {
@@ -489,9 +485,6 @@ Joomla = window.Joomla || {};
       const ariasort = sort.getAttribute('data-sort');
       sort.parentNode.setAttribute('aria-sort', ariasort);
     }
-
-    // Reinitialize for Joomla Updated event
-    document.addEventListener('joomla:updated', onBoot);
 
     // Cleanup
     document.removeEventListener('DOMContentLoaded', onBoot);

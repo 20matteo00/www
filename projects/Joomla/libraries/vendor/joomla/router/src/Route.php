@@ -9,7 +9,7 @@
 
 namespace Joomla\Router;
 
-use function Opis\Closure\{serialize, unserialize};
+use SuperClosure\SerializableClosure;
 
 /**
  * An object representing a route definition.
@@ -378,15 +378,17 @@ class Route implements \Serializable
         $controller = $this->getController();
 
         if ($controller instanceof \Closure) {
-            if (!function_exists('\Opis\Closure\serialize')) {
+            if (!class_exists(SerializableClosure::class)) {
                 throw new \RuntimeException(
                     \sprintf(
                         'Cannot serialize the route for pattern "%s" because the controller is a Closure. '
-                        . 'Install the "opis/closure" package to serialize Closures.',
+                        . 'Install the "jeremeamia/superclosure" package to serialize Closures.',
                         $this->getPattern()
                     )
                 );
             }
+
+            $controller = new SerializableClosure($controller);
         }
 
         return [

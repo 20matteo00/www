@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname(dirname($vendorDir));
 
 return array(
+    'voku\\' => array($vendorDir . '/voku/portable-ascii/src/voku', $vendorDir . '/voku/portable-utf8/src/voku'),
     'phpseclib3\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'enshrined\\svgSanitize\\' => array($vendorDir . '/enshrined/svg-sanitize/src'),
     'bcmath_compat\\' => array($vendorDir . '/phpseclib/bcmath_compat/src'),
@@ -15,10 +16,13 @@ return array(
     'Wamania\\Snowball\\' => array($vendorDir . '/wamania/php-stemmer/src'),
     'Tuf\\' => array($vendorDir . '/php-tuf/php-tuf/src'),
     'Tobscure\\JsonApi\\' => array($vendorDir . '/tobscure/json-api/src'),
+    'TYPO3\\PharStreamWrapper\\' => array($vendorDir . '/typo3/phar-stream-wrapper/src'),
     'Symfony\\Polyfill\\Uuid\\' => array($vendorDir . '/symfony/polyfill-uuid'),
+    'Symfony\\Polyfill\\Php83\\' => array($vendorDir . '/symfony/polyfill-php83'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Intl\\Normalizer\\' => array($vendorDir . '/symfony/polyfill-intl-normalizer'),
     'Symfony\\Polyfill\\Intl\\Grapheme\\' => array($vendorDir . '/symfony/polyfill-intl-grapheme'),
+    'Symfony\\Polyfill\\Iconv\\' => array($vendorDir . '/symfony/polyfill-iconv'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'Symfony\\Contracts\\Translation\\' => array($vendorDir . '/symfony/translation-contracts'),
     'Symfony\\Contracts\\Service\\' => array($vendorDir . '/symfony/service-contracts'),
@@ -79,7 +83,8 @@ return array(
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
     'Fig\\Link\\' => array($vendorDir . '/fig/link-util/src'),
-    'Doctrine\\Inflector\\' => array($vendorDir . '/doctrine/inflector/src'),
+    'Doctrine\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib/Doctrine/Inflector'),
+    'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib/Doctrine/Common/Inflector'),
     'Defuse\\Crypto\\' => array($vendorDir . '/defuse/php-encryption/src'),
     'DebugBar\\' => array($vendorDir . '/php-debugbar/php-debugbar/src/DebugBar'),
     'Cron\\' => array($vendorDir . '/dragonmantank/cron-expression/src/Cron'),

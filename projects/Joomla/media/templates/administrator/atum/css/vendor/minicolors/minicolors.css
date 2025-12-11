@@ -4,7 +4,7 @@
 }
 
 .minicolors-sprite {
-  background-image: url("jquery.minicolors.png?v=176357");
+  background-image: url("jquery.minicolors.png?v=176349");
 }
 
 .minicolors-swatch {
@@ -450,13 +450,13 @@
 }
 
 .minicolors-theme-bootstrap .minicolors-input {
-  inline-size: 140px;
+  width: 140px;
 }
 
 .minicolors-theme-bootstrap .rgb {
-  inline-size: 175px;
+  width: 175px;
 }
 
 .minicolors-theme-bootstrap .rgba {
-  inline-size: 220px;
+  width: 220px;
 }

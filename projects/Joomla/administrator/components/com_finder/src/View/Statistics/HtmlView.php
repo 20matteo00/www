@@ -27,7 +27,7 @@ class HtmlView extends BaseHtmlView
     /**
      * The index statistics
      *
-     * @var    \stdClass
+     * @var    \Joomla\CMS\Object\CMSObject
      *
      * @since  3.6.1
      */

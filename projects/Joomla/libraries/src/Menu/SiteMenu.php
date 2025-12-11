@@ -93,7 +93,7 @@ class SiteMenu extends AbstractMenu implements CacheControllerFactoryAwareInterf
         $loader = function () {
             $currentDate = Factory::getDate()->toSql();
 
-            $query = $this->db->createQuery()
+            $query = $this->db->getQuery(true)
                 ->select(
                     $this->db->quoteName(
                         [

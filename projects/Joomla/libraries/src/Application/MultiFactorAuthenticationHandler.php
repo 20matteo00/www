@@ -348,7 +348,7 @@ trait MultiFactorAuthenticationHandler
         $profileKey = 'mfa.dontshow';
         /** @var DatabaseInterface $db */
         $db         = Factory::getContainer()->get(DatabaseInterface::class);
-        $query      = $db->createQuery()
+        $query      = $db->getQuery(true)
             ->select($db->quoteName('profile_value'))
             ->from($db->quoteName('#__user_profiles'))
             ->where($db->quoteName('user_id') . ' = :userId')
@@ -444,7 +444,7 @@ trait MultiFactorAuthenticationHandler
             // Delete any other record with the same user_id and Method.
             $method = 'emergencycodes';
             $userId = $user->id;
-            $query  = $db->createQuery()
+            $query  = $db->getQuery(true)
                 ->delete($db->quoteName('#__user_mfa'))
                 ->where($db->quoteName('user_id') . ' = :user_id')
                 ->where($db->quoteName('method') . ' = :method')

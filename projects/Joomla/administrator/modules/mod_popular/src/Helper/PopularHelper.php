@@ -10,7 +10,8 @@
 
 namespace Joomla\Module\Popular\Administrator\Helper;
 
-use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Content\Administrator\Model\ArticlesModel;
@@ -25,35 +26,8 @@ use Joomla\Registry\Registry;
  *
  * @since  1.6
  */
-class PopularHelper
+abstract class PopularHelper
 {
-    /**
-     * @var CMSApplicationInterface
-     *
-     * @since   6.0.0
-     */
-    protected $app;
-
-    /**
-     * @var Registry
-     *
-     * @since   6.0.0
-     */
-    protected $params;
-
-    /**
-     * Helper class constructor
-     *
-     * @param   array  $config  Parameters we are using
-     *
-     * @since   6.0.0
-     */
-    public function __construct($config)
-    {
-        $this->app    = $config['app'];
-        $this->params = $config['params'];
-    }
-
     /**
      * Get a list of the most popular articles.
      *
@@ -63,12 +37,10 @@ class PopularHelper
      * @return  mixed  An array of articles, or false on error.
      *
      * @throws  \Exception
-     *
-     * @since   6.0.0
      */
-    public function getArticles(Registry $params, ArticlesModel $model): mixed
+    public static function getList(Registry $params, ArticlesModel $model)
     {
-        $user = $this->app->getIdentity();
+        $user = Factory::getUser();
 
         // Set List SELECT
         $model->setState('list.select', 'a.id, a.title, a.checked_out, a.checked_out_time, ' .
@@ -130,17 +102,15 @@ class PopularHelper
      * @param   Registry  $params  The module parameters.
      *
      * @return  string  The alternate title for the module.
-     *
-     * @since   6.0.0
      */
-    public function getModuleTitle(Registry $params): string
+    public static function getTitle($params)
     {
         $who   = $params->get('user_id', 0);
         $catid = (int) $params->get('catid', null);
         $title = '';
 
         if ($catid) {
-            $category = $this->app->bootComponent('com_content')->getCategory()->get($catid);
+            $category = Categories::getInstance('Content')->get($catid);
             $title    = Text::_('MOD_POPULAR_UNEXISTING');
 
             if ($category) {

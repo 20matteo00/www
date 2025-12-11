@@ -103,7 +103,7 @@ class ClientsModel extends ListModel
     {
         // Create a new query object.
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         $defaultPurchase = (int) ComponentHelper::getParams('com_banners')->get('purchase_type', 3);
 
@@ -227,7 +227,7 @@ class ClientsModel extends ListModel
         $db        = $this->getDatabase();
         $clientIds = array_column($items, 'id');
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('cid'),

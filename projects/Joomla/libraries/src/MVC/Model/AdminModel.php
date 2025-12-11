@@ -18,14 +18,13 @@ use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Table\Category;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Table\TableInterface;
 use Joomla\CMS\Tag\TaggableTableInterface;
 use Joomla\CMS\UCM\UCMType;
-use Joomla\CMS\Versioning\VersionableModelInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
@@ -326,13 +325,7 @@ abstract class AdminModel extends FormModel
 
         foreach ($this->batch_commands as $identifier => $command) {
             if (!empty($commands[$identifier])) {
-                if ($command === 'batchTag') {
-                    $removeTags = ArrayHelper::getValue($commands, 'tag_addremove', 'a') === 'r';
-
-                    if (!$this->batchTags($commands[$identifier], $pks, $contexts, $removeTags)) {
-                        return false;
-                    }
-                } elseif (!$this->$command($commands[$identifier], $pks, $contexts)) {
+                if (!$this->$command($commands[$identifier], $pks, $contexts)) {
                     return false;
                 }
 
@@ -510,7 +503,7 @@ abstract class AdminModel extends FormModel
                 $dbType = strtolower($db->getServerType());
 
                 // Copy rules
-                $query = $db->createQuery();
+                $query = $db->getQuery(true);
                 $query->clear()
                     ->update($db->quoteName('#__assets', 't'));
 
@@ -705,23 +698,6 @@ abstract class AdminModel extends FormModel
      */
     protected function batchTag($value, $pks, $contexts)
     {
-        return $this->batchTags($value, $pks, $contexts);
-    }
-
-    /**
-     * Batch tag a list of item.
-     *
-     * @param   integer  $value       The value of the new tag.
-     * @param   array    $pks         An array of row IDs.
-     * @param   array    $contexts    An array of item contexts.
-     * @param   boolean  $removeTags  Flag indicating whether the tags in $value have to be removed.
-     *
-     * @return  boolean  True if successful, false otherwise and internal error is set.
-     *
-     * @since   6.0.0
-     */
-    protected function batchTags($value, $pks, $contexts, $removeTags = false)
-    {
         // Initialize re-usable member properties, and re-usable local variables
         $this->initBatch();
         $tags = [$value];
@@ -737,7 +713,6 @@ abstract class AdminModel extends FormModel
                         'subject'     => $this->table,
                         'newTags'     => $tags,
                         'replaceTags' => false,
-                        'removeTags'  => $removeTags,
                     ]
                 );
 
@@ -886,7 +861,7 @@ abstract class AdminModel extends FormModel
                     // Multilanguage: if associated, delete the item in the _associations table
                     if ($this->associationsContext && Associations::isEnabled()) {
                         $db    = $this->getDatabase();
-                        $query = $db->createQuery()
+                        $query = $db->getQuery(true)
                             ->select(
                                 [
                                     'COUNT(*) AS ' . $db->quoteName('count'),
@@ -909,7 +884,7 @@ abstract class AdminModel extends FormModel
                         $row = $db->loadAssoc();
 
                         if (!empty($row['count'])) {
-                            $query = $db->createQuery()
+                            $query = $db->getQuery(true)
                                 ->delete($db->quoteName('#__associations'))
                                 ->where(
                                     [
@@ -936,12 +911,6 @@ abstract class AdminModel extends FormModel
                         return false;
                     }
 
-                    if ($this instanceof VersionableModelInterface) {
-                        $typeAlias = $this->typeAlias ?: $this->option . '.' . $this->name;
-
-                        $this->deleteHistory($typeAlias, $pk);
-                    }
-
                     // Trigger the after event.
                     $dispatcher->dispatch($this->event_after_delete, new Model\AfterDeleteEvent($this->event_after_delete, [
                         'context' => $context,
@@ -958,28 +927,14 @@ abstract class AdminModel extends FormModel
                         return false;
                     }
 
-                    if (Factory::getApplication()->isClient('api')) {
-                        $session = Factory::getApplication()->getSession();
-                        $session->set('http_status_code_409', true);
-                    }
-
                     Log::add(Text::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), Log::WARNING, 'jerror');
 
                     return false;
                 }
             } else {
-                $error = $this->getError();
-                if ($error) {
-                    $this->setError($table->getError());
+                $this->setError($table->getError());
 
-                    return false;
-                }
-                if (Factory::getApplication()->isClient('api')) {
-                    $session = Factory::getApplication()->getSession();
-                    $session->set('http_status_code_404', true);
-                }
-
-                return true;
+                return false;
             }
         }
 
@@ -1050,9 +1005,9 @@ abstract class AdminModel extends FormModel
             }
         }
 
-        // Convert to \stdClass before adding other data
-        $properties = get_object_vars($table);
-        $item       = ArrayHelper::toObject($properties);
+        // Convert to the CMSObject before adding other data.
+        $properties = $table->getProperties(1);
+        $item       = ArrayHelper::toObject($properties, CMSObject::class);
 
         if (property_exists($item, 'params')) {
             $registry     = new Registry($item->params);
@@ -1396,7 +1351,7 @@ abstract class AdminModel extends FormModel
             // Get associationskey for edited item
             $db    = $this->getDatabase();
             $id    = (int) $table->$key;
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('key'))
                 ->from($db->quoteName('#__associations'))
                 ->where($db->quoteName('context') . ' = :context')
@@ -1408,7 +1363,7 @@ abstract class AdminModel extends FormModel
 
             if ($associations || $oldKey !== null) {
                 // Deleting old associations for the associated items
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->delete($db->quoteName('#__associations'))
                     ->where($db->quoteName('context') . ' = :context')
                     ->bind(':context', $this->associationsContext);
@@ -1437,7 +1392,7 @@ abstract class AdminModel extends FormModel
             if (\count($associations) > 1) {
                 // Adding new association for these items
                 $key   = md5(json_encode($associations));
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->insert($db->quoteName('#__associations'))
                     ->columns(
                         [
@@ -1462,10 +1417,6 @@ abstract class AdminModel extends FormModel
                 $db->setQuery($query);
                 $db->execute();
             }
-        }
-
-        if ($this instanceof VersionableModelInterface) {
-            $this->saveHistory($data, $this->typeAlias);
         }
 
         if ($app->getInput()->get('task') == 'editAssociations') {
@@ -1566,7 +1517,7 @@ abstract class AdminModel extends FormModel
     {
         // Check that the category exists
         if ($categoryId) {
-            $categoryTable = new Category($this->getDatabase());
+            $categoryTable = Table::getInstance('Category');
 
             if (!$categoryTable->load($categoryId)) {
                 if ($error = $categoryTable->getError()) {
@@ -1660,7 +1611,7 @@ abstract class AdminModel extends FormModel
      *
      * @since   3.9.0
      *
-     * @deprecated  4.3 will be removed in 7.0
+     * @deprecated  4.3 will be removed in 6.0
      *              It is handled by regular save method now.
      */
     public function editAssociations($data)

@@ -47,7 +47,7 @@ class Filter
     public function slider($options = [])
     {
         $db     = $this->getDatabase();
-        $query  = $db->createQuery();
+        $query  = $db->getQuery(true);
         $user   = Factory::getUser();
         $groups = implode(',', $user->getAuthorisedViewLevels());
         $html   = '';
@@ -225,7 +225,7 @@ class Filter
             $branches = $cache->get($cacheId);
         } else {
             $db    = $this->getDatabase();
-            $query = $db->createQuery();
+            $query = $db->getQuery(true);
 
             // Load the predefined filter if specified.
             if (!empty($idxQuery->filter)) {

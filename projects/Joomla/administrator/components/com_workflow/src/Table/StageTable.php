@@ -67,7 +67,7 @@ class StageTable extends Table
         $app = Factory::getApplication();
         $pk  = (int) $pk;
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('default'))
             ->from($db->quoteName('#__workflow_stages'))
             ->where($db->quoteName('id') . ' = :id')
@@ -82,7 +82,7 @@ class StageTable extends Table
         }
 
         try {
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->delete($db->quoteName('#__workflow_transitions'))
                 ->where(
                     [
@@ -135,7 +135,7 @@ class StageTable extends Table
             }
         } else {
             $db    = $this->getDatabase();
-            $query = $db->createQuery();
+            $query = $db->getQuery(true);
 
             $query
                 ->select($db->quoteName('id'))

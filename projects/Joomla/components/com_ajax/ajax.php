@@ -17,7 +17,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\String\StringableInterface;
-use Joomla\CMS\Table\Extension;
+use Joomla\CMS\Table\Table;
 
 /*
  * References
@@ -58,7 +58,7 @@ if (!$format) {
      *
      */
     $module   = $input->get('module');
-    $table    = new Extension(Factory::getDbo());
+    $table    = Table::getInstance('extension');
     $moduleId = $table->find(['type' => 'module', 'element' => 'mod_' . $module]);
 
     if ($moduleId && $table->load($moduleId) && $table->enabled) {
@@ -148,7 +148,7 @@ if (!$format) {
      *
      */
     $template   = $input->get('template');
-    $table      = new Extension(Factory::getDbo());
+    $table      = Table::getInstance('extension');
     $templateId = $table->find(['type' => 'template', 'element' => $template]);
 
     if ($templateId && $table->load($templateId) && $table->enabled) {

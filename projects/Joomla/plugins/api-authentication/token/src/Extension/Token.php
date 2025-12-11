@@ -280,7 +280,7 @@ final class Token extends CMSPlugin implements SubscriberInterface
     {
         try {
             $db    = $this->getDatabase();
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('profile_value'))
                 ->from($db->quoteName('#__user_profiles'))
                 ->where($db->quoteName('profile_key') . ' = :profileKey')
@@ -309,7 +309,7 @@ final class Token extends CMSPlugin implements SubscriberInterface
     {
         try {
             $db    = $this->getDatabase();
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('profile_value'))
                 ->from($db->quoteName('#__user_profiles'))
                 ->where($db->quoteName('profile_key') . ' = :profileKey')

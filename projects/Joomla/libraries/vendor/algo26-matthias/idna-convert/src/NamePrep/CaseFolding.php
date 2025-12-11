@@ -4,16 +4,17 @@ namespace Algo26\IdnaConvert\NamePrep;
 
 class CaseFolding
 {
-    private CaseFoldingData $caseFoldingData;
+    /** @var CaseFoldingData */
+    private $caseFoldingData;
 
     public function __construct()
     {
         $this->caseFoldingData = new CaseFoldingData();
     }
 
-    public function apply(array $inputArray, int $idnaVersion): array
+    public function apply(array $inputArray, string $idnaVersion): array
     {
-        if ($idnaVersion === 2003) {
+        if ($idnaVersion == 2003) {
             return $inputArray;
         }
 

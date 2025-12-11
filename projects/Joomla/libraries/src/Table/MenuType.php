@@ -78,7 +78,7 @@ class MenuType extends Table implements CurrentUserInterface
 
         // Check for unique menutype.
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('COUNT(id)')
             ->from($db->quoteName('#__menu_types'))
             ->where($db->quoteName('menutype') . ' = :menutype')
@@ -121,7 +121,7 @@ class MenuType extends Table implements CurrentUserInterface
             $table->load($this->id);
 
             // Verify that no items are checked out
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__menu'))
                 ->where($db->quoteName('menutype') . ' = :menutype')
@@ -214,7 +214,7 @@ class MenuType extends Table implements CurrentUserInterface
             $table->load($pk);
 
             // Verify that no items are checked out
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__menu'))
                 ->where($db->quoteName('menutype') . ' = :menutype')
@@ -313,7 +313,7 @@ class MenuType extends Table implements CurrentUserInterface
     protected function _getAssetParentId(?Table $table = null, $id = null)
     {
         $assetId = null;
-        $asset   = new Asset($this->getDbo());
+        $asset   = Table::getInstance('asset');
 
         if ($asset->loadByName('com_menus')) {
             $assetId = $asset->id;

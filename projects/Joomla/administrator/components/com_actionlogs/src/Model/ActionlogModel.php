@@ -123,7 +123,7 @@ class ActionlogModel extends BaseDatabaseModel implements UserFactoryAwareInterf
         $app   = Factory::getApplication();
         $lang  = $app->getLanguage();
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         $query
             ->select($db->quoteName(['u.email', 'l.extensions']))

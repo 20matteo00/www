@@ -13,7 +13,7 @@ namespace Joomla\Component\Languages\Administrator\Model;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Table\Language;
+use Joomla\CMS\Table\Table;
 use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
 
@@ -113,7 +113,7 @@ class LanguagesModel extends ListModel
     {
         // Create a new query object.
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         // Select all fields from the languages table.
         $query->select(
@@ -182,9 +182,7 @@ class LanguagesModel extends ListModel
      */
     public function setPublished($cid, $value = 0)
     {
-        $table = new Language($this->getDatabase());
-
-        return $table->publish($cid, $value);
+        return Table::getInstance('Language', 'Joomla\\CMS\\Table\\')->publish($cid, $value);
     }
 
     /**
@@ -202,7 +200,7 @@ class LanguagesModel extends ListModel
         $pks = (array) $pks;
 
         // Get a row instance.
-        $table = new Language($this->getDatabase());
+        $table = Table::getInstance('Language', 'Joomla\\CMS\\Table\\');
 
         // Iterate the items to delete each one.
         foreach ($pks as $itemId) {
@@ -222,13 +220,15 @@ class LanguagesModel extends ListModel
     /**
      * Custom clean cache method, 2 places for 2 clients.
      *
-     * @param  string  $group  Cache group name.
+     * @param   string   $group     Optional cache group name.
+     * @param   integer  $clientId  No longer used, will be removed without replacement
+     *                              @deprecated   4.3 will be removed in 6.0
      *
      * @return  void
      *
      * @since   1.6
      */
-    protected function cleanCache($group = null)
+    protected function cleanCache($group = null, $clientId = 0)
     {
         parent::cleanCache('_system');
         parent::cleanCache('com_languages');

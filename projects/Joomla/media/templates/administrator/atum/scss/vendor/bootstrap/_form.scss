@@ -3,7 +3,7 @@
 // Form
 
 label {
-  margin-block-end: 0;
+  margin-bottom: 0;
 }
 
 .form-control {
@@ -15,31 +15,31 @@ label {
 
 td .form-control {
   display: inline-block;
-  inline-size: auto;
+  width: auto;
 }
 
 legend {
-  margin-block-end: 1.1rem;
+  margin-bottom: 1.1rem;
   font-size: 1rem;
   font-weight: $font-weight-normal;
 }
 
 .checkboxes {
-  padding-block-start: 5px;
+  padding-top: 5px;
 
   .checkbox input {
     position: static;
-    margin-inline-start: 0;
+    margin-left: 0;
   }
 }
 
 .form-check {
-  padding-block-start: 5px;
-  margin-block-end: 0;
+  padding-top: 5px;
+  margin-bottom: 0;
 }
 
 .modal label {
-  inline-size: 100%;
+  width: 100%;
 }
 
 // Validation
@@ -65,12 +65,12 @@ select.form-control {
 
 .field-media-wrapper {
   display: block;
-  inline-size: 100%;
-  max-inline-size: calc(50vw - 5rem);
+  width: 100%;
+  max-width: calc(50vw - 5rem);
 
   .field-media-preview {
-    inline-size: 100%;
-    max-inline-size: none;
+    width: 100%;
+    max-width: none;
   }
 
   .button-select {
@@ -87,18 +87,18 @@ select.form-control {
   }
 
   @include media-breakpoint-down(lg) {
-    min-inline-size: 100%;
+    min-width: 100%;
   }
 }
 
 // Bootstrap 4 b/c
 .form-inline .form-select, .form-inline .custom-select, .form-inline .form-control {
   display: inline-block;
-  inline-size: auto;
+  width: auto;
 }
 
 @include media-breakpoint-down(md) {
   .form-inline .form-select, .form-inline .custom-select, .form-inline .form-control {
-    inline-size: 100%;
+    width: 100%;
   }
 }

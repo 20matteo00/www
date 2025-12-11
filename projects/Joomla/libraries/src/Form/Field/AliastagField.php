@@ -43,7 +43,7 @@ class AliastagField extends ListField
     {
         // Get list of tag type alias
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     'DISTINCT ' . $db->quoteName('type_alias', 'value'),

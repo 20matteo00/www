@@ -5,7 +5,7 @@
 }
 
 .js-stools-container-bar, .js-stools-container-filters {
-  margin-block-end: 10px;
+  margin-bottom: 10px;
 }
 
 .js-stools-container-bar {
@@ -43,7 +43,7 @@
 }
 
 .js-stools-container-filters {
-  inline-size: 100%;
+  width: 100%;
   display: none;
 }
 

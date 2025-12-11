@@ -11,9 +11,7 @@
 namespace Joomla\Component\Menus\Administrator\Helper;
 
 use Joomla\CMS\Association\AssociationExtensionHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Table\Menu;
 use Joomla\CMS\Table\Table;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -119,7 +117,7 @@ class AssociationsHelper extends AssociationExtensionHelper
 
         switch ($typeName) {
             case 'item':
-                $table = new Menu(Factory::getDbo());
+                $table = Table::getInstance('menu');
                 break;
         }
 

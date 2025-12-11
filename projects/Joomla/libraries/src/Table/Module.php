@@ -96,7 +96,7 @@ class Module extends Table
         if ($assetId === null) {
             // Build the query to get the asset id of the parent component.
             $db    = $this->getDatabase();
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__assets'))
                 ->where($db->quoteName('name') . ' = ' . $db->quote('com_modules'));

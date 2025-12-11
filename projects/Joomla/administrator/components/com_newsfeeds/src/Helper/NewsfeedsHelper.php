@@ -44,7 +44,7 @@ class NewsfeedsHelper extends ContentHelper
     public static function countItems(&$items)
     {
         $db    = Factory::getDbo();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $query->select(
             [
                 $db->quoteName('published', 'state'),
@@ -101,7 +101,7 @@ class NewsfeedsHelper extends ContentHelper
     public static function countTagItems(&$items, $extension)
     {
         $db        = Factory::getDbo();
-        $query     = $db->createQuery();
+        $query     = $db->getQuery(true);
         $parts     = explode('.', $extension);
         $section   = null;
 

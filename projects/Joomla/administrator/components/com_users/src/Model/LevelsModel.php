@@ -15,7 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Table\ViewLevel;
+use Joomla\CMS\Table\Table;
 use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
 
@@ -102,7 +102,7 @@ class LevelsModel extends ListModel
     {
         // Create a new query object.
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         // Select the required fields from the table.
         $query->select(
@@ -154,7 +154,7 @@ class LevelsModel extends ListModel
         $user = $this->getCurrentUser();
 
         // Get an instance of the record's table.
-        $table = new ViewLevel($this->getDatabase());
+        $table = Table::getInstance('ViewLevel', 'Joomla\\CMS\Table\\');
 
         // Load the row.
         if (!$table->load($pk)) {
@@ -191,7 +191,7 @@ class LevelsModel extends ListModel
      */
     public function saveorder($pks, $order)
     {
-        $table      = new ViewLevel($this->getDatabase());
+        $table      = Table::getInstance('viewlevel', 'Joomla\\CMS\Table\\');
         $user       = $this->getCurrentUser();
         $conditions = [];
 

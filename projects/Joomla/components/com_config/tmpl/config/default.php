@@ -10,6 +10,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -46,7 +47,8 @@ $wa->useScript('keepalive')
     <?php echo $this->loadTemplate('seo'); ?>
     <?php echo $this->loadTemplate('metadata'); ?>
 
-    <?php echo $this->form->renderControlFields(); ?>
+    <input type="hidden" name="task" value="">
+    <?php echo HTMLHelper::_('form.token'); ?>
 
     <div class="d-grid gap-2 d-sm-block mb-2">
     <button type="button" class="btn btn-primary" data-submit-task="config.apply">

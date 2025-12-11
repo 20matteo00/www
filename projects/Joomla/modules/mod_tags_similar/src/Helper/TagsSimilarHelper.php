@@ -76,7 +76,7 @@ class TagsSimilarHelper implements DatabaseAwareInterface
         $tagsToMatch = explode(',', $tagsToMatch);
         $tagCount    = \count($tagsToMatch);
 
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $query
             ->select(
                 [

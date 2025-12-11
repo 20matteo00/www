@@ -139,7 +139,7 @@ class LoginModel extends BaseDatabaseModel
         $loader = function () use ($app, $lang, $module) {
             $db = Factory::getDbo();
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select(
                     $db->quoteName(
                         [

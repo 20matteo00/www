@@ -15,6 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Versioning\VersionableTableInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Event\DispatcherInterface;
@@ -30,7 +31,7 @@ use Joomla\Utilities\ArrayHelper;
  *
  * @since  1.5
  */
-class BannerTable extends Table
+class BannerTable extends Table implements VersionableTableInterface
 {
     /**
      * Indicates that columns fully support the NULL value in the database
@@ -68,7 +69,7 @@ class BannerTable extends Table
     {
         $id    = (int) $this->id;
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->update($db->quoteName('#__banners'))
             ->set($db->quoteName('clicks') . ' = ' . $db->quoteName('clicks') . ' + 1')
             ->where($db->quoteName('id') . ' = :id')

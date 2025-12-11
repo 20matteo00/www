@@ -767,7 +767,6 @@ class PgsqlDriver extends PdoDriver
         }
 
         // Create the base insert statement.
-        /** @var PgsqlQuery $query */
         $query = $this->createQuery();
 
         $query->insert($this->quoteName($table))

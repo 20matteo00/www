@@ -70,7 +70,7 @@ final class Basic extends CMSPlugin implements SubscriberInterface
         }
 
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName(['id', 'password']))
             ->from($db->quoteName('#__users'))
             ->where($db->quoteName('username') . ' = :username')

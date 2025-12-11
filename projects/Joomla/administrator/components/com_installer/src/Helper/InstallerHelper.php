@@ -13,6 +13,7 @@ namespace Joomla\Component\Installer\Administrator\Helper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
@@ -37,7 +38,7 @@ class InstallerHelper
     public static function getExtensionTypes()
     {
         $db    = Factory::getDbo();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('DISTINCT ' . $db->quoteName('type'))
             ->from($db->quoteName('#__extensions'));
         $db->setQuery($query);
@@ -63,7 +64,7 @@ class InstallerHelper
     {
         $nofolder = '';
         $db       = Factory::getDbo();
-        $query    = $db->createQuery()
+        $query    = $db->getQuery(true)
             ->select('DISTINCT ' . $db->quoteName('folder'))
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('folder') . ' != :folder')
@@ -130,7 +131,7 @@ class InstallerHelper
 
         /** @var DatabaseInterface $db The application's database driver object */
         $db         = Factory::getContainer()->get(DatabaseInterface::class);
-        $query      = $db->createQuery()
+        $query      = $db->getQuery(true)
             ->select(
                 $db->quoteName(
                     [
@@ -232,19 +233,19 @@ class InstallerHelper
     /**
      * Get the download key of an extension going through their installation xml
      *
-     * @param   \stdClass  $extension  element of an extension
+     * @param   CMSObject  $extension  element of an extension
      *
      * @return  array  An array with the prefix, suffix and value of the download key
      *
      * @since   4.0.0
      */
-    public static function getDownloadKey(\stdClass $extension): array
+    public static function getDownloadKey(CMSObject $extension): array
     {
         $installXmlFile = self::getInstallationXML(
-            $extension->element,
-            $extension->type,
-            $extension->client_id,
-            $extension->folder
+            $extension->get('element'),
+            $extension->get('type'),
+            $extension->get('client_id'),
+            $extension->get('folder')
         );
 
         if (!$installXmlFile) {
@@ -263,7 +264,7 @@ class InstallerHelper
 
         $prefix = (string) $installXmlFile->dlid['prefix'];
         $suffix = (string) $installXmlFile->dlid['suffix'];
-        $value  = substr($extension->extra_query ?? '', \strlen($prefix));
+        $value  = substr($extension->get('extra_query'), \strlen($prefix));
 
         if ($suffix) {
             $value = substr($value, 0, -\strlen($suffix));
@@ -308,8 +309,8 @@ class InstallerHelper
             ];
         }
 
-        // Try to retrieve the extension information
-        $query = $db->createQuery()
+        // Try to retrieve the extension information as a CMSObject
+        $query = $db->getQuery(true)
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('type') . ' = :type')
@@ -322,8 +323,8 @@ class InstallerHelper
         $query->bind(':folder', $folder, ParameterType::STRING);
 
         try {
-            $extension = $db->setQuery($query)->loadObject();
-        } catch (\Exception $e) {
+            $extension = new CMSObject($db->setQuery($query)->loadAssoc());
+        } catch (\Exception) {
             return [
                 'supported' => false,
                 'valid'     => false,
@@ -354,15 +355,15 @@ class InstallerHelper
 
         $extensions = self::getUpdateSitesInformation($onlyEnabled);
 
-        $filterClosure = function ($extension) {
+        $filterClosure = function (CMSObject $extension) {
             $dlidInfo = self::getDownloadKey($extension);
 
             return $dlidInfo['supported'];
         };
         $extensions = array_filter($extensions, $filterClosure);
 
-        $mapClosure = function ($extension) {
-            return $extension->update_site_id ?? null;
+        $mapClosure = function (CMSObject $extension) {
+            return $extension->get('update_site_id');
         };
 
         return array_map($mapClosure, $extensions);
@@ -390,7 +391,7 @@ class InstallerHelper
         $extensions = self::getUpdateSitesInformation($onlyEnabled);
 
         // Filter the extensions by what supports Download Keys
-        $filterClosure = function ($extension) use ($exists) {
+        $filterClosure = function (CMSObject $extension) use ($exists) {
             $dlidInfo = self::getDownloadKey($extension);
 
             if (!$dlidInfo['supported']) {
@@ -402,8 +403,8 @@ class InstallerHelper
         $extensions = array_filter($extensions, $filterClosure);
 
         // Return only the update site IDs
-        $mapClosure = function ($extension) {
-            return $extension->update_site_id ?? null;
+        $mapClosure = function (CMSObject $extension) {
+            return $extension->get('update_site_id');
         };
 
         return array_map($mapClosure, $extensions);
@@ -415,7 +416,7 @@ class InstallerHelper
      *
      * @param   bool  $onlyEnabled  Only return enabled update sites
      *
-     * @return  \stdClass[]  List of update site and linked extension information
+     * @return  CMSObject[]  List of update site and linked extension information
      * @since   4.0.0
      */
     protected static function getUpdateSitesInformation(bool $onlyEnabled): array
@@ -426,7 +427,7 @@ class InstallerHelper
             return [];
         }
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 $db->quoteName(
                     [
@@ -472,10 +473,15 @@ class InstallerHelper
 
         // Try to get all of the update sites, including related extension information
         try {
+            $items = [];
             $db->setQuery($query);
 
-            return $db->loadObjectList();
-        } catch (\Exception $e) {
+            foreach ($db->getIterator() as $item) {
+                $items[] = new CMSObject($item);
+            }
+
+            return $items;
+        } catch (\Exception) {
             return [];
         }
     }

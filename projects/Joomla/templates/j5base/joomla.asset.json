@@ -7,65 +7,66 @@
   "assets": [
     {
       "name": "bootstrap-css",
-      "description": "The bootstrap css",
       "type": "style",
       "uri": "bootstrap/bootstrap.css"
     },
     {
       "name": "bootstrap-ico",
-      "description": "The bootstrap icons",
       "type": "style",
       "uri": "bootstrap/icone/font/bootstrap-icons.css"
     },
     {
       "name": "bootstrap-js",
-      "description": "The bootstrap js",
       "type": "script",
       "uri": "bootstrap/bootstrap.bundle.js",
-      "attributes" : {
+      "attributes": {
         "defer": true
       }
     },
     {
       "name": "leaflet-css",
-      "description": "The leaflet css (mappe)",
       "type": "style",
       "uri": "leaflet/leaflet.css"
     },
     {
       "name": "leaflet-marker-css",
-      "description": "The leaflet marker css (mappe)",
       "type": "style",
       "uri": "leaflet/MarkerCluster.css"
     },
     {
       "name": "leaflet-marker-default-css",
-      "description": "The leaflet marker css (mappe)",
       "type": "style",
       "uri": "leaflet/MarkerCluster.Default.css"
     },
     {
       "name": "leaflet-js",
-      "description": "The leaflet js (mappe)",
       "type": "script",
       "uri": "leaflet/leaflet.js"
     },
     {
       "name": "leaflet-marker-js",
-      "description": "The leaflet marker js (mappe)",
       "type": "script",
       "uri": "leaflet/leaflet.markercluster.js",
-      "dependencies": ["leaflet-js"],
-      "attributes" : {
+      "dependencies": [
+        "leaflet-js"
+      ],
+      "attributes": {
         "defer": true
       }
     },
     {
       "name": "alpine-js",
-      "description": "The alpine js",
       "type": "script",
       "uri": "alpine.js",
-      "attributes" : {
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
+      "name": "jquery",
+      "type": "script",
+      "uri": "jquery.js",
+      "attributes": {
         "defer": true
       }
     },
@@ -80,28 +81,55 @@
       "uri": "system/joomla-fontawesome.min.css"
     },
     {
-      "name": "template-css",
-      "description": "The default css of template",
-      "type": "style",
-      "uri": "template.css"
-    },
-    {
-      "name": "template-js",
-      "description": "The default js of template",
-      "type": "script",
-      "uri": "template.js"
-    },
-    {
       "name": "user-css",
-      "description": "The custom css style to use. Must be placed in media/templates/site/templatebaseld/css/user.css",
       "type": "style",
       "uri": "user.css"
     },
     {
       "name": "user-js",
-      "description": "The custom js script to use. Must be placed in media/templates/site/templatebaseld/js/user.js",
       "type": "script",
       "uri": "user.js"
+    },
+    {
+      "name": "core",
+      "type": "preset",
+      "description": "Tutti gli asset del Core",
+      "dependencies": [
+        "searchtools#style",
+        "fontawesome#style",
+        "jquery#script"
+      ]
+    },
+    {
+      "name": "bootstrap",
+      "type": "preset",
+      "description": "Tutti gli asset di Bootstrap",
+      "dependencies": [
+        "bootstrap-css#style",
+        "bootstrap-ico#style",
+        "bootstrap-js#script"
+      ]
+    },
+    {
+      "name": "leaflet",
+      "type": "preset",
+      "description": "Tutti gli asset di Leaflet",
+      "dependencies": [
+        "leaflet-css#style",
+        "leaflet-marker-css#style",
+        "leaflet-marker-default-css#style",
+        "leaflet-js#script",
+        "leaflet-marker-js#script"
+      ]
+    },
+    {
+      "name": "user",
+      "type": "preset",
+      "description": "Tutti gli asset dell'Utente",
+      "dependencies": [
+        "user-css#style",
+        "user-js#script"
+      ]
     }
   ]
 }

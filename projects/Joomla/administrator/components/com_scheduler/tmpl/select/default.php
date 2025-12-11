@@ -16,8 +16,9 @@ defined('_JEXEC') or die;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\Component\Scheduler\Administrator\View\Select\HtmlView;
 
-/** @var  \Joomla\Component\Scheduler\Administrator\View\Select\HtmlView  $this */
+/** @var  HtmlView  $this */
 
 $app = $this->app;
 

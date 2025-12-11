@@ -44,7 +44,7 @@ class StatsAdminHelper
         $user = $app->getIdentity();
 
         $rows  = [];
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         $serverinfo = $params->get('serverinfo', 0);
         $siteinfo   = $params->get('siteinfo', 0);

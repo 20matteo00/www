@@ -16,9 +16,8 @@ use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Table\Asset;
-use Joomla\CMS\Table\Category;
 use Joomla\CMS\Table\Extension;
-use Joomla\CMS\Table\Menu;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\Table\Update;
 use Joomla\Database\ParameterType;
 use Joomla\Filesystem\Folder;
@@ -339,7 +338,8 @@ class ComponentAdapter extends InstallerAdapter
      */
     protected function finaliseInstall()
     {
-        $update = new Update($this->getDatabase());
+        /** @var Update $update */
+        $update = Table::getInstance('update');
 
         // Clobber any possible pending updates
         $uid = $update->find(
@@ -378,7 +378,8 @@ class ComponentAdapter extends InstallerAdapter
             Log::add(Text::_('JLIB_INSTALLER_ABORT_COMP_UPDATESITEMENUS_FAILED'), Log::WARNING, 'jerror');
         }
 
-        $asset = new Asset($this->getDatabase());
+        /** @var Asset $asset */
+        $asset = Table::getInstance('Asset');
 
         // Check if an asset already exists for this extension and create it if not
         if (!$asset->loadByName($this->extension->element)) {
@@ -417,7 +418,7 @@ class ComponentAdapter extends InstallerAdapter
         $db = $this->getDatabase();
 
         // Remove the schema version
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->delete($db->quoteName('#__schemas'))
             ->where($db->quoteName('extension_id') . ' = :extension_id')
             ->bind(':extension_id', $extensionId, ParameterType::INTEGER);
@@ -425,7 +426,7 @@ class ComponentAdapter extends InstallerAdapter
         $db->execute();
 
         // Remove the component container in the assets table.
-        $asset = new Asset($this->getDatabase());
+        $asset = Table::getInstance('Asset');
 
         if ($asset->loadByName($this->getElement())) {
             $asset->delete();
@@ -435,7 +436,7 @@ class ComponentAdapter extends InstallerAdapter
         $extensionNameWithWildcard = $extensionName . '.%';
 
         // Remove categories for this component
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->delete($db->quoteName('#__categories'))
             ->where(
                 [
@@ -450,11 +451,10 @@ class ComponentAdapter extends InstallerAdapter
         $db->execute();
 
         // Rebuild the categories for correct lft/rgt
-        $table = new Category($db);
-        $table->rebuild();
+        Table::getInstance('category')->rebuild();
 
         // Clobber any possible pending updates
-        $update = new Update($this->getDatabase());
+        $update = Table::getInstance('update');
         $uid    = $update->find(
             [
                 'element'   => $this->extension->element,
@@ -668,7 +668,7 @@ class ComponentAdapter extends InstallerAdapter
             // Try to delete existing failed records before retrying
             $db = $this->getDatabase();
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('extension_id'))
                 ->from($db->quoteName('#__extensions'))
                 ->where(
@@ -692,7 +692,8 @@ class ComponentAdapter extends InstallerAdapter
                     $this->_removeAdminMenus($eid);
 
                     // Remove the extension record itself
-                    $extensionTable = new Extension($this->getDatabase());
+                    /** @var Extension $extensionTable */
+                    $extensionTable = Table::getInstance('extension');
                     $extensionTable->delete($eid);
                 }
             }
@@ -856,7 +857,7 @@ class ComponentAdapter extends InstallerAdapter
             // Try to delete existing failed records before retrying
             $db = $this->getDatabase();
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('extension_id'))
                 ->from($db->quoteName('#__extensions'))
                 ->where(
@@ -880,7 +881,8 @@ class ComponentAdapter extends InstallerAdapter
                     $this->_removeAdminMenus($eid);
 
                     // Remove the extension record itself
-                    $extensionTable = new Extension($this->getDatabase());
+                    /** @var Extension $extensionTable */
+                    $extensionTable = Table::getInstance('extension');
                     $extensionTable->delete($eid);
                 }
             }
@@ -936,7 +938,7 @@ class ComponentAdapter extends InstallerAdapter
         $option = $this->element;
 
         // If a component exists with this option in the table within the protected menutype 'main' then we don't need to add menus
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('m.id'),
@@ -1146,10 +1148,11 @@ class ComponentAdapter extends InstallerAdapter
     {
         $db = $this->getDatabase();
 
-        $table = new Menu($db);
+        /** @var  \Joomla\CMS\Table\Menu  $table */
+        $table = Table::getInstance('menu');
 
         // Get the ids of the menu items
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__menu'))
             ->where(
@@ -1218,7 +1221,7 @@ class ComponentAdapter extends InstallerAdapter
 
         // Update all menu items which contain 'index.php?option=com_extension' or 'index.php?option=com_extension&...'
         // to use the new component id.
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->update($db->quoteName('#__menu'))
             ->set($db->quoteName('component_id') . ' = :componentId')
             ->where($db->quoteName('type') . ' = ' . $db->quote('component'))
@@ -1285,7 +1288,7 @@ class ComponentAdapter extends InstallerAdapter
                 $manifest_details = Installer::parseXMLInstallFile(
                     JPATH_SITE . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'
                 );
-                $extension                 = new Extension($this->getDatabase());
+                $extension                 = Table::getInstance('extension');
                 $extension->type           = 'component';
                 $extension->client_id      = 0;
                 $extension->element        = $component;
@@ -1304,7 +1307,7 @@ class ComponentAdapter extends InstallerAdapter
                 $manifest_details = Installer::parseXMLInstallFile(
                     JPATH_ADMINISTRATOR . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'
                 );
-                $extension                 = new Extension($this->getDatabase());
+                $extension                 = Table::getInstance('extension');
                 $extension->type           = 'component';
                 $extension->client_id      = 1;
                 $extension->element        = $component;
@@ -1322,7 +1325,7 @@ class ComponentAdapter extends InstallerAdapter
                 $manifest_details = Installer::parseXMLInstallFile(
                     JPATH_API . '/components/' . $component . '/' . str_replace('com_', '', $component) . '.xml'
                 );
-                $extension                 = new Extension($this->getDatabase());
+                $extension                 = Table::getInstance('extension');
                 $extension->type           = 'component';
                 $extension->client_id      = 3;
                 $extension->element        = $component;
@@ -1389,7 +1392,8 @@ class ComponentAdapter extends InstallerAdapter
     {
         $db = $this->getDatabase();
 
-        $table = new Menu($db);
+        /** @var  \Joomla\CMS\Table\Menu  $table */
+        $table  = Table::getInstance('menu');
 
         try {
             $table->setLocation($parentId, 'last-child');
@@ -1407,7 +1411,7 @@ class ComponentAdapter extends InstallerAdapter
             $home         = $data['home'];
 
             // The menu item already exists. Delete it and retry instead of throwing an error.
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__menu'))
                 ->where(
@@ -1436,7 +1440,8 @@ class ComponentAdapter extends InstallerAdapter
                 return false;
             }
 
-            $temporaryTable = new Menu($db);
+            /** @var  \Joomla\CMS\Table\Menu $temporaryTable */
+            $temporaryTable = Table::getInstance('menu');
             $temporaryTable->delete($menu_id, true);
             $temporaryTable->load($parentId);
             $temporaryTable->rebuild($parentId, $temporaryTable->lft, $temporaryTable->level, $temporaryTable->path);

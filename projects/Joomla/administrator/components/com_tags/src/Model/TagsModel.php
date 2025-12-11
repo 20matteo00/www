@@ -147,7 +147,7 @@ class TagsModel extends ListModel
     {
         // Create a new query object.
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $user  = $this->getCurrentUser();
 
         // Select the required fields from the table.
@@ -183,7 +183,7 @@ class TagsModel extends ListModel
             ->join('LEFT', $db->quoteName('#__viewlevels', 'ug'), $db->quoteName('ug.id') . ' = ' . $db->quoteName('a.access'));
 
         // Count Items
-        $subQueryCountTaggedItems = $db->createQuery();
+        $subQueryCountTaggedItems = $db->getQuery(true);
         $subQueryCountTaggedItems
             ->select('COUNT(' . $db->quoteName('tag_map.content_item_id') . ')')
             ->from($db->quoteName('#__contentitem_tag_map', 'tag_map'))

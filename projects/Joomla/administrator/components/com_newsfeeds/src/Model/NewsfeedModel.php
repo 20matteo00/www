@@ -17,7 +17,6 @@ use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Versioning\VersionableModelInterface;
 use Joomla\CMS\Versioning\VersionableModelTrait;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
 use Joomla\Registry\Registry;
@@ -31,7 +30,7 @@ use Joomla\Registry\Registry;
  *
  * @since  1.6
  */
-class NewsfeedModel extends AdminModel implements VersionableModelInterface
+class NewsfeedModel extends AdminModel
 {
     use VersionableModelTrait;
 
@@ -157,8 +156,8 @@ class NewsfeedModel extends AdminModel implements VersionableModelInterface
 
             // Prime some default values.
             if ($this->getState('newsfeed.id') == 0) {
-                $app         = Factory::getApplication();
-                $data->catid = $app->getInput()->get('catid', $app->getUserState('com_newsfeeds.newsfeeds.filter.category_id'), 'int');
+                $app = Factory::getApplication();
+                $data->set('catid', $app->getInput()->get('catid', $app->getUserState('com_newsfeeds.newsfeeds.filter.category_id'), 'int'));
             }
         }
 
@@ -311,7 +310,7 @@ class NewsfeedModel extends AdminModel implements VersionableModelInterface
             // Set ordering to the last item if not set
             if (empty($table->ordering)) {
                 $db    = $this->getDatabase();
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->select('MAX(' . $db->quoteName('ordering') . ')')
                     ->from($db->quoteName('#__newsfeeds'));
                 $db->setQuery($query);

@@ -87,6 +87,6 @@ $lang     = $this->getLanguage()->getTag();
         <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
     </div>
     <?php echo $this->form->getInput('extension'); ?>
-
-    <?php echo $this->form->renderControlFields(); ?>
+    <input type="hidden" name="task" value="workflow.edit" />
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>

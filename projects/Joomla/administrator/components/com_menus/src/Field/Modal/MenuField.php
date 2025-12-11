@@ -241,7 +241,7 @@ class MenuField extends ModalSelectField
         if ($value) {
             try {
                 $db    = $this->getDatabase();
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->select($db->quoteName('title'))
                     ->from($db->quoteName('#__menu'))
                     ->where($db->quoteName('id') . ' = :id')

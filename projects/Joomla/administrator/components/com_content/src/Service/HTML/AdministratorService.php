@@ -51,7 +51,7 @@ class AdministratorService
 
             // Get the associated menu items
             $db    = Factory::getDbo();
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select(
                     [
                         'c.*',

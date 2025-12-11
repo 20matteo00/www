@@ -232,7 +232,7 @@ class ModuleController extends FormController
             $model      = $this->getModel();
             $data       = $this->input->post->get('jform', [], 'array');
             $item       = $model->getItem($this->input->get('id'));
-            $properties = get_object_vars($item);
+            $properties = $item->getProperties();
 
             if (isset($data['params'])) {
                 unset($properties['params']);

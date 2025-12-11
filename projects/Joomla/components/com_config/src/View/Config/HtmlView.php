@@ -99,10 +99,6 @@ class HtmlView extends BaseHtmlView
         $this->form = $form;
         $this->data = $serviceData;
 
-        // Add form control fields
-        $this->form
-            ->addControlField('task', '');
-
         $this->_prepareDocument();
 
         parent::display($tpl);

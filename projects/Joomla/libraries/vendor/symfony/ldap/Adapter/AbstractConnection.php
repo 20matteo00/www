@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class AbstractConnection implements ConnectionInterface
 {
-    protected array $config;
+    protected $config;
 
     public function __construct(array $config = [])
     {
@@ -30,7 +30,10 @@ abstract class AbstractConnection implements ConnectionInterface
         $this->config = $resolver->resolve($config);
     }
 
-    protected function configureOptions(OptionsResolver $resolver): void
+    /**
+     * @return void
+     */
+    protected function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'host' => 'localhost',

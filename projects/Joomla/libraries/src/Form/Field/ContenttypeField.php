@@ -64,7 +64,7 @@ class ContenttypeField extends ListField
     {
         $lang  = Factory::getLanguage();
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('a.type_id', 'value'),

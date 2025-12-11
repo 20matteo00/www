@@ -1,7 +1,0 @@
-<?php
-defined('_JEXEC') or die;
-return array (
-  'PLG_SYSTEM_NRFRAMEWORK' => 'System - Tassos Framework',
-  'PLG_SYSTEM_NRFRAMEWORK_DESC' => 'Tassos Framework - used by Tassos.gr Joomla extensions',
-  'TASSOS_FRAMEWORK' => 'Tassos Framework',
-);

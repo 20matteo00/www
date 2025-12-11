@@ -48,7 +48,7 @@ class ComponentsFieldgroupField extends ListField
         // Initialise variable.
         $db = $this->getDatabase();
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('DISTINCT a.name AS text, a.element AS value')
             ->from('#__extensions as a')
             ->where('a.enabled >= 1')

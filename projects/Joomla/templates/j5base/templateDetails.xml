@@ -23,19 +23,21 @@
 	<positions>
 		<!-- Header -->
 		<position>header-top</position>
+		<position>header-sticky</position>		
 		<position>header-content</position>
 		<position>header-bottom</position>
-		<position>breadcrumb</position>
 
-		<!-- Extra / Mobile -->
-		<position>offcanvas</position>		<!-- Menu o moduli nascosti su mobile -->
-		<position>sticky</position>		<!-- Banner o CTA sticky sopra contenuto -->
+		<!-- Offcanvas -->
+		<position>offcanvas</position>
 
-		<!-- Content principale -->
+		<!-- Breadcrumbs -->
+		<position>breadcrumbs</position>
+		
+		<!-- Content -->
 		<position>content-top</position>
 		<position>sidebar-left</position>
-		<position>content-top-in-sidebar</position>
-		<position>content-bottom-in-sidebar</position>
+		<position>component-top</position>
+		<position>component-bottom</position>
 		<position>sidebar-right</position>
 		<position>content-bottom</position>
 
@@ -54,13 +56,18 @@
 				<!-- campo colori -->
 				<field name="colors" type="subform" label="Colori tema" description="Aggiungi uno o più colori" formsource="templates/j5base/forms/colors.xml" multiple="true"/>
 				<!-- campi mobile menu -->
-				<field name="mobile_menu" type="radio" label="Menu Mobile" description="Seleziona come deve comportarsi il menu mobile" default="collapse">
-					<option value="collapse">Collapse (classico)</option>
+				<field name="mobile_menu" type="radio" label="Menu Mobile" description="Seleziona come deve comportarsi il menu mobile" default="offcanvas">
 					<option value="offcanvas">Offcanvas (laterale)</option>
+					<option value="collapse">Collapse (classico)</option>
 				</field>
-				<field name="lato_menu" type="radio" label="Lato Menu Mobile" description="Seleziona da che lato vuoi vedere il menu" default="left" showon="mobile_menu:offcanvas">
-					<option value="start">Sinistra</option>
+				<field name="lato_menu" type="radio" label="Lato Menu Mobile" description="Seleziona da che lato vuoi vedere il menu" default="end" showon="mobile_menu:offcanvas">
 					<option value="end">Destra</option>
+					<option value="start">Sinistra</option>
+				</field>
+				<!-- campi mobile menu -->
+				<field name="container" type="radio" label="Menu Mobile" description="Seleziona come deve comportarsi il menu mobile" default="container">
+					<option value="container">Container</option>
+					<option value="container-fluid">Container Fluido</option>
 				</field>
 			</fieldset>
 		</fields>

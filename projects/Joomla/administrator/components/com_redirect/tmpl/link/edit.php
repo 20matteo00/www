@@ -43,6 +43,7 @@ $wa->useScript('keepalive')
             <?php echo HTMLHelper::_('uitab.endTab'); ?>
         <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
-        <?php echo $this->form->renderControlFields(); ?>
+        <input type="hidden" name="task" value="">
+        <?php echo HTMLHelper::_('form.token'); ?>
     </fieldset>
 </form>

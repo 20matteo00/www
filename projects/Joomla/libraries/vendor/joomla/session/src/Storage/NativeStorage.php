@@ -28,6 +28,14 @@ class NativeStorage implements StorageInterface
     private $active = false;
 
     /**
+     * Internal flag identifying whether the session has been closed
+     *
+     * @var    boolean
+     * @since  2.0.0
+     */
+    private $closed = false;
+
+    /**
      * Session save handler
      *
      * @var    \SessionHandlerInterface
@@ -105,6 +113,7 @@ class NativeStorage implements StorageInterface
     {
         session_write_close();
 
+        $this->closed  = true;
         $this->started = false;
     }
 
@@ -228,9 +237,7 @@ class NativeStorage implements StorageInterface
      */
     public function isActive(): bool
     {
-        $this->active = session_status() === \PHP_SESSION_ACTIVE;
-
-        return $this->active;
+        return $this->active = session_status() === \PHP_SESSION_ACTIVE;
     }
 
     /**
@@ -454,6 +461,7 @@ class NativeStorage implements StorageInterface
         }
 
         $this->isActive();
+        $this->closed  = false;
         $this->started = true;
     }
 }

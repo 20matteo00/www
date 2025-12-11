@@ -14,8 +14,9 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\Component\Users\Administrator\View\Methods\HtmlView;
 
-/** @var \Joomla\Component\Users\Administrator\View\Methods\HtmlView $this */
+/** @var HtmlView $this */
 
 $headingLevel = 2;
 ?>

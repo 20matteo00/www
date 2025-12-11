@@ -208,7 +208,7 @@ class SqlField extends ListField
         $db = $this->getDatabase();
 
         // Get the query object
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         // Select fields
         $query->select($conditions['select']);

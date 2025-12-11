@@ -69,7 +69,7 @@ class NotesModel extends ListModel
     protected function getListQuery()
     {
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         // Select the required fields from the table.
         $query->select(

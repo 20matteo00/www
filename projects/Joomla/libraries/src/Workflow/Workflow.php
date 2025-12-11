@@ -9,7 +9,7 @@
 
 namespace Joomla\CMS\Workflow;
 
-use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Event\AbstractEvent;
 use Joomla\CMS\Event\Workflow\WorkflowTransitionEvent;
 use Joomla\CMS\Extension\ComponentInterface;
@@ -18,7 +18,6 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Table\Category;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\ParameterType;
-use Joomla\Event\DispatcherAwareInterface;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -51,7 +50,7 @@ class Workflow
     /**
      * Application Object
      *
-     * @var    CMSApplicationInterface
+     * @var    CMSApplication
      * @since  4.0.0
      */
     protected $app;
@@ -99,13 +98,13 @@ class Workflow
     /**
      * Class constructor
      *
-     * @param   string                    $extension  The extension name
-     * @param   ?CMSApplicationInterface  $app        Application Object
-     * @param   ?DatabaseDriver           $db         Database Driver Object
+     * @param   string           $extension  The extension name
+     * @param   ?CMSApplication  $app        Application Object
+     * @param   ?DatabaseDriver  $db         Database Driver Object
      *
      * @since   4.0.0
      */
-    public function __construct(string $extension, ?CMSApplicationInterface $app = null, ?DatabaseDriver $db = null)
+    public function __construct(string $extension, ?CMSApplication $app = null, ?DatabaseDriver $db = null)
     {
         $this->extension = $extension;
 
@@ -113,10 +112,6 @@ class Workflow
         if ($app === null) {
             @trigger_error('From 6.0 declaring the app dependency will be mandatory.', E_USER_DEPRECATED);
             $app = Factory::getApplication();
-        }
-
-        if (!is_a($app, DispatcherAwareInterface::class)) {
-            trigger_error('The given application object is not Dispatcher aware, which is mandatory.', E_ERROR);
         }
 
         $this->app = $app;
@@ -204,7 +199,7 @@ class Workflow
 
         // Check if the workflow exists
         if ($workflow_id = (int) $workflow_id) {
-            $query = $this->db->createQuery();
+            $query = $this->db->getQuery(true);
 
             $query->select(
                 [
@@ -238,7 +233,7 @@ class Workflow
         }
 
         // Use default workflow
-        $query  = $this->db->createQuery();
+        $query  = $this->db->getQuery(true);
 
         $query->select(
             [
@@ -290,7 +285,7 @@ class Workflow
             return null;
         }
 
-        $query = $this->db->createQuery();
+        $query = $this->db->getQuery(true);
 
         $user = $this->app->getIdentity();
 
@@ -435,7 +430,7 @@ class Workflow
     public function createAssociation(int $pk, int $state): bool
     {
         try {
-            $query = $this->db->createQuery();
+            $query = $this->db->getQuery(true);
 
             $query->insert($this->db->quoteName('#__workflow_associations'))
                 ->columns(
@@ -473,7 +468,7 @@ class Workflow
         $pks = ArrayHelper::toInteger($pks);
 
         try {
-            $query = $this->db->createQuery();
+            $query = $this->db->getQuery(true);
 
             $query->update($this->db->quoteName('#__workflow_associations'))
                 ->set($this->db->quoteName('stage_id') . ' = :state')
@@ -504,7 +499,7 @@ class Workflow
         $pks = ArrayHelper::toInteger($pks);
 
         try {
-            $query = $this->db->createQuery();
+            $query = $this->db->getQuery(true);
 
             $query
                 ->delete($this->db->quoteName('#__workflow_associations'))
@@ -531,7 +526,7 @@ class Workflow
      */
     public function getAssociation(int $itemId): ?\stdClass
     {
-        $query = $this->db->createQuery();
+        $query = $this->db->getQuery(true);
 
         $query->select(
             [

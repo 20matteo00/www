@@ -20,8 +20,6 @@ use Joomla\Http\TransportInterface;
  * HTTP factory class.
  *
  * @since  3.0.0
- * @deprecated  6.0.0 will be removed in 7.0
- *              Use Joomla\Http\HttpFactory instead
  */
 class HttpFactory
 {
@@ -33,10 +31,8 @@ class HttpFactory
      *
      * @return  Http
      *
-     * @throws  \RuntimeException
      * @since   3.0.0
-     * @deprecated  6.0.0 will be removed in 7.0
-     *              Use Joomla\Http\HttpFactory::getHttp() instead
+     * @throws  \RuntimeException
      */
     public static function getHttp($options = [], $adapters = null)
     {
@@ -68,8 +64,6 @@ class HttpFactory
      * @return  TransportInterface|boolean  Interface sub-class or boolean false if no adapters are available
      *
      * @since   3.0.0
-     * @deprecated  6.0.0 will be removed in 7.0
-     *              Use Joomla\Http\HttpFactory::getAvailableDriver() instead
      */
     public static function getAvailableDriver($options = [], $default = null)
     {
@@ -107,8 +101,6 @@ class HttpFactory
      * @return  array  An array of available transport handlers
      *
      * @since   3.0.0
-     * @deprecated  6.0.0 will be removed in 7.0
-     *              Use Joomla\Http\HttpFactory::getHttpTransports() instead
      */
     public static function getHttpTransports()
     {

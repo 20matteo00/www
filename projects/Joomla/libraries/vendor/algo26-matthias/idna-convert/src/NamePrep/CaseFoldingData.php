@@ -9,7 +9,7 @@ namespace Algo26\IdnaConvert\NamePrep;
  */
 class CaseFoldingData implements CaseFoldingDataInterface
 {
-    public array $foldingMap = [
+    public $foldingMap = [
         0x41 => [0x61],
         0x42 => [0x62],
         0x43 => [0x63],

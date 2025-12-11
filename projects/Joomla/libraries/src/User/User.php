@@ -10,7 +10,6 @@
 namespace Joomla\CMS\User;
 
 use Joomla\CMS\Access\Access;
-use Joomla\CMS\Application\ConsoleApplication;
 use Joomla\CMS\Event\User\AfterDeleteEvent;
 use Joomla\CMS\Event\User\AfterSaveEvent;
 use Joomla\CMS\Event\User\BeforeDeleteEvent;
@@ -292,7 +291,7 @@ class User
      * @return  User  The User object.
      *
      * @since       1.7.0
-     * @deprecated  4.3 will be removed in 7.0
+     * @deprecated  4.3 will be removed in 6.0
      *              Load the user service from the dependency injection container or via $app->getIdentity()
      *              Example: Factory::getContainer()->get(UserFactoryInterface::class)->loadUserById($id)
      */
@@ -430,7 +429,7 @@ class User
         // @todo: Modify the way permissions are stored in the db to allow for faster implementation and better scaling
         $db = Factory::getDbo();
 
-        $subQuery = $db->createQuery()
+        $subQuery = $db->getQuery(true)
             ->select($db->quoteName(['id', 'asset_id']))
             ->from($db->quoteName('#__categories'))
             ->where(
@@ -440,7 +439,7 @@ class User
                 ]
             );
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName(['c.id', 'a.name']))
             ->from('(' . $subQuery . ') AS ' . $db->quoteName('c'))
             ->join('INNER', $db->quoteName('#__assets', 'a'), $db->quoteName('c.asset_id') . ' = ' . $db->quoteName('a.id'))
@@ -543,7 +542,7 @@ class User
      */
     public function getTimezone()
     {
-        $timezone = $this->getParam('timezone', Factory::getApplication()->get('offset', 'UTC'));
+        $timezone = $this->getParam('timezone', Factory::getApplication()->get('offset', 'GMT'));
 
         return new \DateTimeZone($timezone);
     }
@@ -583,16 +582,18 @@ class User
 
         // Set the default tabletype;
         if (!isset($tabletype)) {
-            $tabletype = \Joomla\CMS\Table\User::class;
+            $tabletype['name']   = 'user';
+            $tabletype['prefix'] = '\\Joomla\\CMS\\Table\\';
         }
 
         // Set a custom table type is defined
         if (isset($type)) {
-            $tabletype = rtrim($prefix, '\\') . '\\' . $type;
+            $tabletype['name']   = $type;
+            $tabletype['prefix'] = $prefix;
         }
 
         // Create the user table object
-        return new $tabletype(Factory::getDbo());
+        return Table::getInstance($tabletype['name'], $tabletype['prefix']);
     }
 
     /**
@@ -746,8 +747,15 @@ class User
                 $iAmRehashingSuperadmin = true;
             }
 
+            // Check if we are using a CLI application
+            $isCli = false;
+
+            if (Factory::getApplication()->isCli()) {
+                $isCli = true;
+            }
+
             // We are only worried about edits to this account if I am not a Super Admin.
-            if (!$iAmSuperAdmin && !$iAmRehashingSuperadmin && !Factory::getApplication() instanceof ConsoleApplication) {
+            if (!$iAmSuperAdmin && !$iAmRehashingSuperadmin && !$isCli) {
                 // I am not a Super Admin, and this one is, so fail.
                 if (!$isNew && Access::check($this->id, 'core.admin')) {
                     throw new \RuntimeException('User not Super Administrator');

@@ -54,7 +54,7 @@ abstract class Category
             $db     = Factory::getDbo();
             $user   = Factory::getUser();
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select(
                     [
                         $db->quoteName('a.id'),
@@ -148,7 +148,7 @@ abstract class Category
             $config = (array) $config;
             $user   = Factory::getUser();
             $db     = Factory::getDbo();
-            $query  = $db->createQuery()
+            $query  = $db->getQuery(true)
                 ->select(
                     [
                         $db->quoteName('a.id'),

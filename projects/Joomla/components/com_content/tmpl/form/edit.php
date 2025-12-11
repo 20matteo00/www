@@ -51,8 +51,9 @@ if (!$params->exists('show_publishing_options')) {
             <?php echo HTMLHelper::_('uitab.addTab', $this->tab_name, 'editor', Text::_('COM_CONTENT_ARTICLE_CONTENT')); ?>
                 <?php echo $this->form->renderField('title'); ?>
 
-                <?php echo $this->form->renderField('alias'); ?>
-
+                <?php if (is_null($this->item->id)) : ?>
+                    <?php echo $this->form->renderField('alias'); ?>
+                <?php endif; ?>
 
                 <?php echo $this->form->renderField('articletext'); ?>
 

@@ -153,7 +153,7 @@ class OrderingField extends FormField
     {
         $categoryId = (int) $this->form->getValue('catid');
         $db         = $this->getDatabase();
-        $query      = $db->createQuery()
+        $query      = $db->getQuery(true)
             ->select($db->quoteName('ct') . '.*')
             ->from($db->quoteName('#__content_types', 'ct'))
             ->where($db->quoteName('ct.type_alias') . ' = :alias')
@@ -171,7 +171,7 @@ class OrderingField extends FormField
             $title    = $ucmMapCommon[0]->core_title;
         }
 
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $query->select([$db->quoteName($ordering, 'value'), $db->quoteName($title, 'text')])
             ->from($db->quoteName(json_decode($ucmRow->table)->special->dbtable))
             ->where($db->quoteName('catid') . ' = :categoryId')

@@ -92,7 +92,7 @@ class Globalcheckin extends CMSPlugin implements SubscriberInterface
                 continue;
             }
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->update($db->quoteName($tn))
                 ->set($db->quoteName('checked_out') . ' = NULL')
                 ->set($db->quoteName('checked_out_time') . ' = NULL');

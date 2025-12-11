@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 
 extract($displayData);
 
-use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * Layout variables
@@ -45,7 +45,7 @@ use Joomla\CMS\Factory;
  * @var   array    $dataAttributes  Miscellaneous data attribute for eg, data-*.
  */
 
-Factory::getApplication()->getDocument()->getWebAssetManager()->usePreset('awesomplete');
+HTMLHelper::_('behavior.combobox');
 
 $attr = '';
 

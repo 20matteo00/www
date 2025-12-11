@@ -82,11 +82,6 @@ class HtmlView extends InstallerViewDefault
         $this->filterForm    = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
 
-        // Add form control fields
-        $this->filterForm
-            ->addControlField('task', '')
-            ->addControlField('boxchecked', '0');
-
         // Display the view
         parent::display($tpl);
     }

@@ -52,7 +52,7 @@ class Menus
         if ($associations = MenusHelper::getAssociations($itemid)) {
             // Get the associated menu items
             $db    = Factory::getDbo();
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select(
                     [
                         $db->quoteName('m.id'),

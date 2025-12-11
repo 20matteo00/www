@@ -113,7 +113,7 @@ class LibraryHelper
             // Save params in DB
             $db           = Factory::getContainer()->get(DatabaseInterface::class);
             $paramsString = $params->toString();
-            $query        = $db->createQuery()
+            $query        = $db->getQuery(true)
                 ->update($db->quoteName('#__extensions'))
                 ->set($db->quoteName('params') . ' = :params')
                 ->where($db->quoteName('type') . ' = ' . $db->quote('library'))
@@ -148,7 +148,7 @@ class LibraryHelper
     {
         $loader = function ($element) {
             $db    = Factory::getContainer()->get(DatabaseInterface::class);
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName(['extension_id', 'element', 'params', 'enabled'], ['id', 'option', null, null]))
                 ->from($db->quoteName('#__extensions'))
                 ->where($db->quoteName('type') . ' = ' . $db->quote('library'))

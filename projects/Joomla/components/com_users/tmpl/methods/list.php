@@ -18,8 +18,9 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Users\Administrator\Helper\Mfa as MfaHelper;
 use Joomla\Component\Users\Site\Model\MethodsModel;
+use Joomla\Component\Users\Site\View\Methods\HtmlView;
 
-/** @var \Joomla\Component\Users\Site\View\Methods\HtmlView $this */
+/** @var HtmlView $this */
 
 /** @var MethodsModel $model */
 $model = $this->getModel();

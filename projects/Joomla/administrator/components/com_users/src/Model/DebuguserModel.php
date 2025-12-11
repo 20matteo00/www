@@ -196,7 +196,7 @@ class DebuguserModel extends ListModel implements UserFactoryAwareInterface
     {
         // Create a new query object.
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         // Select the required fields from the table.
         $query->select(

@@ -5,7 +5,7 @@
 }
 
 .form-select {
-  max-inline-size: $input-max-width;
+  max-width: $input-max-width;
   cursor: pointer;
   background: $form-select-background;
   border: $form-select-border;

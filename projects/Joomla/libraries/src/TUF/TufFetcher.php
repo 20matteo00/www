@@ -153,7 +153,7 @@ class TufFetcher
     {
         $db = $this->db;
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->update($db->quoteName('#__tuf_metadata'))
             ->set($db->quoteName('snapshot') . ' = NULL')
             ->set($db->quoteName('targets') . ' = NULL')

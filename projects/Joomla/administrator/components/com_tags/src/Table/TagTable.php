@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Nested;
 use Joomla\CMS\User\CurrentUserInterface;
 use Joomla\CMS\User\CurrentUserTrait;
+use Joomla\CMS\Versioning\VersionableTableInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\String\StringHelper;
@@ -30,7 +31,7 @@ use Joomla\String\StringHelper;
  *
  * @since  3.1
  */
-class TagTable extends Nested implements CurrentUserInterface
+class TagTable extends Nested implements VersionableTableInterface, CurrentUserInterface
 {
     use CurrentUserTrait;
 

@@ -9,11 +9,12 @@
 
 namespace Joomla\CMS\Changelog;
 
+use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Object\LegacyErrorHandlingTrait;
 use Joomla\CMS\Object\LegacyPropertyManagementTrait;
 use Joomla\CMS\Version;
-use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -27,6 +28,7 @@ use Joomla\Registry\Registry;
  */
 class Changelog
 {
+    use LegacyErrorHandlingTrait;
     use LegacyPropertyManagementTrait;
 
     /**
@@ -349,7 +351,7 @@ class Changelog
         $httpOption->set('userAgent', $version->getUserAgent('Joomla', true, false));
 
         try {
-            $http     = (new HttpFactory())->getHttp($httpOption);
+            $http     = HttpFactory::getHttp($httpOption);
             $response = $http->get($url);
         } catch (\RuntimeException) {
             $response = null;

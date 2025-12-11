@@ -1,8 +1,6 @@
 <?php
 defined('_JEXEC') or die;
 return [
-	'Adeta\\Component\\Justablank\\Administrator\\' => [JPATH_ADMINISTRATOR . '/components/com_justablank/src'],
-	'Adeta\\Component\\Justablank\\Site\\' => [JPATH_SITE . '/components/com_justablank/src'],
 	'Joomla\\Component\\Actionlogs\\Administrator\\' => [JPATH_ADMINISTRATOR . '/components/com_actionlogs/src'],
 	'Joomla\\Component\\Admin\\Administrator\\' => [JPATH_ADMINISTRATOR . '/components/com_admin/src'],
 	'Joomla\\Component\\Associations\\Administrator\\' => [JPATH_ADMINISTRATOR . '/components/com_associations/src'],
@@ -130,6 +128,7 @@ return [
 	'Joomla\\Plugin\\Authentication\\Joomla\\' => [JPATH_PLUGINS . '\authentication/joomla/src'],
 	'Joomla\\Plugin\\Authentication\\Ldap\\' => [JPATH_PLUGINS . '\authentication/ldap/src'],
 	'Joomla\\Plugin\\Behaviour\\Compat6\\' => [JPATH_PLUGINS . '\behaviour/compat6/src'],
+	'Joomla\\Plugin\\Behaviour\\Compat\\' => [JPATH_PLUGINS . '\behaviour/compat/src'],
 	'Joomla\\Plugin\\Behaviour\\Taggable\\' => [JPATH_PLUGINS . '\behaviour/taggable/src'],
 	'Joomla\\Plugin\\Behaviour\\Versionable\\' => [JPATH_PLUGINS . '\behaviour/versionable/src'],
 	'Joomla\\Plugin\\Content\\ConfirmConsent\\' => [JPATH_PLUGINS . '\content/confirmconsent/src'],
@@ -165,8 +164,6 @@ return [
 	'Joomla\\Plugin\\Fields\\Integer\\' => [JPATH_PLUGINS . '\fields/integer/src'],
 	'Joomla\\Plugin\\Fields\\ListField\\' => [JPATH_PLUGINS . '\fields/list/src'],
 	'Joomla\\Plugin\\Fields\\Media\\' => [JPATH_PLUGINS . '\fields/media/src'],
-	'Joomla\\Plugin\\Fields\\Note\\' => [JPATH_PLUGINS . '\fields/note/src'],
-	'Joomla\\Plugin\\Fields\\Number\\' => [JPATH_PLUGINS . '\fields/number/src'],
 	'Joomla\\Plugin\\Fields\\Radio\\' => [JPATH_PLUGINS . '\fields/radio/src'],
 	'Joomla\\Plugin\\Fields\\SQL\\' => [JPATH_PLUGINS . '\fields/sql/src'],
 	'Joomla\\Plugin\\Fields\\Subform\\' => [JPATH_PLUGINS . '\fields/subform/src'],

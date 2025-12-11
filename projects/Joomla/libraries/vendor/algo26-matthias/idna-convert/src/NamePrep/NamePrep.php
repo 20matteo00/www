@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Algo26\IdnaConvert\NamePrep;
 
 use Algo26\IdnaConvert\Exception\InvalidCharacterException;
@@ -9,42 +7,51 @@ use Algo26\IdnaConvert\Exception\InvalidIdnVersionException;
 
 class NamePrep implements NamePrepInterface
 {
-    private const S_BASE = 0xAC00;
-    private const L_BASE = 0x1100;
-    private const V_BASE = 0x1161;
-    private const T_BASE = 0x11A7;
-    private const L_COUNT = 19;
-    private const V_COUNT = 21;
-    private const T_COUNT = 28;
-    private const N_COUNT = 588;   // V_COUNT * T_COUNT
-    private const S_COUNT = 11172; // L_COUNT * T_COUNT * V_COUNT
+    const sBase = 0xAC00;
+    const lBase = 0x1100;
+    const vBase = 0x1161;
+    const tBase = 0x11A7;
+    const lCount = 19;
+    const vCount = 21;
+    const tCount = 28;
+    const nCount = 588;   // vCount * tCount
+    const sCount = 11172; // lCount * tCount * vCount
+    const sLast = self::sBase + self::lCount * self::vCount * self::tCount;
 
-    private NamePrepDataInterface $namePrepData;
-    private CaseFolding $caseFolding;
+    /** @var NamePrepDataInterface */
+    private $namePrepData;
+
+    /** @var CaseFolding */
+    private $caseFolding;
 
     /**
+     * @param string|null $idnVersion
+     *
      * @throws InvalidIdnVersionException
      */
-    public function __construct(?int $idnVersion = null)
+    public function __construct(?string $idnVersion = null)
     {
         $this->caseFolding = new CaseFolding();
 
-        if ($idnVersion === null || $idnVersion === 2008) {
+        if ($idnVersion === null || $idnVersion == 2008) {
             $this->namePrepData = new NamePrepData2008();
 
             return;
         }
 
-        if ($idnVersion === 2003) {
+        if ($idnVersion == 2003) {
             $this->namePrepData = new NamePrepData2003();
 
             return;
         }
 
-        throw new InvalidIdnVersionException('IDN version must be either 2003 or 2008', 400);
+        throw new InvalidIdnVersionException('IDN version must bei either 2003 or 2008');
     }
 
     /**
+     * @param array $inputArray
+     *
+     * @return array
      * @throws InvalidCharacterException
      */
     public function do(array $inputArray): array
@@ -55,20 +62,25 @@ class NamePrep implements NamePrepInterface
 
         return $this->caseFolding->apply(
             $outputArray,
-            $this->namePrepData->version,
+            $this->namePrepData->version
         );
     }
 
     /**
+     * @param array $inputArray
+     *
+     * @return array
      * @throws InvalidCharacterException
      */
     private function applyCharacterMaps(array $inputArray): array
     {
         $outputArray = [];
         foreach ($inputArray as $codePoint) {
+            // Map to nothing == skip that code point
             if (in_array($codePoint, $this->namePrepData->mapToNothing)) {
                 continue;
             }
+            // Try to find prohibited input
             if (in_array($codePoint, $this->namePrepData->prohibit)
                 || in_array($codePoint, $this->namePrepData->generalProhibited)
             ) {
@@ -81,6 +93,7 @@ class NamePrep implements NamePrepInterface
             }
 
             if (0xAC00 <= $codePoint && $codePoint <= 0xD7AF) {
+                // Hangul syllable decomposition
                 foreach ($this->hangulDecompose($codePoint) as $decomposed) {
                     $outputArray[] = (int) $decomposed;
                 }
@@ -103,15 +116,16 @@ class NamePrep implements NamePrepInterface
         $outputLength = count($codePoints);
         for ($outerIndex = 0; $outerIndex < $outputLength; ++$outerIndex) {
             $combiningClass = $this->getCombiningClass($codePoints[$outerIndex]);
-            if ($combiningClass !== 0
-                && ($previousClass === 0 || $previousClass > $combiningClass)
+            if (
+                ($previousClass === 0 || $previousClass > $combiningClass)
+                && $combiningClass !== 0
             ) {
                 // Try to match
                 $sequenceLength = $outerIndex - $previousStarter;
                 $combined = $this->combine(array_slice($codePoints, $previousStarter, $sequenceLength));
                 // On match: Replace the last starter with the composed character and remove
                 // the now redundant non-starter(s)
-                if (null !== $combined) {
+                if (false !== $combined) {
                     $codePoints[$previousStarter] = $combined;
                     if ($sequenceLength > 1) {
                         for ($innerIndex = $outerIndex + 1; $innerIndex < $outputLength; ++$innerIndex) {
@@ -124,7 +138,7 @@ class NamePrep implements NamePrepInterface
                     $outputLength--;
                     $previousClass = 0;
                     if ($outerIndex !== $previousStarter) {
-                        $previousClass = $this->getCombiningClass($codePoints[$outerIndex - 1]);
+                        $this->getCombiningClass($codePoints[$outerIndex - 1]);
                     }
 
                     continue;
@@ -143,20 +157,22 @@ class NamePrep implements NamePrepInterface
     /**
      * Decomposes a Hangul syllable
      * (see http://www.unicode.org/unicode/reports/tr15/#Hangul
+     * @param    integer  32bit UCS4 code point
+     * @return   array    Either Hangul Syllable decomposed or original 32bit value as one value array
      */
     private function hangulDecompose(int $codePoint): array
     {
-        $sIndex = $codePoint - self::S_BASE;
-        if ($sIndex < 0 || $sIndex >= self::S_COUNT) {
+        $sIndex = (int) $codePoint - self::sBase;
+        if ($sIndex < 0 || $sIndex >= self::sCount) {
             return [$codePoint];
         }
 
         $result = [
-            (int) self::L_BASE + $sIndex / self::N_COUNT,
-            (int) self::V_BASE + ($sIndex % self::N_COUNT) / self::T_COUNT,
+            (int) self::lBase + $sIndex / self::nCount,
+            (int) self::vBase + ($sIndex % self::nCount) / self::tCount,
         ];
-        $T = intval(self::T_BASE + $sIndex % self::T_COUNT);
-        if ($T != self::T_BASE) {
+        $T = intval(self::tBase + $sIndex % self::tCount);
+        if ($T != self::tBase) {
             $result[] = $T;
         }
 
@@ -166,6 +182,9 @@ class NamePrep implements NamePrepInterface
     /**
      * Compose a Hangul syllable
      * (see http://www.unicode.org/unicode/reports/tr15/#Hangul
+     *
+     * @param  array $input   Decomposed UCS4 sequence
+     * @return array UCS4 sequence with syllables composed
      */
     private function hangulCompose(array $input): array
     {
@@ -176,42 +195,45 @@ class NamePrep implements NamePrepInterface
 
         $previousCharCode = (int) $input[0];
 
-        $result = [$previousCharCode];
+        // copy first codepoint from input to output
+        $result = [
+            $previousCharCode,
+        ];
 
         for ($i = 1; $i < $inputLength; ++$i) {
             $charCode = (int) $input[$i];
-            $sIndex = $previousCharCode - self::S_BASE;
-            $lIndex = $previousCharCode - self::L_BASE;
-            $vIndex = $charCode - self::V_BASE;
-            $tIndex = $charCode - self::T_BASE;
+            $sIndex = $previousCharCode - self::sBase;
+            $lIndex = $previousCharCode - self::lBase;
+            $vIndex = $charCode - self::vBase;
+            $tIndex = $charCode - self::tBase;
 
-            // Determine if two current characters are LV and T
+            // Find out, whether two current characters are LV and T
             if (0 <= $sIndex
-                && $sIndex < self::S_COUNT
-                && ($sIndex % self::T_COUNT == 0)
+                && $sIndex < self::sCount
+                && ($sIndex % self::tCount == 0)
                 && 0 <= $tIndex
-                && $tIndex <= self::T_COUNT
+                && $tIndex <= self::tCount
             ) {
-                // Create syllable of form LVT
+                // create syllable of form LVT
                 $previousCharCode += $tIndex;
                 $result[(count($result) - 1)] = $previousCharCode; // reset last
 
                 continue; // discard char
             }
 
-            // Determine if two current characters form L and V
+            // Find out, whether two current characters form L and V
             if (0 <= $lIndex
-                && $lIndex < self::L_COUNT
+                && $lIndex < self::lCount
                 && 0 <= $vIndex
-                && $vIndex < self::V_COUNT
+                && $vIndex < self::vCount
             ) {
-                // Create syllable of form LV
-                $previousCharCode = (int) self::S_BASE + ($lIndex * self::V_COUNT + $vIndex) * self::T_COUNT;
+                // create syllable of form LV
+                $previousCharCode = (int) self::sBase + ($lIndex * self::vCount + $vIndex) * self::tCount;
                 $result[(count($result) - 1)] = $previousCharCode; // reset last
 
                 continue; // discard char
             }
-
+            // if neither case was true, just add the character
             $previousCharCode = $charCode;
             $result[] = $charCode;
         }
@@ -219,11 +241,21 @@ class NamePrep implements NamePrepInterface
         return $result;
     }
 
+    /**
+     * Returns the combining class of a certain wide char
+     * @param integer  $char  Wide char to check (32bit integer)
+     * @return integer Combining class if found, else 0
+     */
     private function getCombiningClass(int $char): int
     {
         return $this->namePrepData->normalizeCombiningClasses[$char] ?? 0;
     }
 
+    /**
+     * Applies the canonical ordering of a decomposed UCS4 sequence
+     * @param array  $input Decomposed UCS4 sequence
+     * @return array Ordered USC4 sequence
+     */
     private function applyCanonicalOrdering(array $input): array
     {
         $needsSwapping = true;
@@ -254,18 +286,39 @@ class NamePrep implements NamePrepInterface
         return $input;
     }
 
-    private function combine(array $input): ?int
+    /**
+     * Do composition of a sequence of starter and non-starter
+     * @param   array $input UCS4 Decomposed sequence
+     * @return  array|false  Ordered USC4 sequence
+     */
+    private function combine(array $input)
     {
-        if ($input === []) {
-            return null;
+        $inputLength = count($input);
+        if (0 === $inputLength) {
+            return false;
         }
 
         foreach ($this->namePrepData->replaceMaps as $namePrepSource => $namePrepTarget) {
-            if ($namePrepTarget === $input) {
+            if ($namePrepTarget[0] !== $input[0]) {
+                continue;
+            }
+            if (count($namePrepTarget) !== $inputLength) {
+                continue;
+            }
+            $hit = false;
+            foreach ($input as $k2 => $v2) {
+                if ($v2 === $namePrepTarget[$k2]) {
+                    $hit = true;
+                } else {
+                    $hit = false;
+                    break;
+                }
+            }
+            if ($hit) {
                 return $namePrepSource;
             }
         }
 
-        return null;
+        return false;
     }
 }

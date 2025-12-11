@@ -12,8 +12,8 @@ namespace Joomla\Component\Messages\Administrator\Model;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\FormModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\Database\ParameterType;
-use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -53,17 +53,17 @@ class ConfigModel extends FormModel
     /**
      * Method to get a single record.
      *
-     * @return  \stdClass|false  Object on success, false on failure.
+     * @return  mixed  Object on success, false on failure.
      *
      * @since   1.6
      */
     public function getItem()
     {
-        $item   = new Registry();
+        $item   = new CMSObject();
         $userid = (int) $this->getState('user.id');
 
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $query->select(
             [
                 $db->quoteName('cfg_name'),
@@ -130,7 +130,7 @@ class ConfigModel extends FormModel
         $db = $this->getDatabase();
 
         if ($userId = (int) $this->getState('user.id')) {
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->delete($db->quoteName('#__messages_cfg'))
                 ->where($db->quoteName('user_id') . ' = :userid')
                 ->bind(':userid', $userId, ParameterType::INTEGER);
@@ -145,7 +145,7 @@ class ConfigModel extends FormModel
             }
 
             if (\count($data)) {
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->insert($db->quoteName('#__messages_cfg'))
                     ->columns(
                         [

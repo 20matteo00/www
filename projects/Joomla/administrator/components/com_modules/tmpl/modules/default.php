@@ -200,10 +200,15 @@ if ($saveOrder && !empty($this->items)) {
 
         <?php // Load the batch processing form. ?>
         <?php
-        if ($this->batchAllowed) : ?>
+        if (
+            $user->authorise('core.create', 'com_modules')
+            && $user->authorise('core.edit', 'com_modules')
+            && $user->authorise('core.edit.state', 'com_modules')
+        ) : ?>
             <template id="joomla-dialog-batch"><?php echo $this->loadTemplate('batch_body'); ?></template>
         <?php endif; ?>
-
-        <?php echo $this->filterForm->renderControlFields(); ?>
+        <input type="hidden" name="task" value="">
+        <input type="hidden" name="boxchecked" value="0">
+        <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>

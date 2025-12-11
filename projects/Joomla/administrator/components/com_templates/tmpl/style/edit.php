@@ -143,6 +143,7 @@ $user = $this->getCurrentUser();
 
         <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
-        <?php echo $this->form->renderControlFields(); ?>
+        <input type="hidden" name="task" value="">
+        <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>

@@ -29,6 +29,19 @@ class StringController
      *
      * @return  array
      *
+     * @since   1.0
+     * @deprecated  2.0  Use `getArray` instead.
+     */
+    public static function _getArray()
+    {
+        return self::getArray();
+    }
+
+    /**
+     * Defines a variable as an array
+     *
+     * @return  array
+     *
      * @since   1.4.0
      */
     public static function getArray()

@@ -299,7 +299,7 @@ class FieldTable extends Table implements CurrentUserInterface
     private function getAssetId($name)
     {
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__assets'))
             ->where($db->quoteName('name') . ' = :name')

@@ -51,7 +51,7 @@ class AdministratorService
 
             // Get the associated newsfeed items
             $db    = Factory::getDbo();
-            $query = $db->createQuery();
+            $query = $db->getQuery(true);
             $query
                 ->select(
                     [

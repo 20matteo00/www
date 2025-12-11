@@ -105,7 +105,7 @@ class Extension extends Table
     {
         // Get the DatabaseQuery object
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         foreach ($options as $col => $val) {
             $query->where($col . ' = ' . $db->quote($val));

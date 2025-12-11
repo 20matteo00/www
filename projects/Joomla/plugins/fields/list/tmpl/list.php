@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
-/** @var \Joomla\Plugin\Fields\ListField\Extension\ListPlugin $this */
+/** @var \Joomla\CMS\Layout\FileLayout $this */
 $fieldValue = $field->value;
 
 if ($fieldValue == '') {

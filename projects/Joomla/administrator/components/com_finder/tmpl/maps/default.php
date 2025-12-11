@@ -168,7 +168,9 @@ $wa->useScript('com_finder.maps')
                 <?php endif; ?>
             </div>
 
-            <?php echo $this->filterForm->renderControlFields(); ?>
+            <input type="hidden" name="task" value="display">
+            <input type="hidden" name="boxchecked" value="0">
+            <?php echo HTMLHelper::_('form.token'); ?>
         </div>
     </div>
 </form>

@@ -19,8 +19,6 @@ $displayData = [
     'formURL'    => 'index.php?option=com_guidedtours&view=tours',
     'helpURL'    => 'https://docs.joomla.org/Special:MyLanguage/Help5.x:Guided_Tours',
     'icon'       => 'icon-map-signs',
-
-    'controlFields' => $this->filterForm->renderControlFields(),
 ];
 
 $user = $this->getCurrentUser();

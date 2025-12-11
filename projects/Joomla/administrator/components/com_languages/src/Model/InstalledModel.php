@@ -17,7 +17,7 @@ use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Table\Extension;
+use Joomla\CMS\Table\Table;
 use Joomla\Filesystem\Folder;
 use Joomla\Utilities\ArrayHelper;
 
@@ -288,7 +288,7 @@ class InstalledModel extends ListModel
             $params = ComponentHelper::getParams('com_languages');
             $params->set($client->name, $cid);
 
-            $table = new Extension($this->getDatabase());
+            $table = Table::getInstance('extension', 'Joomla\\CMS\\Table\\');
             $id    = $table->find(['element' => 'com_languages']);
 
             // Load.

@@ -198,7 +198,7 @@ final class UserGroupsHelper
         if ($this->total === null) {
             $db = Factory::getDbo();
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select('COUNT(' . $db->quoteName('id') . ')')
                 ->from($db->quoteName('#__usergroups'));
 
@@ -226,7 +226,7 @@ final class UserGroupsHelper
 
         $db = Factory::getDbo();
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__usergroups'))
             ->where($db->quoteName('id') . ' = :id')
@@ -256,7 +256,7 @@ final class UserGroupsHelper
 
         $db = Factory::getDbo();
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__usergroups'))
             ->order($db->quoteName('lft') . ' ASC');

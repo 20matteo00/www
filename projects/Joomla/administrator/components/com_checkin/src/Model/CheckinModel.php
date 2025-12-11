@@ -106,7 +106,7 @@ class CheckinModel extends ListModel
                 continue;
             }
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->update($db->quoteName($tn))
                 ->set($db->quoteName('checked_out') . ' = DEFAULT');
 
@@ -187,7 +187,7 @@ class CheckinModel extends ListModel
                     continue;
                 }
 
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->select('COUNT(*)')
                     ->from($db->quoteName($tn));
 

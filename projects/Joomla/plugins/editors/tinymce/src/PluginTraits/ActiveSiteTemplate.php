@@ -33,7 +33,7 @@ trait ActiveSiteTemplate
     protected function getActiveSiteTemplate()
     {
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__template_styles'))
             ->where(

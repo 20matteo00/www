@@ -109,11 +109,6 @@ class HtmlView extends BaseHtmlView
             }
         }
 
-        // Add form control fields
-        $this->filterForm
-            ->addControlField('task', '')
-            ->addControlField('boxchecked', '0');
-
         parent::display($tpl);
     }
 

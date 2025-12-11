@@ -11,7 +11,6 @@ namespace Joomla\CMS\UCM;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
-use Joomla\CMS\Table\CoreContent;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Table\TableInterface;
 use Joomla\Database\ParameterType;
@@ -116,7 +115,7 @@ class UCMContent extends UCMBase
             $pk = explode(',', $pk);
         }
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->delete($db->quoteName('#__ucm_content'))
             ->where($db->quoteName('core_type_id') . ' = :typeId')
             ->whereIn($db->quoteName('core_content_item_id'), $pk)
@@ -191,7 +190,7 @@ class UCMContent extends UCMBase
      */
     protected function store($data, ?TableInterface $table = null, $primaryKey = null)
     {
-        $table = $table ?: new CoreContent(Factory::getDbo());
+        $table = $table ?: Table::getInstance('CoreContent');
 
         $typeId     = $this->getType()->type->type_id;
         $primaryKey = $primaryKey ?: $this->getPrimaryKey($typeId, $data['core_content_item_id']);
@@ -225,7 +224,7 @@ class UCMContent extends UCMBase
     public function getPrimaryKey($typeId, $contentItemId)
     {
         $db    = Factory::getDbo();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('ucm_id'))
             ->from($db->quoteName('#__ucm_base'))
             ->where(

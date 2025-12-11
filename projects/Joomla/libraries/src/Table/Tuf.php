@@ -10,8 +10,6 @@
 namespace Joomla\CMS\Table;
 
 // phpcs:disable PSR1.Files.SideEffects
-use Joomla\Database\DatabaseInterface;
-
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
@@ -25,11 +23,11 @@ class Tuf extends Table
     /**
      * Constructor
      *
-     * @param   DatabaseInterface  $db  A database connector object
+     * @param   \Joomla\Database\DatabaseDriver  $db  A database connector object
      *
      * @since   5.1.0
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct($db)
     {
         parent::__construct('#__tuf_metadata', 'id', $db);
     }

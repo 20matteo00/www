@@ -11,6 +11,7 @@ namespace Joomla\CMS\HTML\Helpers;
 
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Object\CMSObject;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -57,7 +58,7 @@ abstract class AdminLanguage
         }
 
         if ($all) {
-            $all_option = [(object) ['value' => '*', 'text' => $translate ? Text::alt('JALL', 'language') : 'JALL_LANGUAGE']];
+            $all_option = [new CMSObject(['value' => '*', 'text' => $translate ? Text::alt('JALL', 'language') : 'JALL_LANGUAGE'])];
 
             return array_merge($all_option, static::$items);
         }

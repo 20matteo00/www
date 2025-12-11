@@ -54,7 +54,7 @@ class MenuOrderingField extends ListField
         }
 
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('a.id', 'value'),

@@ -136,7 +136,7 @@ class MailModel extends AdminModel
         } else {
             // Get all users email and group except for senders
             $uid   = (int) $user->id;
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select(
                     [
                         $db->quoteName('email'),

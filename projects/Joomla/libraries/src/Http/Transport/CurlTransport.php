@@ -27,8 +27,6 @@ use Laminas\Diactoros\Stream as StreamResponse;
  * HTTP transport class for using cURL.
  *
  * @since  1.7.3
- * @deprecated  6.0.0 will be removed in 7.0
- *              Use Joomla\Http\Transport\Curl instead
  */
 class CurlTransport extends AbstractTransport implements TransportInterface
 {
@@ -44,10 +42,8 @@ class CurlTransport extends AbstractTransport implements TransportInterface
      *
      * @return  Response
      *
-     * @throws  \RuntimeException
      * @since   1.7.3
-     * @deprecated  6.0.0 will be removed in 7.0
-     *              Use Joomla\Http\Transport\Curl::request() instead
+     * @throws  \RuntimeException
      */
     public function request($method, UriInterface $uri, $data = null, array $headers = [], $timeout = null, $userAgent = null)
     {
@@ -218,10 +214,8 @@ class CurlTransport extends AbstractTransport implements TransportInterface
      *
      * @return  Response
      *
-     * @throws  InvalidResponseCodeException
      * @since   1.7.3
-     * @deprecated  6.0.0 will be removed in 7.0
-     *              Use Joomla\Http\Transport\Curl::getResponse() instead
+     * @throws  InvalidResponseCodeException
      */
     protected function getResponse($content, $info)
     {
@@ -279,8 +273,6 @@ class CurlTransport extends AbstractTransport implements TransportInterface
      * @return boolean true if available, else false
      *
      * @since   3.0.0
-     * @deprecated  6.0.0 will be removed in 7.0
-     *              Use Joomla\Http\Transport\Curl::isSupported() instead
      */
     public static function isSupported()
     {
@@ -293,8 +285,6 @@ class CurlTransport extends AbstractTransport implements TransportInterface
      * @return  boolean
      *
      * @since   3.0.0
-     * @deprecated  6.0.0 will be removed in 7.0
-     *              Use Joomla\Http\Transport\Curl::redirectsAllowed() instead
      */
     private function redirectsAllowed()
     {

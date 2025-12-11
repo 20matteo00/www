@@ -38,7 +38,7 @@ class DebugHelper
     {
         // Initialise variable.
         $db    = Factory::getDbo();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('name AS text, element AS value')
             ->from('#__extensions')
             ->where('enabled >= 1')

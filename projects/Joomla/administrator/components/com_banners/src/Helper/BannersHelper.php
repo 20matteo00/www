@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 use Joomla\Database\ParameterType;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -42,7 +43,7 @@ class BannersHelper extends ContentHelper
         $app     = Factory::getApplication();
         $user    = $app->getIdentity();
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__banners'))
             ->where(
@@ -77,7 +78,7 @@ class BannersHelper extends ContentHelper
 
             if ($purchaseType < 0 && $row->cid) {
                 /** @var \Joomla\Component\Banners\Administrator\Table\ClientTable $client */
-                $client = $app->bootComponent('com_banners')->getMVCFactory()->createTable('Client', 'Administrator');
+                $client = Table::getInstance('ClientTable', '\\Joomla\\Component\\Banners\\Administrator\\Table\\');
                 $client->load($row->cid);
                 $purchaseType = $client->purchase_type;
             }
@@ -110,7 +111,7 @@ class BannersHelper extends ContentHelper
             }
 
             // Update the row ordering field.
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->update($db->quoteName('#__banners'))
                 ->set(
                     [
@@ -147,7 +148,7 @@ class BannersHelper extends ContentHelper
         $options = [];
 
         $db    = Factory::getDbo();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('id', 'value'),

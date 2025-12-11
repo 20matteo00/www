@@ -17,6 +17,7 @@ use Joomla\CMS\Tag\TaggableTableInterface;
 use Joomla\CMS\Tag\TaggableTableTrait;
 use Joomla\CMS\User\CurrentUserInterface;
 use Joomla\CMS\User\CurrentUserTrait;
+use Joomla\CMS\Versioning\VersionableTableInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Event\DispatcherInterface;
@@ -31,7 +32,7 @@ use Joomla\Registry\Registry;
  *
  * @since  1.5
  */
-class Category extends Nested implements TaggableTableInterface, CurrentUserInterface
+class Category extends Nested implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {
     use TaggableTableTrait;
     use CurrentUserTrait;
@@ -55,7 +56,7 @@ class Category extends Nested implements TaggableTableInterface, CurrentUserInte
     public function __construct(DatabaseInterface $db, ?DispatcherInterface $dispatcher = null)
     {
         /**
-         * @deprecated  4.0 will be removed in 7.0
+         * @deprecated  4.0 will be removed in 6.0
          *              This format was used by tags and versioning before 4.0 before
          *              the introduction of the getTypeAlias function.
          */
@@ -111,7 +112,7 @@ class Category extends Nested implements TaggableTableInterface, CurrentUserInte
 
         if ($this->parent_id > 1) {
             // Build the query to get the asset id for the parent category.
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('asset_id'))
                 ->from($db->quoteName('#__categories'))
                 ->where($db->quoteName('id') . ' = :parentId')
@@ -126,7 +127,7 @@ class Category extends Nested implements TaggableTableInterface, CurrentUserInte
         } elseif ($assetId === null) {
             // This is a category that needs to parent with the extension.
             // Build the query to get the asset id for the parent category.
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__assets'))
                 ->where($db->quoteName('name') . ' = :extension')

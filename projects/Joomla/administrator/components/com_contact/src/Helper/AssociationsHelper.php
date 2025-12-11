@@ -11,11 +11,8 @@
 namespace Joomla\Component\Contact\Administrator\Helper;
 
 use Joomla\CMS\Association\AssociationExtensionHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Table\Category;
 use Joomla\CMS\Table\Table;
-use Joomla\Component\Contact\Administrator\Table\ContactTable;
 use Joomla\Component\Contact\Site\Helper\AssociationHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -127,11 +124,11 @@ class AssociationsHelper extends AssociationExtensionHelper
 
         switch ($typeName) {
             case 'contact':
-                $table = new ContactTable(Factory::getDbo());
+                $table = Table::getInstance('ContactTable', 'Joomla\\Component\\Contact\\Administrator\\Table\\');
                 break;
 
             case 'category':
-                $table = new Category(Factory::getDbo());
+                $table = Table::getInstance('Category');
                 break;
         }
 

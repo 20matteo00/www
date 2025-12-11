@@ -36,7 +36,7 @@ class ConfigHelper extends ContentHelper
     public static function getAllComponents()
     {
         $db    = Factory::getDbo();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('element')
             ->from('#__extensions')
             ->where('type = ' . $db->quote('component'))

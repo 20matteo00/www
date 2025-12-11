@@ -263,7 +263,7 @@ abstract class PluginHelper
 
         $loader = function () use ($levels) {
             $db    = Factory::getDbo();
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select(
                     $db->quoteName(
                         [

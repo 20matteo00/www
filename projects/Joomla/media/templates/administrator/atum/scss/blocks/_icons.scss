@@ -14,8 +14,8 @@
   [class*=" #{$jicon-css-prefix}-"],
   [class^="#{$fa-css-prefix}-"],
   [class*=" #{$fa-css-prefix}-"] {
-    inline-size: 26px;
-    block-size: 26px;
+    width: 26px;
+    height: 26px;
     font-size: 1rem;
     line-height: 22px;
     color: $gray-400;
@@ -47,8 +47,8 @@
   .#{$jicon-css-prefix}-checkedout,
   .#{$jicon-css-prefix}-lock,
   .#{$fa-css-prefix}-lock {
-    inline-size: auto;
-    block-size: auto;
+    width: auto;
+    height: auto;
     font-size: 1.2rem;
     line-height: 1rem;
     color: $icon-checkedout-color; // var(--template-text-dark);
@@ -73,7 +73,7 @@
 
 // WebAuthn
 .plg_system_webauthn_login_button svg {
-  inline-size: 30px;
+  width: 30px;
   margin: 4px;
 }
 

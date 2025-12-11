@@ -21,8 +21,7 @@ use Joomla\CMS\Router\Route;
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('keepalive')
-    ->useScript('form.validate')
-    ->useScript('com_users.activate-user-send-email');
+    ->useScript('form.validate');
 
 $input = Factory::getApplication()->getInput();
 
@@ -77,5 +76,7 @@ $this->useCoreUI = true;
         <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
     </div>
 
-    <?php echo $this->form->renderControlFields(); ?>
+    <input type="hidden" name="task" value="">
+    <input type="hidden" name="return" value="<?php echo $input->getBase64('return'); ?>">
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>

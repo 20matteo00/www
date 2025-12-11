@@ -19,7 +19,6 @@ use Joomla\Language\StemmerInterface;
  * See copyright and link information above.
  *
  * @since  1.0
- * @deprecated  5.0  Use wamania/php-stemmer instead
  */
 class Porteren implements StemmerInterface
 {

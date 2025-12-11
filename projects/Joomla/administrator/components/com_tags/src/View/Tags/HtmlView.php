@@ -113,11 +113,6 @@ class HtmlView extends BaseHtmlView
             $this->ordering[$item->parent_id][] = $item->id;
         }
 
-        // Add form control fields
-        $this->filterForm
-            ->addControlField('task', '')
-            ->addControlField('boxchecked', '0');
-
         // We don't need toolbar in the modal window.
         if ($this->getLayout() !== 'modal') {
             $this->addToolbar();

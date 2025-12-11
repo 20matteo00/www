@@ -26,7 +26,6 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Table\Category;
 use Joomla\CMS\UCM\UCMType;
-use Joomla\CMS\Versioning\VersionableModelInterface;
 use Joomla\CMS\Versioning\VersionableModelTrait;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
 use Joomla\Database\ParameterType;
@@ -44,7 +43,7 @@ use Joomla\Utilities\ArrayHelper;
  *
  * @since  1.6
  */
-class CategoryModel extends AdminModel implements VersionableModelInterface
+class CategoryModel extends AdminModel
 {
     use VersionableModelTrait;
 
@@ -338,12 +337,18 @@ class CategoryModel extends AdminModel implements VersionableModelInterface
                 $extension = substr($app->getUserState('com_categories.categories.filter.extension', ''), 4);
                 $filters   = (array) $app->getUserState('com_categories.categories.' . $extension . '.filter');
 
-                $data->published = $app->getInput()->getInt(
+                $data->set(
                     'published',
-                    ((isset($filters['published']) && $filters['published'] !== '') ? $filters['published'] : null)
+                    $app->getInput()->getInt(
+                        'published',
+                        ((isset($filters['published']) && $filters['published'] !== '') ? $filters['published'] : null)
+                    )
                 );
-                $data->language = $app->getInput()->getString('language', (!empty($filters['language']) ? $filters['language'] : null));
-                $data->access   = $app->getInput()->getInt('access', (!empty($filters['access']) ? $filters['access'] : $app->get('access')));
+                $data->set('language', $app->getInput()->getString('language', (!empty($filters['language']) ? $filters['language'] : null)));
+                $data->set(
+                    'access',
+                    $app->getInput()->getInt('access', (!empty($filters['access']) ? $filters['access'] : $app->get('access')))
+                );
             }
         }
 
@@ -606,7 +611,7 @@ class CategoryModel extends AdminModel implements VersionableModelInterface
             // Get associationskey for edited item
             $db    = $this->getDatabase();
             $id    = (int) $table->id;
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('key'))
                 ->from($db->quoteName('#__associations'))
                 ->where($db->quoteName('context') . ' = :associationscontext')
@@ -620,7 +625,7 @@ class CategoryModel extends AdminModel implements VersionableModelInterface
                 $where = [];
 
                 // Deleting old associations for the associated items
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->delete($db->quoteName('#__associations'))
                     ->where($db->quoteName('context') . ' = :associationscontext')
                     ->bind(':associationscontext', $this->associationsContext);
@@ -709,12 +714,6 @@ class CategoryModel extends AdminModel implements VersionableModelInterface
         }
 
         $this->setState($this->getName() . '.id', $table->id);
-
-        /**
-         * Save the version history. We need to call saveHistory method manually because category model does not
-         * call parent::save()
-         */
-        $this->saveHistory($data, $this->typeAlias);
 
         if (Factory::getApplication()->getInput()->get('task') == 'editAssociations') {
             return $this->redirectToAssociations($data);
@@ -826,7 +825,7 @@ class CategoryModel extends AdminModel implements VersionableModelInterface
         $successful = [];
 
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         /**
          * For each category get the max ordering value
@@ -935,7 +934,7 @@ class CategoryModel extends AdminModel implements VersionableModelInterface
         $parents = [];
 
         // Calculate the emergency stop count as a precaution against a runaway loop bug
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('COUNT(' . $db->quoteName('id') . ')')
             ->from($db->quoteName('#__categories'));
         $db->setQuery($query);
@@ -1086,7 +1085,7 @@ class CategoryModel extends AdminModel implements VersionableModelInterface
         $this->type = $type->getTypeByAlias($this->typeAlias);
 
         $db        = $this->getDatabase();
-        $query     = $db->createQuery();
+        $query     = $db->getQuery(true);
         $extension = Factory::getApplication()->getInput()->get('extension', '', 'word');
 
         // Check that the parent exists.
@@ -1218,13 +1217,15 @@ class CategoryModel extends AdminModel implements VersionableModelInterface
     /**
      * Custom clean the cache of com_content and content modules
      *
-     * @param  string  $group  Cache group name.
+     * @param   string   $group     Cache group name.
+     * @param   integer  $clientId  No longer used, will be removed without replacement
+     *                              @deprecated   4.3 will be removed in 6.0
      *
      * @return  void
      *
      * @since   1.6
      */
-    protected function cleanCache($group = null)
+    protected function cleanCache($group = null, $clientId = 0)
     {
         $extension = Factory::getApplication()->getInput()->get('extension');
 

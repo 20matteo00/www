@@ -44,7 +44,7 @@ class NewsfeedsField extends ListField
         $options = [];
 
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('id', 'value'),

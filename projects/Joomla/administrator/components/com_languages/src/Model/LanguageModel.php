@@ -16,8 +16,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Table\Language;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 
@@ -70,7 +70,7 @@ class LanguageModel extends AdminModel
      */
     public function getTable($name = '', $prefix = '', $options = [])
     {
-        return new Language($this->getDatabase());
+        return Table::getInstance('Language', 'Joomla\\CMS\\Table\\');
     }
 
     /**
@@ -127,7 +127,7 @@ class LanguageModel extends AdminModel
         }
 
         $properties = $table->getProperties(1);
-        $value      = ArrayHelper::toObject($properties);
+        $value      = ArrayHelper::toObject($properties, CMSObject::class);
 
         return $value;
     }
@@ -267,13 +267,15 @@ class LanguageModel extends AdminModel
     /**
      * Custom clean cache method.
      *
-     * @param  string  $group  Cache group name.
+     * @param   string   $group     Optional cache group name.
+     * @param   integer  $clientId  No longer used, will be removed without replacement
+     *                              @deprecated   4.3 will be removed in 6.0
      *
      * @return  void
      *
      * @since   1.6
      */
-    protected function cleanCache($group = null)
+    protected function cleanCache($group = null, $clientId = 0)
     {
         parent::cleanCache('_system');
         parent::cleanCache('com_languages');

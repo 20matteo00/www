@@ -62,7 +62,7 @@ final class Consents extends PrivacyPlugin implements SubscriberInterface
         $domain = $this->createDomain('consents', 'joomla_consent_data');
         $db     = $this->getDatabase();
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__privacy_consents'))
             ->where($db->quoteName('user_id') . ' = :id')

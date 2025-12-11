@@ -21,7 +21,7 @@ if ($value == '') {
 
 $db    = Factory::getDbo();
 $value = (array) $value;
-$query = $db->createQuery();
+$query = $db->getQuery(true);
 $sql   = $fieldParams->get('query', '');
 
 $bindNames = $query->bindArray($value, ParameterType::STRING);

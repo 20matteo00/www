@@ -227,7 +227,8 @@
       "dependencies": [
         "core",
         "codemirror",
-        "editors"
+        "editors",
+        "wcpolyfill"
       ],
       "attributes": {
         "type": "module"

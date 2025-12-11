@@ -62,19 +62,17 @@ $finderHelper = $app->bootModule('mod_finder', 'site')->getHelper('FinderHelper'
 
 ?>
 
-<search>
-    <form class="mod-finder js-finder-searchform form-search" action="<?php echo Route::_($route); ?>" method="get" aria-label="search">
-        <?php echo $output; ?>
+<form class="mod-finder js-finder-searchform form-search" action="<?php echo Route::_($route); ?>" method="get" role="search">
+    <?php echo $output; ?>
 
-        <?php $show_advanced = $params->get('show_advanced', 0); ?>
-        <?php if ($show_advanced == 2) : ?>
-            <br>
-            <a href="<?php echo Route::_($route); ?>" class="mod-finder__advanced-link"><?php echo Text::_('COM_FINDER_ADVANCED_SEARCH'); ?></a>
-        <?php elseif ($show_advanced == 1) : ?>
-            <div class="mod-finder__advanced js-finder-advanced">
-                <?php echo HTMLHelper::_('filter.select', $query, $params); ?>
-            </div>
-        <?php endif; ?>
-        <?php echo $finderHelper->getHiddenFields($route); ?>
-    </form>
-</search>
+    <?php $show_advanced = $params->get('show_advanced', 0); ?>
+    <?php if ($show_advanced == 2) : ?>
+        <br>
+        <a href="<?php echo Route::_($route); ?>" class="mod-finder__advanced-link"><?php echo Text::_('COM_FINDER_ADVANCED_SEARCH'); ?></a>
+    <?php elseif ($show_advanced == 1) : ?>
+        <div class="mod-finder__advanced js-finder-advanced">
+            <?php echo HTMLHelper::_('filter.select', $query, $params); ?>
+        </div>
+    <?php endif; ?>
+    <?php echo $finderHelper->getHiddenFields($route); ?>
+</form>

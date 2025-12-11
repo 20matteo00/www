@@ -12,7 +12,7 @@ namespace Joomla\Component\Categories\Administrator\Helper;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Associations;
-use Joomla\Component\Categories\Administrator\Table\CategoryTable;
+use Joomla\CMS\Table\Table;
 use Joomla\Database\ParameterType;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -47,7 +47,7 @@ class CategoriesHelper
             $assocId = (int) $arrId[0];
             $db      = Factory::getDbo();
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('published'))
                 ->from($db->quoteName('#__categories'))
                 ->whereIn($db->quoteName('access'), $groups)
@@ -74,7 +74,7 @@ class CategoriesHelper
      */
     public static function validateCategoryId($catid, $extension)
     {
-        $categoryTable = new CategoryTable(Factory::getDbo());
+        $categoryTable = Table::getInstance('CategoryTable', '\\Joomla\\Component\\Categories\\Administrator\\Table\\');
 
         $data              = [];
         $data['id']        = $catid;

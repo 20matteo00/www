@@ -16,6 +16,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\Filesystem\Path;
 use Joomla\Registry\Registry;
@@ -175,9 +176,9 @@ class TemplateModel extends AdminModel
             }
         }
 
-        // Convert to an object before adding other data.
+        // Convert to the CMSObject before adding other data.
         $properties = $table->getProperties(1);
-        $item       = ArrayHelper::toObject($properties);
+        $item       = ArrayHelper::toObject($properties, CMSObject::class);
 
         if (property_exists($item, 'params')) {
             $registry     = new Registry($item->params);
@@ -221,9 +222,9 @@ class TemplateModel extends AdminModel
             }
         }
 
-        // Convert to an object before adding other data.
+        // Convert to the CMSObject before adding other data.
         $properties = $table->getProperties(1);
-        $item       = ArrayHelper::toObject($properties);
+        $item       = ArrayHelper::toObject($properties, CMSObject::class);
 
         if (property_exists($item, 'params')) {
             $registry     = new Registry($item->params);

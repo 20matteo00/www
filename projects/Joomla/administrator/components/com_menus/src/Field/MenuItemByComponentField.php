@@ -43,7 +43,7 @@ class MenuItemByComponentField extends ListField
         $db      = $this->getDatabase();
         $options = [];
 
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $query->select('DISTINCT ' . $db->quoteName('extensions.element'))
             ->from($db->quoteName('#__menu', 'menu'))
             ->join(

@@ -165,7 +165,7 @@ class MapsModel extends ListModel
         $db = $this->getDatabase();
 
         // Select all fields from the table.
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('a.id, a.parent_id, a.lft, a.rgt, a.level, a.path, a.title, a.alias, a.state, a.access, a.language')
             ->from($db->quoteName('#__finder_taxonomy', 'a'))
             ->where('a.parent_id != 0');
@@ -175,7 +175,7 @@ class MapsModel extends ListModel
             ->leftJoin($db->quoteName('#__finder_taxonomy', 'b') . ' ON b.level = 1 AND b.lft <= a.lft AND a.rgt <= b.rgt');
 
         // Join to get the map links.
-        $stateQuery = $db->createQuery()
+        $stateQuery = $db->getQuery(true)
             ->select('m.node_id')
             ->select('COUNT(NULLIF(l.published, 0)) AS count_published')
             ->select('COUNT(NULLIF(l.published, 1)) AS count_unpublished')
@@ -363,7 +363,7 @@ class MapsModel extends ListModel
     public function purge()
     {
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->delete($db->quoteName('#__finder_taxonomy'))
             ->where($db->quoteName('parent_id') . ' > 1');
         $db->setQuery($query);

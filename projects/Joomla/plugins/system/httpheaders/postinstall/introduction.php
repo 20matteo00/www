@@ -39,7 +39,7 @@ function httpheaders_postinstall_action()
     // Enable the plugin
     $db = Factory::getDbo();
 
-    $query = $db->createQuery()
+    $query = $db->getQuery(true)
         ->update($db->quoteName('#__extensions'))
         ->set($db->quoteName('enabled') . ' = 1')
         ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
@@ -48,7 +48,7 @@ function httpheaders_postinstall_action()
     $db->setQuery($query);
     $db->execute();
 
-    $query = $db->createQuery()
+    $query = $db->getQuery(true)
         ->select('extension_id')
         ->from($db->quoteName('#__extensions'))
         ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))

@@ -11,6 +11,7 @@ namespace Joomla\CMS\UCM;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\Table\TableInterface;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -77,7 +78,7 @@ class UCMBase implements UCM
     protected function store($data, ?TableInterface $table = null, $primaryKey = null)
     {
         if (!$table) {
-            $table = new \Joomla\CMS\Table\Ucm(Factory::getDbo());
+            $table = Table::getInstance('Ucm');
         }
 
         $ucmId      = $data['ucm_id'] ?? null;

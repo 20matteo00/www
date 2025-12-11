@@ -1,21 +1,21 @@
 ﻿:root {
-  --color-1: var(--c1, #022347);
-  --color-2: var(--c2, #dd1111);
-  --color-3: var(--c3, #28a745);
-  --color-4: var(--c4, #ffc107);
+  --color-1: var(--c1, #b01919);
+  --color-2: var(--c2, #ffffff);
+  --color-3: var(--c3, #ca5858);
+  --color-4: var(--c4, #3c3c3c);
 }
 
 /*FONT*/
 @font-face {
   font-family: "TitilliumWeb";
-  src: url("/media/templates/site/templatebaseld/fonts/TitilliumWeb/TitilliumWeb-Regular.ttf") format("truetype");
+  src: url("../fonts/TitilliumWeb/TitilliumWeb-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Roboto";
-  src: url("/media/templates/site/templatebaseld/fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  src: url("../fonts/Roboto/Roboto-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -24,15 +24,7 @@ body {
   font-family: "TitilliumWeb", sans-serif;
 }
 
-a {
-  color: var(--color-2);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
+/*COLORS*/
 .bg-primary {
   background-color: var(--color-1) !important;
 }
@@ -65,8 +57,38 @@ a:hover {
   color: var(--color-4) !important;
 }
 
+.border-primary {
+  border: 2px solid var(--color-1) !important;
+}
+
+.border-secondary {
+  border: 2px solid var(--color-2) !important;
+}
+
+.border-tertiary {
+  border: 2px solid var(--color-3) !important;
+}
+
+.border-quaternary {
+  border: 2px solid var(--color-4) !important;
+}
+
+
+/*NAVBAR*/
+.navbar .menu-toggle {
+  cursor: pointer;
+}
+.navbar a, .navbar span {
+  color: var(--color-2) !important;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: var(--color-3) !important;
+  text-decoration: underline;
+}
+
 .navbar-brand img{
   width: 100%;
   max-height: 80px;
-  aspect-ratio: 2 / 3;
 }

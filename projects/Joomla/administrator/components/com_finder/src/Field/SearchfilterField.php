@@ -44,7 +44,7 @@ class SearchfilterField extends ListField
     {
         // Build the query.
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('f.title AS text, f.filter_id AS value')
             ->from($db->quoteName('#__finder_filters') . ' AS f')
             ->where('f.state = 1')

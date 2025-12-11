@@ -67,7 +67,7 @@ final class Contact extends PrivacyPlugin implements SubscriberInterface
         $domains[] = $domain;
         $db        = $this->getDatabase();
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__contact_details'))
             ->order($db->quoteName('ordering') . ' ASC');

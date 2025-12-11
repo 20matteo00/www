@@ -123,6 +123,8 @@ $urgentRequestDate->sub(new DateInterval('P' . $this->urgentRequestAge . 'D'));
 
         <?php endif; ?>
 
-        <?php echo $this->filterForm->renderControlFields(); ?>
+        <input type="hidden" name="task" value="" />
+        <input type="hidden" name="boxchecked" value="0" />
+        <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>

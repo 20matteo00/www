@@ -512,7 +512,7 @@ class MailTemplate
     public static function getTemplate($key, $language)
     {
         $db    = Factory::getDbo();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $query->select('*')
             ->from($db->quoteName('#__mail_templates'))
             ->where($db->quoteName('template_id') . ' = :key')
@@ -603,7 +603,7 @@ class MailTemplate
     public static function deleteTemplate($key)
     {
         $db    = Factory::getDbo();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $query->delete($db->quoteName('#__mail_templates'))
             ->where($db->quoteName('template_id') . ' = :key')
             ->bind(':key', $key);

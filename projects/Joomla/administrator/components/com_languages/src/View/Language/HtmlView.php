@@ -77,10 +77,6 @@ class HtmlView extends BaseHtmlView
         $this->state = $model->getState();
         $this->canDo = ContentHelper::getActions('com_languages');
 
-        // Add form control fields
-        $this->form
-            ->addControlField('task', '');
-
         $this->addToolbar();
         parent::display($tpl);
     }

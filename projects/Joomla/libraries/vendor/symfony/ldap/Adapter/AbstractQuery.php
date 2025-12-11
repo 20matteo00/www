@@ -19,14 +19,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class AbstractQuery implements QueryInterface
 {
-    protected array $options;
+    protected $connection;
+    protected $dn;
+    protected $query;
+    protected $options;
 
-    public function __construct(
-        protected ConnectionInterface $connection,
-        protected string $dn,
-        protected string $query,
-        array $options = [],
-    ) {
+    public function __construct(ConnectionInterface $connection, string $dn, string $query, array $options = [])
+    {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'filter' => '*',
@@ -43,8 +42,9 @@ abstract class AbstractQuery implements QueryInterface
 
         $resolver->setNormalizer('filter', fn (Options $options, $value) => \is_array($value) ? $value : [$value]);
 
-        $resolver->setDeprecated('sizeLimit', 'symfony/ldap', '7.2', 'The "%name%" option is deprecated and will be removed in Symfony 8.0.');
-
+        $this->connection = $connection;
+        $this->dn = $dn;
+        $this->query = $query;
         $this->options = $resolver->resolve($options);
     }
 }

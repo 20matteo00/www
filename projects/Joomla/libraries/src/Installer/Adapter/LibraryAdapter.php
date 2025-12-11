@@ -14,7 +14,7 @@ use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Installer\Manifest\LibraryManifest;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\Table\Extension;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\Table\Update;
 use Joomla\Database\ParameterType;
 use Joomla\Filesystem\File;
@@ -55,7 +55,7 @@ class LibraryAdapter extends InstallerAdapter
 
                 // Clear the cached data
                 $this->currentExtensionId = null;
-                $this->extension          = new Extension($this->getDatabase());
+                $this->extension          = Table::getInstance('Extension', '\\Joomla\\CMS\\Table\\', ['dbo' => $this->getDatabase()]);
 
                 // From this point we'll consider this an update
                 $this->setRoute('update');
@@ -92,7 +92,8 @@ class LibraryAdapter extends InstallerAdapter
     protected function finaliseInstall()
     {
         // Clobber any possible pending updates
-        $update = new Update($this->getDatabase());
+        /** @var Update $update */
+        $update = Table::getInstance('update');
         $uid    = $update->find(
             [
                 'element' => $this->element,
@@ -168,7 +169,7 @@ class LibraryAdapter extends InstallerAdapter
         $db = $this->getDatabase();
 
         // Remove the schema version
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->delete('#__schemas')
             ->where('extension_id = :extension_id')
             ->bind(':extension_id', $extensionId, ParameterType::INTEGER);
@@ -176,7 +177,7 @@ class LibraryAdapter extends InstallerAdapter
         $db->execute();
 
         // Clobber any possible pending updates
-        $update = new Update($this->getDatabase());
+        $update = Table::getInstance('update');
         $uid    = $update->find(
             [
                 'element' => $this->extension->element,
@@ -461,7 +462,7 @@ class LibraryAdapter extends InstallerAdapter
             $element       = str_replace([$mainFolder . DIRECTORY_SEPARATOR, '.xml'], '', $file);
             $manifestCache = Installer::parseXMLInstallFile($file);
 
-            $extension                 = new Extension($this->getDatabase());
+            $extension                 = Table::getInstance('extension');
             $extension->type           = 'library';
             $extension->client_id      = 0;
             $extension->element        = $element;

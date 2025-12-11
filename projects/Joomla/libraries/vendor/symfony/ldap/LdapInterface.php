@@ -16,10 +16,9 @@ use Symfony\Component\Ldap\Adapter\QueryInterface;
 use Symfony\Component\Ldap\Exception\ConnectionException;
 
 /**
- * @author Charles Sarrazin <charles@sarraz.in>
+ * Ldap interface.
  *
- * @method void   saslBind(?string $dn = null, #[\SensitiveParameter] ?string $password = null, ?string $mech = null, ?string $realm = null, ?string $authcId = null, ?string $authzId = null, ?string $props =  null)
- * @method string whoami()
+ * @author Charles Sarrazin <charles@sarraz.in>
  */
 interface LdapInterface
 {
@@ -27,23 +26,13 @@ interface LdapInterface
     public const ESCAPE_DN = 0x02;
 
     /**
-     * Returns a connection bound to the ldap.
+     * Return a connection bound to the ldap.
+     *
+     * @return void
      *
      * @throws ConnectionException if dn / password could not be bound
      */
-    public function bind(?string $dn = null, #[\SensitiveParameter] ?string $password = null): void;
-
-    /**
-     * Returns a connection bound to the ldap using SASL.
-     *
-     * @throws ConnectionException if dn / password could not be bound
-     */
-    // public function saslBind(?string $dn = null, #[\SensitiveParameter] ?string $password = null, ?string $mech = null, ?string $realm = null, ?string $authcId = null, ?string $authzId = null, ?string $props = null): void;
-
-    /**
-     * Returns authenticated and authorized (for SASL) DN.
-     */
-    // public function whoami(): string;
+    public function bind(?string $dn = null, #[\SensitiveParameter] ?string $password = null);
 
     /**
      * Queries a ldap server for entries matching the given criteria.

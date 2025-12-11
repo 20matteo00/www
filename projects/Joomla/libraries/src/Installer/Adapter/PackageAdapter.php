@@ -18,6 +18,7 @@ use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\CMS\Installer\Manifest\PackageManifest;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\Table\Update;
 use Joomla\Database\Exception\ExecutionFailureException;
 use Joomla\Database\ParameterType;
@@ -205,7 +206,8 @@ class PackageAdapter extends InstallerAdapter
     protected function finaliseInstall()
     {
         // Clobber any possible pending updates
-        $update = new Update($this->getDatabase());
+        /** @var Update $update */
+        $update = Table::getInstance('update');
         $uid    = $update->find(
             [
                 'element' => $this->element,
@@ -220,7 +222,7 @@ class PackageAdapter extends InstallerAdapter
         // Set the package ID for each of the installed extensions to track the relationship
         if (!empty($this->installedIds)) {
             $db    = $this->getDatabase();
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->update($db->quoteName('#__extensions'))
                 ->set($db->quoteName('package_id') . ' = :id')
                 ->whereIn($db->quoteName('extension_id'), $this->installedIds)
@@ -307,7 +309,7 @@ class PackageAdapter extends InstallerAdapter
         $db = $this->getDatabase();
 
         // Remove the schema version
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->delete($db->quoteName('#__schemas'))
             ->where($db->quoteName('extension_id') . ' = :extension_id')
             ->bind(':extension_id', $this->extension->extension_id, ParameterType::INTEGER);
@@ -315,7 +317,7 @@ class PackageAdapter extends InstallerAdapter
         $db->execute();
 
         // Clobber any possible pending updates
-        $update = new Update($this->getDatabase());
+        $update = Table::getInstance('update');
         $uid    = $update->find(
             [
                 'element' => $this->extension->element,
@@ -653,7 +655,7 @@ class PackageAdapter extends InstallerAdapter
     {
         $db = $this->getDatabase();
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'))
             ->where(

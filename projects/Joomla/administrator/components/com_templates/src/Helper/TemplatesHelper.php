@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\Database\ParameterType;
 use Joomla\Filesystem\Path;
 
@@ -54,7 +55,7 @@ class TemplatesHelper
     {
         // Build the filter options.
         $db    = Factory::getDbo();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         $query->select($db->quoteName('element', 'value'))
             ->select($db->quoteName('name', 'text'))
@@ -81,11 +82,11 @@ class TemplatesHelper
      * @param   string  $templateBaseDir
      * @param   string  $templateDir
      *
-     * @return \stdClass|false
+     * @return boolean|CMSObject
      */
     public static function parseXMLTemplateFile($templateBaseDir, $templateDir)
     {
-        $data = new \stdClass();
+        $data = new CMSObject();
 
         // Check of the xml file exists
         $filePath = Path::clean($templateBaseDir . '/templates/' . $templateDir . '/templateDetails.xml');

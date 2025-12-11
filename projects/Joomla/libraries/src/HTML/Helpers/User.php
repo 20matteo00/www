@@ -70,7 +70,7 @@ abstract class User
     public static function userlist()
     {
         $db    = Factory::getDbo();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('a.id', 'value'),

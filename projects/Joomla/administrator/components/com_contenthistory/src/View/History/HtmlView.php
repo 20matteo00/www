@@ -60,13 +60,6 @@ class HtmlView extends BaseHtmlView
     protected $toolbar;
 
     /**
-     * The SHA1 hash of the current version of the item being viewed
-     *
-     * @var  string
-     */
-    protected $currentVersionHash;
-
-    /**
      * Method to display the view.
      *
      * @param   string  $tpl  A template file to load. [optional]
@@ -81,10 +74,9 @@ class HtmlView extends BaseHtmlView
         $model = $this->getModel();
         $model->setUseExceptions(true);
 
-        $this->state              = $model->getState();
-        $this->items              = $model->getItems();
-        $this->pagination         = $model->getPagination();
-        $this->currentVersionHash = $model->getSha1Hash();
+        $this->state      = $model->getState();
+        $this->items      = $model->getItems();
+        $this->pagination = $model->getPagination();
 
         $this->toolbar = $this->addToolbar();
 

@@ -90,7 +90,7 @@ class ComponentlayoutField extends FormField
 
             // Get the database object and a new query object.
             $db    = $this->getDatabase();
-            $query = $db->createQuery();
+            $query = $db->getQuery(true);
 
             // Build the query.
             $query->select(

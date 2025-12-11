@@ -90,7 +90,7 @@ class TosField extends RadioField
             $attribs['data-bs-target'] = '#tosModal';
 
             $db    = $this->getDatabase();
-            $query = $db->createQuery();
+            $query = $db->getQuery(true);
 
             $query->select($db->quoteName(['id', 'alias', 'catid', 'language']))
                 ->from($db->quoteName('#__content'))

@@ -1,6 +1,0 @@
-
-			# Block direct PHP access
-			<Files *.php>
-				deny from all
-			</Files>
-		

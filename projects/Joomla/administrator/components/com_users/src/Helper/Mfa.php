@@ -264,7 +264,7 @@ abstract class Mfa
 
         /** @var DatabaseInterface $db */
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__user_mfa'))
             ->where($db->quoteName('user_id') . ' = :user_id')

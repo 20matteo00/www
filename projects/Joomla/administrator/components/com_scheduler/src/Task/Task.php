@@ -305,9 +305,9 @@ class Task implements LoggerAwareInterface
     public function acquireLock(): bool
     {
         $db    = $this->db;
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $id    = $this->get('id');
-        $now   = Factory::getDate('now', 'UTC');
+        $now   = Factory::getDate('now', 'GMT');
 
         $timeout          = ComponentHelper::getParams('com_scheduler')->get('timeout', 300);
         $timeout          = new \DateInterval(\sprintf('PT%dS', $timeout));
@@ -361,7 +361,7 @@ class Task implements LoggerAwareInterface
     public function releaseLock(bool $update = true): bool
     {
         $db    = $this->db;
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
         $id    = $this->get('id');
 
         $query->update($db->quoteName('#__scheduler_tasks', 't'))
@@ -433,7 +433,7 @@ class Task implements LoggerAwareInterface
     public function skipExecution(): void
     {
         $db    = $this->db;
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         $id       = $this->get('id');
         $nextExec = (new ExecRuleHelper($this->taskRegistry->toObject()))->nextExec(true, true);

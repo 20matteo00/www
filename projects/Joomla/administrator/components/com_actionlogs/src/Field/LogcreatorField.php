@@ -59,7 +59,7 @@ class LogcreatorField extends ListField
             $db = $this->getDatabase();
 
             // Construct the query
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('u.id', 'value'))
                 ->select($db->quoteName('u.username', 'text'))
                 ->from($db->quoteName('#__users', 'u'))

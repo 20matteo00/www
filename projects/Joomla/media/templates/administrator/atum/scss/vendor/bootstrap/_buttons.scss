@@ -6,10 +6,10 @@
 
 @include media-breakpoint-down(sm) {
   .btn {
-    margin-block-end: .25rem;
+    margin-bottom: .25rem;
   }
   .input-group .btn {
-    margin-block-end: 0;
+    margin-bottom: 0;
   }
 }
 

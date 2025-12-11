@@ -90,9 +90,7 @@ class Client
      */
     public function authenticate()
     {
-        $dataCode = $this->input->get('code', false, 'raw');
-
-        if ($dataCode) {
+        if ($dataCode = $this->input->get('code', false, 'raw')) {
             $data = [
                 'grant_type'    => 'authorization_code',
                 'redirect_uri'  => $this->getOption('redirecturi'),
@@ -103,21 +101,21 @@ class Client
 
             $response = $this->http->post($this->getOption('tokenurl'), $data);
 
-            if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 400) {
+            if (!($response->code >= 200 && $response->code < 400)) {
                 throw new UnexpectedResponseException(
                     $response,
                     sprintf(
                         'Error code %s received requesting access token: %s.',
-                        $response->getStatusCode(),
-                        (string) $response->getBody()
+                        $response->code,
+                        $response->body
                     )
                 );
             }
 
             if (in_array('application/json', $response->getHeader('Content-Type'))) {
-                $token = array_merge(json_decode((string) $response->getBody(), true), ['created' => time()]);
+                $token = array_merge(json_decode($response->body, true), ['created' => time()]);
             } else {
-                parse_str((string) $response->getBody(), $token);
+                parse_str($response->body, $token);
                 $token = array_merge($token, ['created' => time()]);
             }
 
@@ -179,22 +177,16 @@ class Client
         $url->setVar('response_type', 'code');
         $url->setVar('client_id', urlencode($this->getOption('clientid')));
 
-        $redirect = $this->getOption('redirecturi');
-
-        if ($redirect) {
+        if ($redirect = $this->getOption('redirecturi')) {
             $url->setVar('redirect_uri', urlencode($redirect));
         }
 
-        $scope = $this->getOption('scope');
-
-        if ($scope) {
+        if ($scope = $this->getOption('scope')) {
             $scope = \is_array($scope) ? implode(' ', $scope) : $scope;
             $url->setVar('scope', urlencode($scope));
         }
 
-        $state = $this->getOption('state');
-
-        if ($state) {
+        if ($state = $this->getOption('state')) {
             $url->setVar('state', urlencode($state));
         }
 
@@ -262,13 +254,13 @@ class Client
                 throw new \InvalidArgumentException('Unknown HTTP request method: ' . $method . '.');
         }
 
-        if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 400) {
+        if ($response->code < 200 || $response->code >= 400) {
             throw new UnexpectedResponseException(
                 $response,
                 sprintf(
                     'Error code %s received requesting data: %s.',
-                    $response->getStatusCode(),
-                    $response->getBody()
+                    $response->code,
+                    $response->body
                 )
             );
         }
@@ -329,9 +321,9 @@ class Client
      *
      * @since   1.0
      */
-    public function setToken(array $value)
+    public function setToken($value)
     {
-        if (!array_key_exists('expires_in', $value) && array_key_exists('expires', $value)) {
+        if (\is_array($value) && !array_key_exists('expires_in', $value) && array_key_exists('expires', $value)) {
             $value['expires_in'] = $value['expires'];
             unset($value['expires']);
         }
@@ -377,21 +369,21 @@ class Client
 
         $response = $this->http->post($this->getOption('tokenurl'), $data);
 
-        if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 400) {
+        if (!($response->code >= 200 || $response->code < 400)) {
             throw new UnexpectedResponseException(
                 $response,
                 sprintf(
                     'Error code %s received refreshing token: %s.',
-                    $response->getStatusCode(),
-                    (string) $response->getBody()
+                    $response->code,
+                    $response->body
                 )
             );
         }
 
         if (in_array('application/json', $response->getHeader('Content-Type'))) {
-            $token = array_merge(json_decode((string) $response->getBody(), true), ['created' => time()]);
+            $token = array_merge(json_decode($response->body, true), ['created' => time()]);
         } else {
-            parse_str((string) $response->getBody(), $token);
+            parse_str($response->body, $token);
             $token = array_merge($token, ['created' => time()]);
         }
 

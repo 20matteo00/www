@@ -1,10 +1,4 @@
 // Global
-@media screen and (prefers-reduced-motion: no-preference) {
-  @view-transition {
-    navigation: auto;
-  }
-}
-
 :root {
   scroll-behavior: smooth;
   font-size: $font-size-root;

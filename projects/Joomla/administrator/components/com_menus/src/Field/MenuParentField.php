@@ -46,7 +46,7 @@ class MenuParentField extends ListField
         $options = [];
 
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     'DISTINCT ' . $db->quoteName('a.id', 'value'),

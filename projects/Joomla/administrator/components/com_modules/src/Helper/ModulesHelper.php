@@ -71,7 +71,7 @@ abstract class ModulesHelper
     {
         $db       = Factory::getDbo();
         $clientId = (int) $clientId;
-        $query    = $db->createQuery()
+        $query    = $db->getQuery(true)
             ->select('DISTINCT ' . $db->quoteName('position'))
             ->from($db->quoteName('#__modules'))
             ->where($db->quoteName('client_id') . ' = :clientid')
@@ -120,7 +120,7 @@ abstract class ModulesHelper
         $clientId = (int) $clientId;
 
         // Get the database object and a new query object.
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         // Build the query.
         $query->select($db->quoteName(['element', 'name', 'enabled']))
@@ -157,7 +157,7 @@ abstract class ModulesHelper
     public static function getModules($clientId)
     {
         $db    = Factory::getDbo();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('element AS value, name AS text')
             ->from('#__extensions as e')
             ->where('e.client_id = ' . (int) $clientId)

@@ -107,7 +107,7 @@ class PreprocessRules implements RulesInterface
             return;
         }
 
-        $dbquery = $this->getDatabase()->createQuery();
+        $dbquery = $this->getDatabase()->getQuery(true);
         $id      = (int) $query[$key];
 
         $dbquery->select($dbquery->quoteName('alias'))

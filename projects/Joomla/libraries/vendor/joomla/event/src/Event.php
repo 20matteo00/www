@@ -96,14 +96,14 @@ class Event extends AbstractEvent
      * @return  void
      *
      * @since   1.0
-     * @deprecated  2.0 will be removed in 5.0 Use stopPropagation instead
+     * @deprecated  3.0  Use stopPropagation instead
      */
     public function stop()
     {
         trigger_deprecation(
             'joomla/event',
             '2.0.0',
-            '%s() is deprecated and will be removed in 5.0, use %s::stopPropagation() instead.',
+            '%s() is deprecated and will be removed in 3.0, use %s::stopPropagation() instead.',
             __METHOD__,
             EventInterface::class
         );
@@ -122,7 +122,8 @@ class Event extends AbstractEvent
      * @since   1.0
      * @throws  InvalidArgumentException  If the argument name is null.
      */
-    public function offsetSet($name, $value): void
+    #[\ReturnTypeWillChange]
+    public function offsetSet($name, $value)
     {
         if ($name == null) {
             throw new InvalidArgumentException('The argument name cannot be null.');
@@ -140,7 +141,8 @@ class Event extends AbstractEvent
      *
      * @since   1.0
      */
-    public function offsetUnset($name): void
+    #[\ReturnTypeWillChange]
+    public function offsetUnset($name)
     {
         $this->removeArgument($name);
     }

@@ -330,7 +330,7 @@ final class Notification extends CMSPlugin implements SubscriberInterface
         $db = $this->getDatabase();
 
         // Check for locked inboxes would be better to have _cdf settings in the user_object or a filter in users model
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         $query->select($db->quoteName('user_id'))
             ->from($db->quoteName('#__messages_cfg'))

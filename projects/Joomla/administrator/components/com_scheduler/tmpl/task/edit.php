@@ -17,8 +17,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Scheduler\Administrator\Task\TaskOption;
+use Joomla\Component\Scheduler\Administrator\View\Task\HtmlView;
 
-/** @var  \Joomla\Component\Scheduler\Administrator\View\Task\HtmlView $this */
+/** @var  HtmlView $this */
 
 $wa = $this->getDocument()->getWebAssetManager();
 
@@ -197,7 +198,7 @@ endforeach;
         <?php endif; ?>
         <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
         <?php echo $this->form->getInput('context'); ?>
-
-        <?php echo $this->form->renderControlFields(); ?>
+        <input type="hidden" name="task" value="">
+        <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>

@@ -87,14 +87,7 @@ class RandomImageHelper
      */
     public function getImagesFromFolder(Registry &$params, string $folder): array
     {
-        $type       = $params->get('type', 'jpg');
-        $extensions = array_map('trim', explode(',', $type));
-
-        // Normalize to lowercase and strip leading dots
-        $extensions = array_map(function ($ext) {
-            return ltrim(strtolower($ext), '.');
-        }, $extensions);
-
+        $type   = $params->get('type', 'jpg');
         $files  = [];
         $images = [];
 
@@ -115,14 +108,9 @@ class RandomImageHelper
             $i = 0;
 
             foreach ($files as $img) {
-                if (is_dir($dir . '/' . $img)) {
-                    continue;
-                }
+                if (!is_dir($dir . '/' . $img) && preg_match('/' . $type . '/', $img)) {
+                    $images[$i] = new \stdClass();
 
-                $ext = pathinfo($img, PATHINFO_EXTENSION);
-
-                if (\in_array(strtolower($ext), $extensions, true)) {
-                    $images[$i]         = new \stdClass();
                     $images[$i]->name   = $img;
                     $images[$i]->folder = $folder;
                     $i++;

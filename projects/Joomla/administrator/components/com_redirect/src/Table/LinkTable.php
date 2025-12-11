@@ -99,7 +99,7 @@ class LinkTable extends Table
         $db = $this->getDatabase();
 
         // Check for existing name
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->select($db->quoteName('old_url'))
             ->from($db->quoteName('#__redirect_links'))

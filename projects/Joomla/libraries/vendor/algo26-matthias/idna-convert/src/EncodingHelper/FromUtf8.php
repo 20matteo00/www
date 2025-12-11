@@ -1,24 +1,24 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Algo26\IdnaConvert\EncodingHelper;
 
 class FromUtf8 implements EncodingHelperInterface
 {
     private const DEFAULT_ENCODING = 'ISO-8859-1';
-    private string $encoding = self::DEFAULT_ENCODING;
+
+    private $encoding = self::DEFAULT_ENCODING;
 
     public function convert(
         string $sourceString,
         ?string $encoding = self::DEFAULT_ENCODING,
         ?bool $safeMode = false
-    ): string {
+    ) {
         $safe = ($safeMode) ? $sourceString : false;
 
-        $this->encoding = 'ISO-8859-1';
         if ($encoding !== null) {
             $this->encoding = strtoupper($encoding);
+        } else {
+            $this->encoding = 'ISO-8859-1';
         }
 
         if ($this->encoding === 'UTF-8' || $this->encoding === 'UTF8') {
@@ -38,7 +38,7 @@ class FromUtf8 implements EncodingHelperInterface
         }
 
         $converted = $this->convertWithLibraries($sourceString);
-        if (null !== $converted) {
+        if (false !== $converted) {
             return $converted;
         }
 
@@ -47,23 +47,43 @@ class FromUtf8 implements EncodingHelperInterface
 
     /**
      * Special treatment for our guys in Redmond
-     * Windows-1252 is basically ISO-8859-1 -- with some exceptions
+     * Windows-1252 is basically ISO-8859-1 -- with some exceptions, which get dealt with here
+     *
+     * @param  string $string Your input in ISO-8859-1
+     *
+     * @return  string  The resulting Win1252 string
+     * @since 0.0.1
      */
-    private function mapIso8859_1ToWindows1252(string $string = ''): string
+    private function mapIso8859_1ToWindows1252($string = '')
     {
         $return = '';
         for ($i = 0; $i < strlen($string); ++$i) {
             $codePoint = ord($string[$i]);
-            $return .= match ($codePoint) {
-                196 => chr(142),
-                214 => chr(153),
-                220 => chr(154),
-                223 => chr(225),
-                228 => chr(132),
-                246 => chr(148),
-                252 => chr(129),
-                default => chr($codePoint),
-            };
+            switch ($codePoint) {
+                case 196:
+                    $return .= chr(142);
+                    break;
+                case 214:
+                    $return .= chr(153);
+                    break;
+                case 220:
+                    $return .= chr(154);
+                    break;
+                case 223:
+                    $return .= chr(225);
+                    break;
+                case 228:
+                    $return .= chr(132);
+                    break;
+                case 246:
+                    $return .= chr(148);
+                    break;
+                case 252:
+                    $return .= chr(129);
+                    break;
+                default:
+                    $return .= chr($codePoint);
+            }
         }
 
         return $return;
@@ -92,6 +112,6 @@ class FromUtf8 implements EncodingHelperInterface
             }
         }
 
-        return null;
+        return false;
     }
 }

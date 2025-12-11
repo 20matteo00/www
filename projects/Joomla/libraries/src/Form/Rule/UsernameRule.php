@@ -48,7 +48,7 @@ class UsernameRule extends FormRule implements DatabaseAwareInterface
     {
         // Get the database object and a new query object.
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         // Get the extra field check attribute.
         $userId = ($form instanceof Form) ? (int) $form->getValue('id') : 0;

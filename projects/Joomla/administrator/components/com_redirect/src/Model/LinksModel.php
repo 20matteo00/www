@@ -65,7 +65,7 @@ class LinksModel extends ListModel
     {
         $db = $this->getDatabase();
 
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         $query->delete('#__redirect_links')->where($db->quoteName('published') . '= 0');
 
@@ -136,7 +136,7 @@ class LinksModel extends ListModel
     {
         // Create a new query object.
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         // Select the required fields from the table.
         $query->select(
@@ -204,7 +204,7 @@ class LinksModel extends ListModel
     public function batchProcess($batchUrls)
     {
         $db    = $this->getDatabase();
-        $query = $db->createQuery();
+        $query = $db->getQuery(true);
 
         $params  = ComponentHelper::getParams('com_redirect');
         $state   = (int) $params->get('defaultImportState', 0);

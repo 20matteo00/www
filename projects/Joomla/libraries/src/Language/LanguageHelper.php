@@ -15,9 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
-use Joomla\Filesystem\Exception\FilesystemException;
 use Joomla\Filesystem\File;
-use Joomla\Filesystem\Folder;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -113,11 +111,6 @@ class LanguageHelper
                 $browserLang         = substr($browserLang, 0, strcspn($browserLang, ';'));
                 $primary_browserLang = substr($browserLang, 0, 2);
 
-                // Some browser return only "fr" or "de", so let's try to use it like "fr-fr" or "de-de"
-                if (\strlen($browserLang) == 2) {
-                    $browserLang = $browserLang . '-' . $browserLang;
-                }
-
                 foreach ($systemLangs as $systemLang) {
                     // Take off 3 letters iso code languages as they can't match browsers' languages and default them to en
                     $Jinstall_lang = $systemLang->lang_code;
@@ -176,7 +169,7 @@ class LanguageHelper
                     $languages = $cache->get('languages');
                 } else {
                     $db    = Factory::getDbo();
-                    $query = $db->createQuery()
+                    $query = $db->getQuery(true)
                         ->select('*')
                         ->from($db->quoteName('#__languages'))
                         ->where($db->quoteName('published') . ' = 1')
@@ -238,7 +231,7 @@ class LanguageHelper
             } else {
                 $db ??= Factory::getContainer()->get(DatabaseInterface::class);
 
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->select(
                         [
                             $db->quoteName('element'),
@@ -387,7 +380,7 @@ class LanguageHelper
             } else {
                 $db = Factory::getDbo();
 
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->select('*')
                     ->from($db->quoteName('#__languages'));
 
@@ -451,12 +444,6 @@ class LanguageHelper
             return [];
         }
 
-        $cacheFile = JPATH_CACHE . '/language/' . ltrim(str_replace([JPATH_ROOT, '/'], ['', '-'], $fileName), '-') . '.' . filemtime($fileName) . '.php';
-
-        if (is_file($cacheFile)) {
-            return include $cacheFile;
-        }
-
         // This was required for https://github.com/joomla/joomla-cms/issues/17198 but not sure what server setup
         // issue it is solving
         $disabledFunctions      = explode(',', \ini_get('disable_functions'));
@@ -484,28 +471,10 @@ class LanguageHelper
             restore_error_handler();
         }
 
-        if (!\is_array($strings)) {
-            $strings = [];
-        }
-
         // Ini files are processed in the "RAW" mode of parse_ini_string, leaving escaped quotes untouched - lets postprocess them
         $strings = str_replace('\"', '"', $strings);
 
-        // Write cache
-        try {
-            Folder::create(\dirname($cacheFile));
-
-            $data         = "<?php\ndefined('_JEXEC') or die;\nreturn " . var_export($strings, true) . ";\n";
-            $bytesWritten = file_put_contents($cacheFile, $data);
-
-            if ($bytesWritten === false || $bytesWritten < \strlen($data)) {
-                throw new FilesystemException('Unable to write cache file');
-            }
-        } catch (FilesystemException $e) {
-            // We ignore the error, as the file is for caching only.
-        }
-
-        return $strings;
+        return \is_array($strings) ? $strings : [];
     }
 
     /**

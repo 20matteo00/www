@@ -62,7 +62,7 @@ class AbstractImmutableEvent extends AbstractEvent
      * @since   4.0.0
      * @throws  \BadMethodCallException
      */
-    public function offsetSet($name, $value): void
+    public function offsetSet($name, $value)
     {
         // B/C check for plugins which use $event['result'] = $result;
         if ($name === 'result') {
@@ -95,7 +95,7 @@ class AbstractImmutableEvent extends AbstractEvent
      * @since   4.0.0
      * @throws  \BadMethodCallException
      */
-    public function offsetUnset($name): void
+    public function offsetUnset($name)
     {
         throw new \BadMethodCallException(
             \sprintf(

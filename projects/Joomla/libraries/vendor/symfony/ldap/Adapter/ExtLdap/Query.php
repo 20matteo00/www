@@ -35,7 +35,10 @@ class Query extends AbstractQuery
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }
 
-    public function __wakeup(): void
+    /**
+     * @return void
+     */
+    public function __wakeup()
     {
         throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
     }
@@ -175,7 +178,7 @@ class Query extends AbstractQuery
         // This is not supported in PHP < 7.2, so these versions will remain broken.
         $ctl = [];
         ldap_get_option($con, \LDAP_OPT_SERVER_CONTROLS, $ctl);
-        if ($ctl) {
+        if (!empty($ctl)) {
             foreach ($ctl as $idx => $info) {
                 if (static::PAGINATION_OID == $info['oid']) {
                     unset($ctl[$idx]);

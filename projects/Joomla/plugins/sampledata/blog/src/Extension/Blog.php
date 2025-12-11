@@ -339,7 +339,7 @@ final class Blog extends CMSPlugin implements SubscriberInterface
             }
 
             // Get the stage Ids of the new stages
-            $query = $this->getDatabase()->createQuery();
+            $query = $this->getDatabase()->getQuery(true);
 
             $query->select([$this->getDatabase()->quoteName('title'), $this->getDatabase()->quoteName('id')])
                 ->from($this->getDatabase()->quoteName('#__workflow_stages'))
@@ -769,7 +769,7 @@ final class Blog extends CMSPlugin implements SubscriberInterface
                 && ComponentHelper::getParams('com_content')->get('workflow_enabled')
             ) {
                 // Set the article featured in #__content_frontpage
-                $this->getDatabase()->createQuery();
+                $this->getDatabase()->getQuery(true);
 
                 $featuredItem = (object) [
                     'content_id'    => $articleModel->getItem()->id,

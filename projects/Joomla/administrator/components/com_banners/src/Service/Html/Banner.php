@@ -63,7 +63,7 @@ class Banner
     public function clientlist()
     {
         $db    = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     $db->quoteName('id', 'value'),

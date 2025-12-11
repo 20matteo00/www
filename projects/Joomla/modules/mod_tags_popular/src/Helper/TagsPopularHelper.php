@@ -51,7 +51,7 @@ class TagsPopularHelper implements DatabaseAwareInterface
         $nowDate     = Factory::getDate()->toSql();
         $nullDate    = $db->getNullDate();
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(
                 [
                     'MAX(' . $db->quoteName('tag_id') . ') AS ' . $db->quoteName('tag_id'),
@@ -151,7 +151,7 @@ class TagsPopularHelper implements DatabaseAwareInterface
                 }
 
                 $query->order($db->quoteName('count') . ' DESC');
-                $equery = $db->createQuery()
+                $equery = $db->getQuery(true)
                     ->select(
                         $db->quoteName(
                             [

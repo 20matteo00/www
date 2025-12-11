@@ -10,7 +10,7 @@
 
 defined('_JEXEC') or die;
 
-/** @var \Joomla\Plugin\Fields\User\Extension\User $this */
+/** @var \Joomla\CMS\Layout\FileLayout $this */
 $value = $field->value;
 
 if ($value == '') {

@@ -89,7 +89,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
             <?php echo $this->pagination->getListFooter(); ?>
 
         <?php endif; ?>
-
-        <?php echo $this->filterForm->renderControlFields(); ?>
+        <div>
+            <input type="hidden" name="task" value="">
+            <input type="hidden" name="boxchecked" value="0">
+            <?php echo HTMLHelper::_('form.token'); ?>
+        </div>
     </div>
 </form>

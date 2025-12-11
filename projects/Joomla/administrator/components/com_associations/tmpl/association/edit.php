@@ -10,10 +10,12 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\Component\Associations\Administrator\View\Association\HtmlView;
 
-/** @var \Joomla\Component\Associations\Administrator\View\Association\HtmlView $this */
+/** @var HtmlView $this */
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->getDocument()->getWebAssetManager();
@@ -81,5 +83,7 @@ $options = [
         </div>
     </div>
 
-    <?php echo $this->form->renderControlFields(); ?>
+    <input type="hidden" name="task" value="">
+    <input type="hidden" name="target-id" id="target-id" value="">
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>

@@ -1,17 +1,20 @@
 <?php
-
-declare(strict_types=1);
-
 namespace Algo26\IdnaConvert;
 
 use Algo26\IdnaConvert\Punycode\FromPunycode;
+use Algo26\IdnaConvert\TranscodeUnicode\TranscodeUnicode;
 
 class ToUnicode extends AbstractIdnaConvert implements IdnaConvertInterface
 {
-    private FromPunycode $punycodeEncoder;
+    /** @var TranscodeUnicode */
+    private $unicodeTransCoder;
+
+    /** @var FromPunycode */
+    private $punycodeEncoder;
 
     public function __construct()
     {
+        $this->unicodeTransCoder = new TranscodeUnicode();
         $this->punycodeEncoder = new FromPunycode();
     }
 

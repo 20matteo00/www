@@ -22,15 +22,17 @@ use Symfony\Component\Ldap\Exception\LdapException;
  */
 class Adapter implements AdapterInterface
 {
+    private array $config;
     private ConnectionInterface $connection;
     private EntryManagerInterface $entryManager;
 
-    public function __construct(
-        private array $config = [],
-    ) {
+    public function __construct(array $config = [])
+    {
         if (!\extension_loaded('ldap')) {
             throw new LdapException('The LDAP PHP extension is not enabled.');
         }
+
+        $this->config = $config;
     }
 
     public function getConnection(): ConnectionInterface
@@ -54,10 +56,10 @@ class Adapter implements AdapterInterface
 
         // Per RFC 4514, leading/trailing spaces should be encoded in DNs, as well as carriage returns.
         if ($flags & \LDAP_ESCAPE_DN) {
-            if ($value && ' ' === $value[0]) {
+            if (!empty($value) && ' ' === $value[0]) {
                 $value = '\\20'.substr($value, 1);
             }
-            if ($value && ' ' === $value[\strlen($value) - 1]) {
+            if (!empty($value) && ' ' === $value[\strlen($value) - 1]) {
                 $value = substr($value, 0, -1).'\\20';
             }
             $value = str_replace("\r", '\0d', $value);

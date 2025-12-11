@@ -138,7 +138,7 @@ class ContactField extends ModalSelectField
         if ($value) {
             try {
                 $db    = $this->getDatabase();
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->select($db->quoteName('name'))
                     ->from($db->quoteName('#__contact_details'))
                     ->where($db->quoteName('id') . ' = :value')

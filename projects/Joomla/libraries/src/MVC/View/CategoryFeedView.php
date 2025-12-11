@@ -45,7 +45,7 @@ class CategoryFeedView extends AbstractView
         $contentType    = $extension . '.' . $this->viewName;
 
         $db    = Factory::getDbo();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('ct') . '.*')
             ->from($db->quoteName('#__content_types', 'ct'))
             ->where($db->quoteName('ct.type_alias') . ' = :alias')

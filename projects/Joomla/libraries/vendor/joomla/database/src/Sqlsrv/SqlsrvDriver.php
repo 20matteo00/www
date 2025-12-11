@@ -338,6 +338,7 @@ class SqlsrvDriver extends DatabaseDriver
      * @return  string|boolean  The collation in use by the database connection (string) or boolean false if not supported.
      *
      * @since   1.6.0
+     * @throws  \RuntimeException
      */
     public function getConnectionCollation()
     {
@@ -351,6 +352,7 @@ class SqlsrvDriver extends DatabaseDriver
      * @return  string  The database encryption details.
      *
      * @since   2.0.0
+     * @throws  \RuntimeException
      */
     public function getConnectionEncryption(): string
     {

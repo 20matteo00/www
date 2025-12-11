@@ -138,7 +138,7 @@ class NewsfeedField extends ModalSelectField
         if ($value) {
             try {
                 $db    = $this->getDatabase();
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->select($db->quoteName('name'))
                     ->from($db->quoteName('#__newsfeeds'))
                     ->where($db->quoteName('id') . ' = :value')
