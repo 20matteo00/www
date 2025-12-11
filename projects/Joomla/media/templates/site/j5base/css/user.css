@@ -20,11 +20,20 @@
   font-style: normal;
 }
 
+/*GENERALE*/
 body {
   font-family: "TitilliumWeb", sans-serif;
 }
 
-/*COLORS*/
+a {
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  text-decoration: underline;
+}
+
+/*COLORI*/
 .bg-primary {
   background-color: var(--color-1) !important;
 }
@@ -78,14 +87,9 @@ body {
 .navbar .menu-toggle {
   cursor: pointer;
 }
-.navbar a, .navbar span {
-  color: var(--color-2) !important;
-  text-decoration: none;
-}
 
 .navbar a:hover {
   background-color: var(--color-3) !important;
-  text-decoration: underline;
 }
 
 .navbar-brand img{

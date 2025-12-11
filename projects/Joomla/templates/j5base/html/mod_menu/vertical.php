@@ -35,9 +35,9 @@ if ($tagId = $params->get('tag_id', '')) {
 
                 // link o span
                 if (!empty($item->flink) && $item->flink != '#') {
-                    echo '<a class="nav-link d-inline-block"' . $indent . ' href="' . $item->flink . '">' . $item->title . '</a>' . $toggle;
+                    echo '<a class="nav-link d-inline-block text-secondary"' . $indent . ' href="' . $item->flink . '">' . $item->title . '</a>' . $toggle;
                 } else {
-                    echo '<span class="nav-link d-inline-block"' . $indent . '>' . $item->title . '</span>' . $toggle;
+                    echo '<span class="nav-link d-inline-block text-secondary"' . $indent . '>' . $item->title . '</span>' . $toggle;
                 }
 
                 // lista figli

@@ -50,7 +50,8 @@ $mobileMenu = $templateParams->get('mobile_menu', 'collapse');
 
                     echo '<li class="' . $class . '">';
 
-                    $linkClass = $item->level == 1 ? 'nav-link' : 'dropdown-item';
+                    $linkClass = 'text-secondary ';
+                    $linkClass .= $item->level == 1 ? 'nav-link' : 'dropdown-item';
                     $indent = $item->level > 1 ? ' style="padding-left: ' . (($item->level - 1) * 1.5) . 'rem;"' : '';
                     $hasUrl = !empty($item->flink) && $item->flink != '#';
 
