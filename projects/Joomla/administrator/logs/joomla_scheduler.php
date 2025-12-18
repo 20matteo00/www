@@ -9,3 +9,8 @@
 2025-12-11	08:30:30	INFO	Attività terminata con successo#02 in 0.00 (rete 0.03) secondi.
 2025-12-11	08:30:44	INFO	Esecuzione attività#03 'Update Notification'.
 2025-12-11	08:30:48	INFO	Attività terminata con successo#03 in 3.55 (rete 3.55) secondi.
+2025-12-18	11:35:17	INFO	Esecuzione attività#02 'Session GC'.
+2025-12-18	11:35:17	INFO	Attività> SessionGC end
+2025-12-18	11:35:17	INFO	Attività terminata con successo#02 in 0.00 (rete 0.00) secondi.
+2025-12-18	11:37:37	INFO	Esecuzione attività#03 'Update Notification'.
+2025-12-18	11:37:38	INFO	Attività terminata con successo#03 in 0.65 (rete 0.65) secondi.
