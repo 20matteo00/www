@@ -21,7 +21,7 @@ $seasons = $helper->getSeasons($json);
             </button>
         </div>
         <div class="col-auto">
-            <button class="btn btn-primary w-100" name="action" type="submit" value="viewtable">
+            <button class="btn btn-success w-100" name="action" type="submit" value="viewtable">
                 Visualizza Classifica
             </button>
         </div>

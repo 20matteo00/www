@@ -16,13 +16,13 @@
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
+                    <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=stagione">Stagioni</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=squadra">Squadre</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=perpetua">Classifica Perpetua</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=stagione">Dettaglio Stagione</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=squadra">Dettaglio Squadra</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=scontri">Scontri Diretti</a>

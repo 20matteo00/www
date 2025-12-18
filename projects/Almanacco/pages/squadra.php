@@ -18,8 +18,13 @@ $teams = $helper->getTeams($json, 1);
         </div>
 
         <div class="col-auto">
-            <button class="btn btn-success w-100" name="action" type="submit" value="viewstats">
-                Visualizza Statistiche
+            <button class="btn btn-success w-100" name="action" type="submit" value="viewseasons">
+                Visualizza Stagioni
+            </button>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-success w-100" name="action" type="submit" value="viewmatches">
+                Visualizza Partite
             </button>
         </div>
         <div class="col-auto">
@@ -34,8 +39,10 @@ $teams = $helper->getTeams($json, 1);
         $action = $_POST['action'] ?? null;
 
         if ($action && $selectedTeam) {
-            if ($action === 'viewstats') {
-                $helper->viewStatsForTeam($json, $selectedTeam);
+            if ($action === 'viewseasons') {
+                $helper->viewSeasonsForTeam($json, $selectedTeam);
+            } elseif ($action === 'viewmatches') {
+                $helper->viewMatchesForTeam($json, $selectedTeam);
             }
         }
     }
