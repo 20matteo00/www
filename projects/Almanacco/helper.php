@@ -10,6 +10,31 @@ class Helper
     }
 
     /**
+     * Ottiene l'elenco delle squadre dal JSON
+     */
+    public static function getTeams($json, $sort = 0)
+    {
+        $teams = [];
+
+        foreach ($json as $season => $data) {
+            foreach ($data['giornate'] as $matches) {
+                foreach ($matches as $match) {
+                    $squadre = explode('-', $match['squadre']);
+                    if (count($squadre) === 2) {
+                        $teams[] = trim($squadre[0]);
+                        $teams[] = trim($squadre[1]);
+                    }
+                }
+            }
+        }
+        if ($sort === 1) {
+            sort($teams);
+        }
+
+        return array_values(array_unique($teams));
+    }
+
+    /**
      * Visualizza tutte le giornate di una stagione
      */
     public static function viewDaysForSeason($json, $season)
@@ -20,7 +45,8 @@ class Helper
         }
 
         ?>
-        <div class="h1 text-center">Giornate <?= htmlspecialchars($season) ?></div>
+        <div class="fw-bold text-center fs-4 bg-info text-white p-3 rounded-pill mb-3">Giornate <?= htmlspecialchars($season) ?>
+        </div>
         <div class="row">
             <?php foreach ($json[$season]['giornate'] as $giornata => $matches): ?>
                 <div class="col-12 col-lg-6 my-2">
@@ -37,12 +63,12 @@ class Helper
     public static function viewTableForSeason($json, $season)
     {
         $table = self::calculateTableForSeason($json, $season);
-        
+
         ?>
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header fw-bold text-center fs-4 bg-warning">
+                    <div class="card-header fw-bold text-center fs-4 bg-info text-white">
                         Classifica <?= htmlspecialchars($season) ?>
                     </div>
                     <div class="card-body">
@@ -60,7 +86,7 @@ class Helper
     public static function viewTableAllTime($json)
     {
         $allTimeTable = self::calculateAllTimeTable($json);
-        
+
         ?>
         <div class="row">
             <div class="col-12">
@@ -78,6 +104,134 @@ class Helper
     }
 
     /**
+     * Visualizza gli scontri diretti tra due squadre
+     */
+    public static function viewMatchesBetweenTeams($json, $team1, $team2, $location = 'tutto')
+    {
+        $result = self::calculateMatchesBetweenTeams($json, $team1, $team2, $location);
+        $matchesFound = $result['matches'];
+        $stats = $result['stats'];
+        if (empty($matchesFound)) {
+            echo "<div class='alert alert-info'>Nessun incontro trovato tra " . htmlspecialchars($team1) . " e " . htmlspecialchars($team2) . ".</div>";
+            return;
+        }
+
+        ?>
+        <div class="fw-bold text-center fs-4 bg-primary text-white p-3 rounded-pill mb-3">
+            Scontri Diretti tra <?= htmlspecialchars($team1) ?> e <?= htmlspecialchars($team2) ?>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Stagione</th>
+                        <th>Data</th>
+                        <th>Squadre</th>
+                        <th>Risultato</th>
+                        <th>Esito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($matchesFound as $match): ?>
+                        <?php
+                        if ($match['vincitore'] !== null) {
+                            $teams = explode("-", $match['squadre']);
+                            if (count($teams) === 2) {
+                                $homeTeam = trim($teams[0]);
+                                $awayTeam = trim($teams[1]);
+                                if ($match['vincitore'] === $homeTeam) {
+                                    // Home team won
+                                    $match['squadre'] = "<span class='text-success fw-bold'>" . htmlspecialchars($homeTeam) . "</span> - <span class='text-danger fw-bold'>" . htmlspecialchars($awayTeam) . "</span>";
+                                } else {
+                                    // Away team won
+                                    $match['squadre'] = "<span class='text-danger fw-bold'>" . htmlspecialchars($homeTeam) . "</span> - <span class='text-success fw-bold'>" . htmlspecialchars($awayTeam) . "</span>";
+                                }
+                            }
+                        } else {
+                            // It's a draw
+                            $teams = explode("-", $match['squadre']);
+                            if (count($teams) === 2) {
+                                $homeTeam = trim($teams[0]);
+                                $awayTeam = trim($teams[1]);
+                                $match['squadre'] = "<span class='text-warning fw-bold'>" . htmlspecialchars($homeTeam) . "</span> - <span class='text-warning fw-bold'>" . htmlspecialchars($awayTeam) . "</span>";
+                            }
+                        }
+                        ?>
+                        <tr>
+                            <td><?= htmlspecialchars($match['stagione']) ?></td>
+                            <td><?= htmlspecialchars($match['data']) ?></td>
+                            <td class="fw-bold"><?= $match['squadre'] ?></td>
+                            <td class="fw-bold"><?= htmlspecialchars($match['risultato']) ?></td>
+                            <td class="fw-bold"><?= htmlspecialchars($match['esito']) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="card border-0 shadow-sm mt-5">
+            <div class="card-header fw-bold text-center fs-4 bg-primary text-white p-3 rounded-pill mb-4">
+                Statistiche
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <?php foreach ($stats as $team => $teamStats): ?>
+                        <?php
+                            $giocate = $teamStats['vinte'] + $teamStats['pari'] + $teamStats['perse'];
+                            $differenza = $teamStats['fatti'] - $teamStats['subiti'];  
+                            if ($differenza >= 0) {
+                                $differenza = "+" . $differenza;
+                                $badgeClass = "bg-success";
+                            } else {
+                                $badgeClass = "bg-danger";
+                            }  
+                        ?>
+                        <div class="col-12 col-md-6">
+                            <div class="card h-100 border-primary shadow-sm">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title fw-bold mb-3"><?= htmlspecialchars($team) ?></h5>
+                                    <hr>
+                                    <ul class="list-group list-group-flush text-start mb-3">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Giocate
+                                            <span class="badge bg-dark rounded-pill"><?= $giocate ?></span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Vinte
+                                            <span class="badge bg-success rounded-pill"><?= $teamStats['vinte'] ?></span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Pari
+                                            <span class="badge bg-warning rounded-pill"><?= $teamStats['pari'] ?></span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Perse
+                                            <span class="badge bg-danger rounded-pill"><?= $teamStats['perse'] ?></span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Gol Fatti
+                                            <span class="badge bg-info rounded-pill"><?= $teamStats['fatti'] ?></span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Gol Subiti
+                                            <span class="badge bg-info rounded-pill"><?= $teamStats['subiti'] ?></span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Differenza Reti
+                                            <span class="badge <?= $badgeClass ?> rounded-pill"><?= $differenza ?></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+
+        <?php
+    }
+
+    /**
      * Calcola la classifica all-time sommando tutte le stagioni
      */
     private static function calculateAllTimeTable($json)
@@ -86,23 +240,23 @@ class Helper
 
         foreach ($json as $season => $data) {
             $seasonTable = self::calculateTableForSeason($json, $season);
-            
+
             foreach ($seasonTable as $squadra => $stats) {
                 if (!isset($allTimeTable[$squadra])) {
                     $allTimeTable[$squadra] = self::initTeamStats();
                     $allTimeTable[$squadra]['stagioni'] = 0; // Contatore stagioni
                 }
-                
+
                 // Incrementa il contatore delle stagioni partecipate
                 $allTimeTable[$squadra]['stagioni']++;
-                
+
                 // Somma le statistiche
                 foreach (['totale', 'casa', 'trasferta'] as $tipo) {
                     foreach (['pt', 'g', 'v', 'n', 'p', 'gf', 'gs'] as $stat) {
                         $allTimeTable[$squadra][$tipo][$stat] += $stats[$tipo][$stat];
                     }
                     // Ricalcola la differenza reti
-                    $allTimeTable[$squadra][$tipo]['dr'] = 
+                    $allTimeTable[$squadra][$tipo]['dr'] =
                         $allTimeTable[$squadra][$tipo]['gf'] - $allTimeTable[$squadra][$tipo]['gs'];
                 }
             }
@@ -127,7 +281,7 @@ class Helper
         foreach ($json[$season]['giornate'] as $giornata => $partite) {
             foreach ($partite as $partita) {
                 $matchData = self::parseMatch($partita);
-                
+
                 if (!$matchData) {
                     continue; // Salta partite non valide
                 }
@@ -165,7 +319,7 @@ class Helper
             'gs' => 0,
             'dr' => 0,
         ];
-        
+
         return [
             'totale' => $base,
             'casa' => $base,
@@ -193,7 +347,7 @@ class Helper
         if (count($squadre) !== 2) {
             return null;
         }
-        
+
         $casa = trim($squadre[0]);
         $trasferta = trim($squadre[1]);
 
@@ -234,10 +388,10 @@ class Helper
     private static function updateTeamStats(&$team, $gf, $gs, $punti, $moltiplicatore, $isCasa)
     {
         $tipo = $isCasa ? 'casa' : 'trasferta';
-        
+
         // Aggiorna le statistiche specifiche (casa o trasferta)
         self::updateStatsBlock($team[$tipo], $gf, $gs, $punti, $moltiplicatore);
-        
+
         // Aggiorna le statistiche totali
         self::updateStatsBlock($team['totale'], $gf, $gs, $punti, $moltiplicatore);
     }
@@ -272,12 +426,12 @@ class Helper
             if ($a['totale']['pt'] !== $b['totale']['pt']) {
                 return $b['totale']['pt'] <=> $a['totale']['pt'];
             }
-            
+
             // Poi per differenza reti
             if ($a['totale']['dr'] !== $b['totale']['dr']) {
                 return $b['totale']['dr'] <=> $a['totale']['dr'];
             }
-            
+
             // Infine per gol fatti
             return $b['totale']['gf'] <=> $a['totale']['gf'];
         });
@@ -292,7 +446,7 @@ class Helper
     {
         $parts = explode('-', $season);
         $year = isset($parts[0]) ? (int) $parts[0] : 0;
-        
+
         return ($year < 1994) ? 2 : 3;
     }
 
@@ -359,10 +513,10 @@ class Helper
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
+                    <?php
                     $position = 1;
-                    foreach ($table as $squadra => $row): 
-                    ?>
+                    foreach ($table as $squadra => $row):
+                        ?>
                         <tr>
                             <td><?= $position++ ?></td>
                             <td class="text-start fw-bold"><?= htmlspecialchars($squadra) ?></td>
@@ -386,5 +540,108 @@ class Helper
         </div>
         <?php
     }
+
+    /**
+     * Calcola i match tra due squadre
+     */
+    private static function calculateMatchesBetweenTeams($json, $team1, $team2, $location = 'tutto')
+    {
+        $matchesFound = [];
+        $stats = []; // statistiche aggregate
+
+        foreach ($json as $season => $data) {
+            foreach ($data['giornate'] as $matches) {
+                foreach ($matches as $match) {
+
+                    // Controllo squadre
+                    if (empty($match['squadre']))
+                        continue;
+                    $squadre = array_map('trim', explode('-', $match['squadre']));
+                    if (count($squadre) !== 2)
+                        continue;
+
+                    $homeTeam = $squadre[0];
+                    $awayTeam = $squadre[1];
+
+                    // Controllo risultato valido
+                    if (empty($match['risultato']) || !preg_match('/^(\d+)\s*-\s*(\d+)$/', $match['risultato'], $res)) {
+                        continue;
+                    }
+
+                    $homeGoals = (int) $res[1];
+                    $awayGoals = (int) $res[2];
+
+                    // Controllo match tra le squadre specificate
+                    $isMatch = ($homeTeam === $team1 && $awayTeam === $team2) || ($homeTeam === $team2 && $awayTeam === $team1);
+                    if (!$isMatch)
+                        continue;
+
+                    // Controllo location
+                    if ($location === 's1' && $homeTeam !== $team1)
+                        continue;
+                    if ($location === 's2' && $homeTeam !== $team2)
+                        continue;
+
+                    // Determina vincitore
+                    $winner = null;
+                    $esito = 'X';
+                    if ($homeGoals > $awayGoals) {
+                        $winner = $homeTeam;
+                        $esito = 1;
+                    } elseif ($homeGoals < $awayGoals) {
+                        $winner = $awayTeam;
+                        $esito = 2;
+                    }
+
+                    // Aggiunge il match trovato (solo dati del match)
+                    $matchesFound[] = [
+                        'data' => $match['data'],
+                        'squadre' => $match['squadre'],
+                        'risultato' => $match['risultato'],
+                        'stagione' => $season,
+                        'vincitore' => $winner,
+                        'esito' => $esito,
+                    ];
+
+                    // Aggiorna statistiche aggregate (man mano, senza inserire nel match)
+                    foreach ([$homeTeam, $awayTeam] as $team) {
+                        if (!isset($stats[$team])) {
+                            $stats[$team] = [
+                                'vinte' => 0,
+                                'pari' => 0,
+                                'perse' => 0,
+                                'fatti' => 0,
+                                'subiti' => 0,
+                            ];
+                        }
+                    }
+
+                    if ($homeGoals > $awayGoals) {
+                        $stats[$homeTeam]['vinte']++;
+                        $stats[$awayTeam]['perse']++;
+                    } elseif ($homeGoals < $awayGoals) {
+                        $stats[$awayTeam]['vinte']++;
+                        $stats[$homeTeam]['perse']++;
+                    } else {
+                        $stats[$homeTeam]['pari']++;
+                        $stats[$awayTeam]['pari']++;
+                    }
+
+                    $stats[$homeTeam]['fatti'] += $homeGoals;
+                    $stats[$homeTeam]['subiti'] += $awayGoals;
+                    $stats[$awayTeam]['fatti'] += $awayGoals;
+                    $stats[$awayTeam]['subiti'] += $homeGoals;
+                }
+            }
+        }
+
+        // Alla fine restituisci i match E le statistiche aggregate FINALMENTE calcolate
+        return [
+            'matches' => $matchesFound,
+            'stats' => $stats, // solo il totale finale
+        ];
+    }
+
+
 }
 ?>

@@ -2,6 +2,9 @@
 $id_esclusi = [48, 49];
 $stagioni_dati = []; // qui accumuliamo tutte le stagioni
 
+$dirpath = "../json";
+$filepath = "../json/partite.json";
+
 for ($i = 34; $i <= 129; $i++) {
     if (in_array($i, $id_esclusi)) {
         echo "=================== Stagione " . getStagione($i) . " esclusa =================== <br>";
@@ -26,14 +29,14 @@ for ($i = 34; $i <= 129; $i++) {
 }
 
 // Crea la cartella se non esiste
-if (!is_dir('giornate')) {
-    mkdir('giornate', 0755, true);
+if (!is_dir($dirpath)) {
+    mkdir($dirpath, 0755, true);
 }
 
 // Salva tutto in un unico file
-file_put_contents("giornate/stagioni.json", json_encode($stagioni_dati, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+file_put_contents($filepath, json_encode($stagioni_dati, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-echo "Tutte le stagioni salvate in giornate/stagioni.json\n";
+echo "Tutte le stagioni salvate in json/partite.json\n";
 
 
 // ---------------- FUNZIONI ----------------
