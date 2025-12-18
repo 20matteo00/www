@@ -81,6 +81,89 @@ class Helper
     }
 
     /**
+     * Visualizza le statistiche di una squadra in tutte le stagioni
+     */
+    public static function viewStatsForTeam($json, $team)
+    {
+        ?>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header fw-bold text-center fs-4 bg-info text-white">
+                        Statistiche <?= htmlspecialchars($team) ?> (Tutte le Stagioni)
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered text-center align-middle">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Stagione</th>
+                                        <th rowspan="2">Pos</th>
+                                        <th colspan="8">Totale</th>
+                                        <th colspan="8">Casa</th>
+                                        <th colspan="8">Trasferta</th>
+                                    </tr>
+                                    <tr>
+                                        <?php for ($i = 0; $i < 3; $i++): ?>
+                                            <th>Pt</th>
+                                            <th>G</th>
+                                            <th>V</th>
+                                            <th>N</th>
+                                            <th>P</th>
+                                            <th>GF</th>
+                                            <th>GS</th>
+                                            <th>DR</th>
+                                        <?php endfor; ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach (self::getSeasons($json) as $season) {
+                                        echo "<tr>";
+                                        // Calcola la classifica per la stagione
+                                        $table = self::calculateTableForSeason($json, $season);
+                                        if (isset($table[$team])) {
+                                            echo "<td><b>" . htmlspecialchars($season) . "</b></td>";
+                                            $position = array_search($team, array_keys($table)) + 1;
+                                            // Mostra solo la riga della squadra selezionata
+                                            self::renderTbody([$team => $table[$team]], false, false, $position, $team, $table[$team]);
+                                        }
+                                        echo "</tr>";
+                                    }
+                                    ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th rowspan="2">Stagione</th>
+                                        <th rowspan="2">Pos</th>
+                                        <?php for ($i = 0; $i < 3; $i++): ?>
+                                            <th>Pt</th>
+                                            <th>G</th>
+                                            <th>V</th>
+                                            <th>N</th>
+                                            <th>P</th>
+                                            <th>GF</th>
+                                            <th>GS</th>
+                                            <th>DR</th>
+                                        <?php endfor; ?>
+                                    </tr>
+                                    <tr>
+
+                                        <th colspan="8">Totale</th>
+                                        <th colspan="8">Casa</th>
+                                        <th colspan="8">Trasferta</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+
+    /**
      * Visualizza la classifica di tutti i tempi (somma di tutte le stagioni)
      */
     public static function viewTableAllTime($json)
@@ -176,14 +259,14 @@ class Helper
                 <div class="row g-4">
                     <?php foreach ($stats as $team => $teamStats): ?>
                         <?php
-                            $giocate = $teamStats['vinte'] + $teamStats['pari'] + $teamStats['perse'];
-                            $differenza = $teamStats['fatti'] - $teamStats['subiti'];  
-                            if ($differenza >= 0) {
-                                $differenza = "+" . $differenza;
-                                $badgeClass = "bg-success";
-                            } else {
-                                $badgeClass = "bg-danger";
-                            }  
+                        $giocate = $teamStats['vinte'] + $teamStats['pari'] + $teamStats['perse'];
+                        $differenza = $teamStats['fatti'] - $teamStats['subiti'];
+                        if ($differenza >= 0) {
+                            $differenza = "+" . $differenza;
+                            $badgeClass = "bg-success";
+                        } else {
+                            $badgeClass = "bg-danger";
+                        }
                         ?>
                         <div class="col-12 col-md-6">
                             <div class="card h-100 border-primary shadow-sm">
@@ -483,7 +566,7 @@ class Helper
     /**
      * Renderizza la tabella della classifica
      */
-    private static function renderTable($table, $showSeasons = false)
+    private static function renderTable($table, $showSeasons = false, $showTeams = true)
     {
         ?>
         <div class="table-responsive">
@@ -514,31 +597,68 @@ class Helper
                 </thead>
                 <tbody>
                     <?php
-                    $position = 1;
+                    $position = 0;
                     foreach ($table as $squadra => $row):
                         ?>
                         <tr>
-                            <td><?= $position++ ?></td>
-                            <td class="text-start fw-bold"><?= htmlspecialchars($squadra) ?></td>
-                            <?php if ($showSeasons): ?>
-                                <td class="fw-bold text-primary"><?= $row['stagioni'] ?? 0 ?></td>
-                            <?php endif; ?>
-                            <?php foreach (['totale', 'casa', 'trasferta'] as $tipo): ?>
-                                <td class="fw-bold"><?= $row[$tipo]['pt'] ?></td>
-                                <td><?= $row[$tipo]['g'] ?></td>
-                                <td><?= $row[$tipo]['v'] ?></td>
-                                <td><?= $row[$tipo]['n'] ?></td>
-                                <td><?= $row[$tipo]['p'] ?></td>
-                                <td><?= $row[$tipo]['gf'] ?></td>
-                                <td><?= $row[$tipo]['gs'] ?></td>
-                                <td><?= $row[$tipo]['dr'] >= 0 ? '+' : '' ?><?= $row[$tipo]['dr'] ?></td>
-                            <?php endforeach; ?>
+                            <?php
+                            $position++;
+                            self::renderTbody($table, $showSeasons, $showTeams, $position, $squadra, $row);
+                            ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th rowspan="2">Pos</th>
+                        <th rowspan="2">Squadra</th>
+                        <?php if ($showSeasons): ?>
+                            <th rowspan="2">Stagioni</th>
+                        <?php endif; ?>
+                        <?php for ($i = 0; $i < 3; $i++): ?>
+                            <th>Pt</th>
+                            <th>G</th>
+                            <th>V</th>
+                            <th>N</th>
+                            <th>P</th>
+                            <th>GF</th>
+                            <th>GS</th>
+                            <th>DR</th>
+                        <?php endfor; ?>
+                    </tr>
+                    <tr>
+
+                        <th colspan="8">Totale</th>
+                        <th colspan="8">Casa</th>
+                        <th colspan="8">Trasferta</th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
         <?php
+    }
+
+    private static function renderTbody($table, $showSeasons, $showTeams, $position, $squadra, $row)
+    {
+        ?>
+        <td><b><?= $position ?>°</b></td>
+        <?php if ($showTeams): ?>
+            <td class="text-start fw-bold"><?= htmlspecialchars($squadra) ?></td>
+        <?php endif; ?>
+        <?php if ($showSeasons): ?>
+            <td class="fw-bold text-primary"><?= $row['stagioni'] ?? 0 ?></td>
+        <?php endif; ?>
+        <?php foreach (['totale', 'casa', 'trasferta'] as $tipo): ?>
+            <td class="fw-bold"><?= $row[$tipo]['pt'] ?></td>
+            <td><?= $row[$tipo]['g'] ?></td>
+            <td><?= $row[$tipo]['v'] ?></td>
+            <td><?= $row[$tipo]['n'] ?></td>
+            <td><?= $row[$tipo]['p'] ?></td>
+            <td><?= $row[$tipo]['gf'] ?></td>
+            <td><?= $row[$tipo]['gs'] ?></td>
+            <td><?= $row[$tipo]['dr'] >= 0 ? '+' : '' ?><?= $row[$tipo]['dr'] ?></td>
+        <?php endforeach; ?>
+    <?php
     }
 
     /**

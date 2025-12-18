@@ -22,6 +22,9 @@
                     <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=stagione">Dettaglio Stagione</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=squadra">Dettaglio Squadra</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=scontri">Scontri Diretti</a>
                 </li>
             </ul>
