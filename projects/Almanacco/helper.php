@@ -1,6 +1,16 @@
 <?php
+
 class Helper
 {
+
+    public static function getJson()
+    {
+        if (file_exists("json/partite.json")) {
+            return json_decode(file_get_contents("json/partite.json"), true);
+        }
+        return [];
+    }
+
     /**
      * Ottiene l'elenco delle stagioni dal JSON
      */
@@ -212,7 +222,7 @@ class Helper
                     Classifica Perpetua
                 </div>
                 <div class="">
-                    <?php self::renderTable($allTimeTable, true); ?>
+                    <?php self::renderTable($allTimeTable, true, true, true); ?>
                 </div>
             </div>
         </div>
@@ -350,9 +360,6 @@ class Helper
     }
 
 
-
-
-
     /**
      * Calcola la classifica all-time sommando tutte le stagioni
      */
@@ -365,6 +372,7 @@ class Helper
 
             foreach ($seasonTable as $squadra => $stats) {
                 if (!isset($allTimeTable[$squadra])) {
+
                     $allTimeTable[$squadra] = self::initTeamStats();
                     $allTimeTable[$squadra]['stagioni'] = 0; // Contatore stagioni
                 }
@@ -411,8 +419,8 @@ class Helper
                 [$casa, $trasferta, $golCasa, $golTrasferta] = $matchData;
 
                 // Inizializza le squadre se necessario
-                self::ensureTeamExists($classifica, $casa);
-                self::ensureTeamExists($classifica, $trasferta);
+                self::ensureTeamExists($classifica, $casa, $season, $json);
+                self::ensureTeamExists($classifica, $trasferta, $season, $json);
 
                 // Calcola i punti
                 [$puntiCasa, $puntiTrasferta] = self::calculatePoints($golCasa, $golTrasferta, $moltiplicatorePunti);
@@ -429,7 +437,7 @@ class Helper
     /**
      * Inizializza le statistiche di una squadra
      */
-    private static function initTeamStats()
+    private static function initTeamStats($penalita = 0)
     {
         $base = [
             'pt' => 0,
@@ -443,19 +451,22 @@ class Helper
         ];
 
         return [
-            'totale' => $base,
+            'penalita' => $penalita,
+            'totale' => array_merge($base, ['pt' => -$penalita]),
             'casa' => $base,
             'trasferta' => $base,
         ];
     }
 
+
     /**
      * Assicura che una squadra esista nella classifica
      */
-    private static function ensureTeamExists(&$classifica, $squadra)
+    private static function ensureTeamExists(&$classifica, $squadra, $season, $json)
     {
         if (!isset($classifica[$squadra])) {
-            $classifica[$squadra] = self::initTeamStats();
+            $penalita = self::getPenalitaForTeamBySeason($json, $squadra, $season);
+            $classifica[$squadra] = self::initTeamStats($penalita);
         }
     }
 
@@ -609,7 +620,7 @@ class Helper
     /**
      * Renderizza la tabella della classifica
      */
-    private static function renderTable($table, $showSeasons = false, $showTeams = true)
+    private static function renderTable($table, $showSeasons = false, $showTeams = true, $isalltime = false)
     {
         ?>
         <div class="table-responsive">
@@ -646,7 +657,7 @@ class Helper
                         <tr>
                             <?php
                             $position++;
-                            self::renderTbody($table, $showSeasons, $showTeams, $position, $squadra, $row);
+                            self::renderTbody($table, $showSeasons, $showTeams, $position, $squadra, $row, $isalltime);
                             ?>
                         </tr>
                     <?php endforeach; ?>
@@ -681,18 +692,33 @@ class Helper
         <?php
     }
 
-    private static function renderTbody($table, $showSeasons, $showTeams, $position, $squadra, $row)
+    private static function renderTbody($table, $showSeasons, $showTeams, $position, $squadra, $row, $isalltime = false)
     {
+        $p = $row['penalita'];
+        if ($isalltime) {
+            $p = self::getPenalitaForTeam($squadra);
+        }
+        $pen = $penpt = '';
+        if ($p > 0) {
+            $pen = " <span class='text-danger' title='Penalità'>(-$p)</span>";
+            $sum = $row['totale']['pt'] + $p;
+            $penpt = " <span class='text-warning' title='Penalità'>($sum)</span>";
+        }
+
         ?>
         <td><b><?= $position ?>°</b></td>
         <?php if ($showTeams): ?>
-            <td class="text-start fw-bold"><?= htmlspecialchars($squadra) ?></td>
+            <td class="text-start fw-bold"><?= htmlspecialchars($squadra) ?><span><?= $pen ?></span></td>
         <?php endif; ?>
         <?php if ($showSeasons): ?>
             <td class="fw-bold text-primary"><?= $row['stagioni'] ?? 0 ?></td>
         <?php endif; ?>
         <?php foreach (['totale', 'casa', 'trasferta'] as $tipo): ?>
-            <td class="fw-bold"><?= $row[$tipo]['pt'] ?></td>
+            <?php if ($tipo == 'totale' && $p > 0): ?>
+                <td class="fw-bold"><?= $row[$tipo]['pt'] ?>                 <?= $penpt ?></td>
+            <?php else: ?>
+                <td class="fw-bold"><?= $row[$tipo]['pt'] ?></td>
+            <?php endif; ?>
             <td><?= $row[$tipo]['g'] ?></td>
             <td><?= $row[$tipo]['v'] ?></td>
             <td><?= $row[$tipo]['n'] ?></td>
@@ -805,6 +831,36 @@ class Helper
         ];
     }
 
+    /**
+     * Ottiene le penalità per una squadra in una stagione specifica
+     */
+    private static function getPenalitaForTeamBySeason($json, $team, $season)
+    {
+        $penalità = 0;
+        foreach ($json[$season]['penalita'] ?? [] as $penalty) {
+            if ($penalty['squadra'] === $team) {
+                $penalità = (int) $penalty['punti'];
+                break;
+            }
+        }
+        return $penalità;
+    }
+
+    /**
+     * Ottiene le penalità totali per una squadra in tutte le stagioni
+     */
+    private static function getPenalitaForTeam($team)
+    {
+        $totalPenalità = 0;
+        foreach (self::getJson() as $season => $data) {
+            foreach ($data['penalita'] ?? [] as $penalty) {
+                if ($penalty['squadra'] === $team) {
+                    $totalPenalità += (int) $penalty['punti'];
+                }
+            }
+        }
+        return $totalPenalità;
+    }
 
 }
 ?>
