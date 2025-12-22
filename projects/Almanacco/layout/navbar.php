@@ -22,10 +22,17 @@
                     <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=squadra">Squadre</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=perpetua">Classifica Perpetua</a>
+                    <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=perpetua">Classifica
+                        Perpetua</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=scontri">Scontri Diretti</a>
+                    <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=scontri">Scontri
+                        Diretti</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active fw-bold" aria-current="page" href="index.php?page=admin">Script</a>
                 </li>
             </ul>
 
