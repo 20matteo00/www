@@ -211,9 +211,12 @@ class Helper
     /**
      * Visualizza la classifica di tutti i tempi (somma di tutte le stagioni)
      */
-    public static function viewTableAllTime($json)
+    public static function viewTableAllTime($json, $location = 'tutto', $seasonStart = null, $seasonEnd = null)
     {
-        $allTimeTable = self::calculateAllTimeTable($json);
+        $allTimeTable = self::calculateAllTimeTable($json, $location, $seasonStart, $seasonEnd);
+        $loc = $location;
+        if ($location == 'tutto')
+            $loc == null;
 
         ?>
         <div class="row">
@@ -222,7 +225,7 @@ class Helper
                     Classifica Perpetua
                 </div>
                 <div class="">
-                    <?php self::renderTable($allTimeTable, true, true, true); ?>
+                    <?php self::renderTable($allTimeTable, true, true, true, $loc); ?>
                 </div>
             </div>
         </div>
@@ -232,19 +235,30 @@ class Helper
     /**
      * Visualizza gli scontri diretti tra due squadre
      */
-    public static function viewMatchesBetweenTeams($json, $team1, $team2, $location = 'tutto')
+    public static function viewMatchesBetweenTeams($json, $team1, $team2, $location = 'tutto', $seasonStart = null, $seasonEnd = null)
     {
-        $result = self::calculateMatchesBetweenTeams($json, $team1, $team2, $location);
+        $result = self::calculateMatchesBetweenTeams($json, $team1, $team2, $location, $seasonStart, $seasonEnd);
         $matchesFound = $result['matches'];
         $stats = $result['stats'];
+
+        if ($seasonStart != null && $seasonEnd != null) {
+            $texttoadd = " dalla stagione " . htmlspecialchars($seasonStart) . " alla stagione " . htmlspecialchars($seasonEnd);
+        } elseif ($seasonStart != null) {
+            $texttoadd = " dalla stagione " . htmlspecialchars($seasonStart);
+        } elseif ($seasonEnd != null) {
+            $texttoadd = " fino alla stagione " . htmlspecialchars($seasonEnd);
+        } else {
+            $texttoadd = "";
+        }
+
         if (empty($matchesFound)) {
-            echo "<div class='alert alert-info'>Nessun incontro trovato tra " . htmlspecialchars($team1) . " e " . htmlspecialchars($team2) . ".</div>";
+            echo "<div class='alert alert-info'>Nessun incontro trovato tra " . htmlspecialchars($team1) . " e " . htmlspecialchars($team2) . " " . $texttoadd . ".</div>";
             return;
         }
 
         ?>
         <div class="fw-bold text-center fs-4 bg-info text-white p-3 rounded-pill mb-3">
-            Scontri Diretti tra <?= htmlspecialchars($team1) ?> e <?= htmlspecialchars($team2) ?>
+            Scontri Diretti tra <?= htmlspecialchars($team1) ?> e <?= htmlspecialchars($team2) ?>         <?= $texttoadd ?>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered">
@@ -363,11 +377,29 @@ class Helper
     /**
      * Calcola la classifica all-time sommando tutte le stagioni
      */
-    private static function calculateAllTimeTable($json)
+    private static function calculateAllTimeTable($json, $location = 'tutto', $seasonStart = null, $seasonEnd = null)
     {
         $allTimeTable = [];
 
+        if ($seasonStart != null) {
+            $seasonStart = (int) explode('-', $seasonStart)[0] ?? null;
+        }
+        if ($seasonEnd != null) {
+            $seasonEnd = (int) explode('-', $seasonEnd)[0] ?? null;
+        }
         foreach ($json as $season => $data) {
+            if ($seasonStart != null) {
+                $year = (int) explode('-', $season)[0] ?? null;
+                if ($year < $seasonStart) {
+                    continue;
+                }
+            }
+            if ($seasonEnd != null) {
+                $year = (int) explode('-', $season)[0] ?? null;
+                if ($year > $seasonEnd) {
+                    continue;
+                }
+            }
             $seasonTable = self::calculateTableForSeason($json, $season);
 
             foreach ($seasonTable as $squadra => $stats) {
@@ -620,8 +652,9 @@ class Helper
     /**
      * Renderizza la tabella della classifica
      */
-    private static function renderTable($table, $showSeasons = false, $showTeams = true, $isalltime = false)
+    private static function renderTable($table, $showSeasons = false, $showTeams = true, $isalltime = false, $location = null)
     {
+        $count = $location ? 1 : 3;
         ?>
         <div class="table-responsive">
             <table class="table table-striped table-bordered text-center align-middle">
@@ -632,12 +665,18 @@ class Helper
                         <?php if ($showSeasons): ?>
                             <th rowspan="2">Stagioni</th>
                         <?php endif; ?>
-                        <th colspan="8">Totale</th>
-                        <th colspan="8">Casa</th>
-                        <th colspan="8">Trasferta</th>
+                        <?php if ($location == null): ?>
+                            <th colspan="8">Totale</th>
+                        <?php endif; ?>
+                        <?php if ($location == null || $location == 'casa'): ?>
+                            <th colspan="8">Casa</th>
+                        <?php endif; ?>
+                        <?php if ($location == null || $location == 'trasferta'): ?>
+                            <th colspan="8">Trasferta</th>
+                        <?php endif; ?>
                     </tr>
                     <tr>
-                        <?php for ($i = 0; $i < 3; $i++): ?>
+                        <?php for ($i = 0; $i < $count; $i++): ?>
                             <th>Pt</th>
                             <th>G</th>
                             <th>V</th>
@@ -657,7 +696,7 @@ class Helper
                         <tr>
                             <?php
                             $position++;
-                            self::renderTbody($table, $showSeasons, $showTeams, $position, $squadra, $row, $isalltime);
+                            self::renderTbody($table, $showSeasons, $showTeams, $position, $squadra, $row, $isalltime, $location);
                             ?>
                         </tr>
                     <?php endforeach; ?>
@@ -669,7 +708,7 @@ class Helper
                         <?php if ($showSeasons): ?>
                             <th rowspan="2">Stagioni</th>
                         <?php endif; ?>
-                        <?php for ($i = 0; $i < 3; $i++): ?>
+                        <?php for ($i = 0; $i < $count; $i++): ?>
                             <th>Pt</th>
                             <th>G</th>
                             <th>V</th>
@@ -682,9 +721,15 @@ class Helper
                     </tr>
                     <tr>
 
-                        <th colspan="8">Totale</th>
-                        <th colspan="8">Casa</th>
-                        <th colspan="8">Trasferta</th>
+                        <?php if ($location == null): ?>
+                            <th colspan="8">Totale</th>
+                        <?php endif; ?>
+                        <?php if ($location == null || $location == 'casa'): ?>
+                            <th colspan="8">Casa</th>
+                        <?php endif; ?>
+                        <?php if ($location == null || $location == 'trasferta'): ?>
+                            <th colspan="8">Trasferta</th>
+                        <?php endif; ?>
                     </tr>
                 </tfoot>
             </table>
@@ -692,7 +737,7 @@ class Helper
         <?php
     }
 
-    private static function renderTbody($table, $showSeasons, $showTeams, $position, $squadra, $row, $isalltime = false)
+    private static function renderTbody($table, $showSeasons, $showTeams, $position, $squadra, $row, $isalltime = false, $location = null)
     {
         $p = $row['penalita'];
         if ($isalltime) {
@@ -704,6 +749,11 @@ class Helper
             $sum = $row['totale']['pt'] + $p;
             $penpt = " <span class='text-warning' title='Penalità'>($sum)</span>";
         }
+        if ($location == null) {
+            $arr = ['totale', 'casa', 'trasferta'];
+        } else {
+            $arr = [$location];
+        }
 
         ?>
         <td><b><?= $position ?>°</b></td>
@@ -713,7 +763,7 @@ class Helper
         <?php if ($showSeasons): ?>
             <td class="fw-bold text-primary"><?= $row['stagioni'] ?? 0 ?></td>
         <?php endif; ?>
-        <?php foreach (['totale', 'casa', 'trasferta'] as $tipo): ?>
+        <?php foreach ($arr as $tipo): ?>
             <?php if ($tipo == 'totale' && $p > 0): ?>
                 <td class="fw-bold"><?= $row[$tipo]['pt'] ?>                 <?= $penpt ?></td>
             <?php else: ?>
@@ -733,12 +783,30 @@ class Helper
     /**
      * Calcola i match tra due squadre
      */
-    private static function calculateMatchesBetweenTeams($json, $team1, $team2, $location = 'tutto')
+    private static function calculateMatchesBetweenTeams($json, $team1, $team2, $location = 'tutto', $seasonStart = null, $seasonEnd = null)
     {
         $matchesFound = [];
         $stats = []; // statistiche aggregate
 
+        if ($seasonStart != null) {
+            $seasonStart = (int) explode('-', $seasonStart)[0] ?? null;
+        }
+        if ($seasonEnd != null) {
+            $seasonEnd = (int) explode('-', $seasonEnd)[0] ?? null;
+        }
         foreach ($json as $season => $data) {
+            if ($seasonStart != null) {
+                $year = (int) explode('-', $season)[0] ?? null;
+                if ($year < $seasonStart) {
+                    continue;
+                }
+            }
+            if ($seasonEnd != null) {
+                $year = (int) explode('-', $season)[0] ?? null;
+                if ($year > $seasonEnd) {
+                    continue;
+                }
+            }
             foreach ($data['giornate'] as $matches) {
                 foreach ($matches as $match) {
 
