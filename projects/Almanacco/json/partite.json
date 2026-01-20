@@ -150188,7 +150188,7 @@
                 {
                     "data": "15.01.2026",
                     "squadre": "Como-Milan",
-                    "risultato": "-"
+                    "risultato": "1-3"
                 },
                 {
                     "data": "21.12.2025",
@@ -150203,7 +150203,7 @@
                 {
                     "data": "14.01.2026",
                     "squadre": "Inter-Lecce",
-                    "risultato": "-"
+                    "risultato": "1-0"
                 },
                 {
                     "data": "20.12.2025",
@@ -150218,7 +150218,7 @@
                 {
                     "data": "14.01.2026",
                     "squadre": "Napoli-Parma",
-                    "risultato": "-"
+                    "risultato": "0-0"
                 },
                 {
                     "data": "21.12.2025",
@@ -150228,7 +150228,7 @@
                 {
                     "data": "15.01.2026",
                     "squadre": "Verona-Bologna",
-                    "risultato": "-"
+                    "risultato": "2-3"
                 }
             ],
             "17": [
@@ -150545,12 +150545,12 @@
             ],
             "23": [
                 {
-                    "data": "01.02.2026",
+                    "data": "03.02.2026",
                     "squadre": "Bologna-Milan",
                     "risultato": "-"
                 },
                 {
-                    "data": "01.02.2026",
+                    "data": "31.01.2026",
                     "squadre": "Cagliari-Verona",
                     "risultato": "-"
                 },
@@ -150565,12 +150565,12 @@
                     "risultato": "-"
                 },
                 {
-                    "data": "01.02.2026",
+                    "data": "30.01.2026",
                     "squadre": "Lazio-Genoa",
                     "risultato": "-"
                 },
                 {
-                    "data": "01.02.2026",
+                    "data": "31.01.2026",
                     "squadre": "Napoli-Fiorentina",
                     "risultato": "-"
                 },
@@ -150580,7 +150580,7 @@
                     "risultato": "-"
                 },
                 {
-                    "data": "01.02.2026",
+                    "data": "31.01.2026",
                     "squadre": "Pisa-Sassuolo",
                     "risultato": "-"
                 },
@@ -150590,14 +150590,14 @@
                     "risultato": "-"
                 },
                 {
-                    "data": "01.02.2026",
+                    "data": "02.02.2026",
                     "squadre": "Udinese-Roma",
                     "risultato": "-"
                 }
             ],
             "24": [
                 {
-                    "data": "08.02.2026",
+                    "data": "09.02.2026",
                     "squadre": "Atalanta-Cremonese",
                     "risultato": "-"
                 },
@@ -150607,12 +150607,12 @@
                     "risultato": "-"
                 },
                 {
-                    "data": "08.02.2026",
+                    "data": "07.02.2026",
                     "squadre": "Fiorentina-Torino",
                     "risultato": "-"
                 },
                 {
-                    "data": "08.02.2026",
+                    "data": "07.02.2026",
                     "squadre": "Genoa-Napoli",
                     "risultato": "-"
                 },
@@ -150632,7 +150632,7 @@
                     "risultato": "-"
                 },
                 {
-                    "data": "08.02.2026",
+                    "data": "09.02.2026",
                     "squadre": "Roma-Cagliari",
                     "risultato": "-"
                 },
@@ -150642,7 +150642,7 @@
                     "risultato": "-"
                 },
                 {
-                    "data": "08.02.2026",
+                    "data": "06.02.2026",
                     "squadre": "Verona-Pisa",
                     "risultato": "-"
                 }

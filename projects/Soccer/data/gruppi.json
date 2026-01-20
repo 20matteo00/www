@@ -1,0 +1,14 @@
+[
+    {
+        "nome": "Serie A",
+        "descrizione": "Campionato Italiano di Calcio di 1 Livello"
+    },
+    {
+        "nome": "Coppa Italia",
+        "descrizione": "Torneo Italiano ad Eliminazione diretta"
+    },
+    {
+        "nome": "Serie B",
+        "descrizione": "Campionato Italiano di Calcio di 2 Livello"
+    }
+]
