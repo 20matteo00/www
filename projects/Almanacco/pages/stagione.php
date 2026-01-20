@@ -10,7 +10,9 @@ $seasons = $helper->getSeasons($json);
             <select class="form-select" name="season" id="season">
                 <option value="">-- Seleziona --</option>
                 <?php foreach ($seasons as $season): ?>
-                    <option value="<?= $season ?>" <?= (isset($_POST['season']) && $_POST['season'] === $season) ? 'selected' : '' ?>><?= $season ?></option>
+                    <option value="<?= $season ?>" <?= ((isset($_POST['season']) && $_POST['season'] === $season) || (!isset($_POST['season']) && isset($_GET['season']) && $_GET['season'] === $season)) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($season) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -32,19 +34,19 @@ $seasons = $helper->getSeasons($json);
         </div>
     </form>
     <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $selectedSeason = $_POST['season'] ?? null;
-        $action = $_POST['action'] ?? null;
 
-        if ($action && $selectedSeason) {
-            if ($action === 'viewdays') {
-                $helper->viewDaysForSeason($json, $selectedSeason);
-            } elseif ($action === 'viewtable') {
-                $helper->viewTableForSeason($json, $selectedSeason);
-            }
+    $selectedSeason = $_POST['season'] ?? $_GET['season'] ?? null;
+    $action = $_POST['action'] ?? $_GET['action'] ?? null;
+
+    if ($action && $selectedSeason) {
+        if ($action === 'viewdays') {
+            $helper->viewDaysForSeason($json, $selectedSeason);
+        } elseif ($action === 'viewtable') {
+            $helper->viewTableForSeason($json, $selectedSeason);
         }
-
     }
+
+
     ?>
 
 </div>

@@ -10,8 +10,8 @@ $teams = $helper->getTeams($json, 1);
             <select class="form-select" name="team" id="team">
                 <option value="">-- Seleziona --</option>
                 <?php foreach ($teams as $team): ?>
-                    <option value="<?= $team ?>" <?= (isset($_POST['team']) && $_POST['team'] === $team) ? 'selected' : '' ?>>
-                        <?= $team ?>
+                    <option value="<?= $team ?>" <?= ((isset($_POST['team']) && $_POST['team'] === $team) || (!isset($_POST['team']) && isset($_GET['team']) && $_GET['team'] === $team)) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($team) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -34,16 +34,14 @@ $teams = $helper->getTeams($json, 1);
         </div>
     </form>
     <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $selectedTeam = $_POST['team'] ?? null;
-        $action = $_POST['action'] ?? null;
+    $selectedTeam = $_POST['team'] ?? $_GET['team'] ?? null;
+    $action = $_POST['action'] ?? $_GET['action'] ?? null;
 
-        if ($action && $selectedTeam) {
-            if ($action === 'viewseasons') {
-                $helper->viewSeasonsForTeam($json, $selectedTeam);
-            } elseif ($action === 'viewmatches') {
-                $helper->viewMatchesForTeam($json, $selectedTeam);
-            }
+    if ($action && $selectedTeam) {
+        if ($action === 'viewseasons') {
+            $helper->viewSeasonsForTeam($json, $selectedTeam);
+        } elseif ($action === 'viewmatches') {
+            $helper->viewMatchesForTeam($json, $selectedTeam);
         }
     }
     ?>

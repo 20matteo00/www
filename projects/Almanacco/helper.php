@@ -134,7 +134,7 @@ class Helper
                                     // Calcola la classifica per la stagione
                                     $table = self::calculateTableForSeason($json, $season);
                                     if (isset($table[$team])) {
-                                        echo "<td><b>" . htmlspecialchars($season) . "</b></td>";
+                                        echo "<td><b><a href='?page=stagione&season=" . htmlspecialchars($season) . "&action=viewtable'>" . htmlspecialchars($season) . "</b></td>";
                                         $position = array_search($team, array_keys($table)) + 1;
                                         // Mostra solo la riga della squadra selezionata
                                         self::renderTbody([$team => $table[$team]], false, false, $position, $team, $table[$team]);
@@ -758,7 +758,7 @@ class Helper
         ?>
         <td><b><?= $position ?>°</b></td>
         <?php if ($showTeams): ?>
-            <td class="text-start fw-bold"><?= htmlspecialchars($squadra) ?><span><?= $pen ?></span></td>
+            <td class="text-start fw-bold"><a href="?page=squadra&team=<?= $squadra ?>&action=viewseasons" class="text-decoration-none text-dark"><?= htmlspecialchars($squadra) ?><span><?= $pen ?></span></a></td>
         <?php endif; ?>
         <?php if ($showSeasons): ?>
             <td class="fw-bold text-primary"><?= $row['stagioni'] ?? 0 ?></td>
