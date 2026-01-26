@@ -1,6 +1,6 @@
 <?php
-$jsonFile = Helper::FILE_GRUPPI;
-$gruppi = $h->getGruppi();
+$jsonFile = Helper::FILE_SQUADRE;
+$squadre = $h->getSquadre();
 
 $editIndex = null;
 $nomeForm = '';
@@ -13,28 +13,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $index = isset($_POST['index']) ? (int) $_POST['index'] : null;
 
     if ($azione === 'crea' && $nome !== '') {
-        $h->addItem($gruppi, ['nome' => $nome, 'descrizione' => $descrizione]);
+        $h->addItem($squadre, ['nome' => $nome, 'descrizione' => $descrizione]);
     } elseif ($azione === 'elimina' && $index !== null) {
-        $h->deleteItem($gruppi, $index);
+        $h->deleteItem($squadre, $index);
     } elseif ($azione === 'modifica' && $index !== null && $nome !== '') {
-        $h->editItem($gruppi, $index, ['nome' => $nome, 'descrizione' => $descrizione]);
+        $h->editItem($squadre, $index, ['nome' => $nome, 'descrizione' => $descrizione]);
     } elseif ($azione === 'carica_modifica' && $index !== null) {
         $editIndex = $index;
-        $item = $h->loadItem($gruppi, $index);
+        $item = $h->loadItem($squadre, $index);
         if ($item) {
             $nomeForm = $item['nome'];
             $descrizioneForm = $item['descrizione'];
         }
     }
 
-    $h->saveJson($jsonFile, $gruppi);
+    $h->saveJson($jsonFile, $squadre);
 
     if ($azione !== 'carica_modifica') {
-        header('Location: ' . $_SERVER['PHP_SELF'] . '?page=gruppi');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?page=squadre');
         exit();
     }
 }
 
 
-include 'layout/gruppi.php';
+
+
+include 'layout/squadre.php';
 ?>

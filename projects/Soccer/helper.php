@@ -3,6 +3,9 @@
 class Helper
 {
 
+    public const FILE_GRUPPI = 'data/gruppi.json';
+    public const FILE_SQUADRE = 'data/squadre.json';
+
     public function getMenu()
     {
         return [
@@ -17,14 +20,16 @@ class Helper
         ];
     }
 
-    public function getFileGruppiPath()
-    {
-        return 'data/gruppi.json';
-    }
 
     public function getGruppi()
     {
-        $filename = $this->getFileGruppiPath();
+        $filename = self::FILE_GRUPPI;
+        return $this->getFile($filename);
+    }
+
+    public function getSquadre()
+    {
+        $filename = self::FILE_SQUADRE;
         return $this->getFile($filename);
     }
 
