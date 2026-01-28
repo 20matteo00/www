@@ -33,6 +33,18 @@ class Helper
         return $this->getFile($filename);
     }
 
+    public function getUltimoID($gruppi)
+    {
+        // Estraggo tutti gli ID
+        $ids = array_column($gruppi, 'id');
+
+        if (empty($ids)) {
+            return 0; // Se non ci sono elementi, il prossimo ID sarà 1
+        }
+
+        return max($ids); // Restituisce l'ID più alto
+    }
+
 
     private function getFile($filename)
     {

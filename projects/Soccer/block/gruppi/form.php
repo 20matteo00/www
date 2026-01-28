@@ -21,6 +21,7 @@
 
                     <?php if ($editIndex !== null): ?>
                         <input type="hidden" name="index" value="<?= $editIndex ?>">
+                        <input type="hidden" name="id" value="<?= $idForm ?>">
                     <?php endif; ?>
 
                     <div class="mt-4 text-end">

@@ -1,14 +1,21 @@
 [
     {
+        "id": 1,
         "nome": "Serie A",
         "descrizione": "Campionato Italiano di Calcio di 1 Livello"
     },
     {
+        "id": 2,
         "nome": "Coppa Italia",
         "descrizione": "Torneo Italiano ad Eliminazione diretta"
     },
     {
+        "id": 3,
         "nome": "Serie B",
         "descrizione": "Campionato Italiano di Calcio di 2 Livello"
+    },
+    {
+        "nome": "Serie C",
+        "descrizione": ""
     }
 ]
